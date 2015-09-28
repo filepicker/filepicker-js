@@ -1,0 +1,27 @@
+{
+  "name": "filepicker-js",
+  "version": "2.0.0",
+  "homepage": "https://github.com/filepicker/filepicker-js",
+  "description": "Filepicker javascript library",
+  "main": "dist/filepicker.min.js",
+  "keywords": [
+    "filepicker",
+    "uploading",
+    "widget",
+    "file",
+    "upload",
+    "image",
+    "conversion"
+  ],
+  "authors": [
+    "krystiangw"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
