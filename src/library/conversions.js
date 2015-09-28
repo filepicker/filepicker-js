@@ -10,6 +10,7 @@ filepicker.extend('conversions', function(){
         crop:'string or array',
         crop_first:'boolean',
         compress:'boolean',
+        exif:'string or boolean',
         filter:'string',
         fit:'string',
         format:'string',

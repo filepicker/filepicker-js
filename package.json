@@ -1,0 +1,36 @@
+{
+  "name": "filepicker-js",
+  "version": "2.0.0",
+  "description": "Filepicker javascript library",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "build-src": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.js -b",
+    "build-min": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.min.js --compress --mangle",
+    "build": "npm run build-src && npm run build-min",
+    "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/filepicker/filepicker-js.git"
+  },
+  "keywords": [
+    "filepicker",
+    "file",
+    "upload",
+    "file",
+    "processing",
+    "store",
+    "widget"
+  ],
+  "author": "krystiangw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filepicker/filepicker-js/issues"
+  },
+  "homepage": "https://github.com/filepicker/filepicker-js",
+  "devDependencies": {
+    "onchange": "^2.0.0",
+    "uglify-js": "^2.4.24"
+  }
+}
