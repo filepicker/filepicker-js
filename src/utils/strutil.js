@@ -50,12 +50,38 @@ filepicker.extend('util', function(){
             segments: a.pathname.replace(/^\//,'').split('/')
         };
         ret.origin = ret.protocol+'://'+ret.host+(ret.port ? ':'+ret.port : '');
-
+        ret.rawUrl = (ret.origin + ret.path).replace('/convert', '');
         return ret;
-    };
+    }
 
     var endsWith = function(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    };
+
+    var toQuery = function(obj) {
+        var pairs = [];
+        for (var prop in obj) {
+            if (!obj.hasOwnProperty(prop)) {
+                continue;
+            }
+            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+                pairs.push(serialize(obj[prop]));
+                continue;
+            }
+            pairs.push(prop + '=' + obj[prop]);
+        }
+        return pairs.join('&');
+    };
+
+    // passed data  converted to a URL-encoded string
+    var serialize = function(obj) {
+        var str = [];
+        for(var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+            }
+        }
+        return str.join('&');
     };
 
     return {
@@ -63,6 +89,8 @@ filepicker.extend('util', function(){
         trimConvert: trimConvert,
         parseUrl: parseUrl,
         isUrl: isUrl,
-        endsWith: endsWith
+        endsWith: endsWith,
+        toQuery: toQuery,
+        serialize: serialize
     };
 });

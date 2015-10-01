@@ -739,8 +739,13 @@ filepicker.extend(function(){
         return fp.dragdrop.makeDropPane(div, options);
     };
 
+    var setResponsiveOptions = function(options){
+        fp.responsiveOptions = options || {};
+    };
+
     return {
         setKey: setKey,
+        setResponsiveOptions: setResponsiveOptions,
         pick: pick,
         pickFolder: pickFolder,
         pickMultiple: pickMultiple,

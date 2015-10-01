@@ -129,6 +129,16 @@ filepicker.extend('util', function(){
         }
     };
 
+    var extend = function(obj1, obj2){
+        for (var i in obj1) {
+            if (obj1.hasOwnProperty(i)) {
+                obj2[i] = obj1[i];
+            }
+        }
+        return obj2;
+    };
+
+
     return {
         isArray: isArray,
         isFile: isFile,
@@ -143,6 +153,7 @@ filepicker.extend('util', function(){
         console: console,
         clone: clone,
         standardizeFPFile: standardizeFPFile,
-        isCanvasSupported: isCanvasSupported
+        isCanvasSupported: isCanvasSupported,
+        extend: extend
     };
 });

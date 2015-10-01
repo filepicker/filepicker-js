@@ -10,7 +10,7 @@
     "build": "npm run build-src && npm run build-min",
     "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build && npm run jshint",
     "linter": "jshint ./src/**/*",
-    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run jshint"
+    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run linter"
   },
   "repository": {
     "type": "git",

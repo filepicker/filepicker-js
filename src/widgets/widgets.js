@@ -493,6 +493,10 @@ filepicker.extend('widgets', function(){
             for (i=0; i< previews.length; i++) {
                 constructPreview(previews[i]);
             }
+            var responsiveImages = document.querySelectorAll('img[data-fp-src]');
+            for (i=0; i< responsiveImages.length; i++) {
+                fp.responsiveImages.construct(responsiveImages[i]);
+            }
             appendStyle();
         }
     };
