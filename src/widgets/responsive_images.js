@@ -3,17 +3,84 @@
 filepicker.extend('responsiveImages', function(){
     var fp = this;
 
-    var WINDOW_RESIZE_TIMEOUT = 200;
+    var WINDOW_RESIZE_TIMEOUT = 200,
+        windowLastWidth = 0;
 
 
-
-
+    var reloadWithDebounce = debounce(function () {
+        constructAll();
+        windowLastWidth = fp.window.getWidth();
+    }, WINDOW_RESIZE_TIMEOUT);
 
 
     return {
         getElementDims: getElementDims,
-        construct: construct
+        init: init,
     };
+
+    /**
+    *   Initialize
+    *
+    *   @method init
+    */
+
+    function init(){
+        constructAll();
+        addWindowResizeEvent();
+    }
+
+    /**
+    *   Search for all images with data-fp-src attribute 
+    *   and rebuild its source url if needed
+    *
+    *   @method constructAll
+    */
+
+    function constructAll(){
+        var responsiveOptions = getResponsiveOptions(),
+            responsiveImages = document.querySelectorAll('img[data-fp-src]');
+
+        for (var i=0; i< responsiveImages.length; i++) {
+            var image = responsiveImages[i],
+                imageSrc = getSrcAttr(image),
+            /*
+                get image data-fp-on-resize attr
+                OR global option
+                OR 'all' by default
+            */
+                changeOnResize = getFpOnResizeAttr(image) || responsiveOptions.onResize || 'all';
+
+            /*
+                if there is not src attribute
+                OR onResize = 'all'
+                construct url immedialty
+            */
+
+            if (!imageSrc || changeOnResize === 'all') {
+                construct(image);
+            }
+
+            if (changeOnResize === 'none') {
+                continue;
+            }
+
+            var currentParams = getCurrentConvertParams(imageSrc),
+                currentDims = getElementDims(image);
+
+
+            construct(image);
+        }
+    }
+
+    /**
+    *   Return image DOM element size ( or parent node size )
+    *
+    *   @method getElementDims
+    *   @param {DOMElement} elem - Image element
+    *   @returns {Object}
+    *       width {Number}
+    *       height {Number}
+    */
 
     function getElementDims(elem){
         var dims = {};
@@ -46,14 +113,17 @@ filepicker.extend('responsiveImages', function(){
         return dims;
     }
 
-    /*
-        Replace the image source of the element.
-        @param elem
+    /**
+    *   Replace the image source of the element.
+    *
+    *   @method replaceSrc
+    *   @param {DOMElement} elem - Image element
+    *   @param {String} newSrc - new image source url
     */
 
     function replaceSrc(elem, newSrc) {
         
-        var previousSrc = getSrcAttr(elem);
+        var previousSrc = getSrcAttr(elem) || getFpSrcAttr(elem);
 
         elem.src = newSrc;
 
@@ -65,47 +135,197 @@ filepicker.extend('responsiveImages', function(){
         }
     }
 
-    /*
-        Get the elements image src.
-        @param elem
-        @returns {string}
+    /**
+    *   @method getFpOnResizeAttr
+    *   @param {DOMElement} elem - Image element
+    *   @returns {String} Return attribute value
     */
 
+    function getFpOnResizeAttr(elem) {
+        return elem.getAttribute('data-fp-on-resize');
+    }
+
+    /**
+    *   @method getFpPixelRoundAttr
+    *   @param {DOMElement} elem - Image element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpPixelRoundAttr(elem) {
+        return elem.getAttribute('data-fp-pixel-round');
+    }
+
+    /**
+    *   @method getFpImageQualityAttr
+    *   @param {DOMElement} elem - Image element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpImageQualityAttr(elem) {
+        return elem.getAttribute('fp-image-quality');
+    }
+
+    /**
+    *   @method getSrcAttr
+    *   @param {DOMElement} elem - Image element
+    *   @returns {String} Return attribute value
+    */
 
     function getSrcAttr(elem) {
-        return elem.getAttribute('data-fp-src') || elem.getAttribute('src');
+        return elem.getAttribute('src');
     }
 
+    /**
+    *   @method getFpSrcAttr
+    *   @param {DOMElement} elem - Image element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpSrcAttr(elem){
+        return elem.getAttribute('data-fp-src');
+    }
+
+    /**
+    *   Parse url and return w & h values from query
+    *
+    *   @method getCurrentConvertParams
+    *   @param {String} url - Image url
+    *   @returns {Object} 
+    *       width {Number}
+    *       height {Number}
+    */
 
     function getCurrentConvertParams(url){
-        var restConvertOptions = fp.util.parseUrl(url).params || {};
+        var urlQueryParams = fp.util.parseUrl(url).params || {};
 
         return {
-            width: restConvertOptions.w,
-            height: restConvertOptions.h
+            width: urlQueryParams.w,
+            height: urlQueryParams.h
         };
     }
+
+    /**
+    *   Build url based on original url and appended params
+    *
+    *   @method buildUrl
+    *   @param {String} originalUrl
+    *   @returns {Object} Return object with width and height values
+    */
 
     function buildUrl(originalUrl, params) {
         if (Object.keys(params).length) {
             originalUrl += '/convert?' + fp.util.toQuery(params);
         }
         return originalUrl;
-    };
+    }
+
+    /**
+    *   Get Image DOM elment and based on its data-fp-src attribute,
+    *   and current dimenisions - replace src attribute
+    *
+    *   @method construct
+    *   @param {DOMElement} elem - Image element
+    */
 
     function construct(elem){
-        var url = getSrcAttr(elem),
+        var url = getFpSrcAttr(elem),
             dims = getElementDims(elem),
             parsed = fp.util.parseUrl(url),
+            /*
+                get image data-fp-pixel-round attr
+                OR global pixelRound option
+                OR 10 by default
+            */
+            pixelRound = getFpPixelRoundAttr(elem) || getResponsiveOptions().pixelRound || 10,
             params = fp.util.extend(
                 {
-                    w:dims.width
+                    w: roundWithStep(dims.width, pixelRound)
                 },
                 parsed.params
             );
 
         replaceSrc(elem, buildUrl(parsed.rawUrl, params));
     }
-    
+
+    /**
+    *   Timeout function calls based on a period of time.
+    *
+    *   @method debounce
+    *   @param {function} func - function to call
+    *   @param {number} wait - time to wait in miliseconds
+    *   @returns {function}
+    */
+
+    function debounce(func, wait) {
+        var timeout;
+        return function () {
+            var context = this;
+            var args = arguments;
+            var later = function () {
+                timeout = null;
+                func.apply(context, args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    /**
+    * Reload if the window width is different to last window width.
+    * This is used in the "resize" event listener callback.
+    *
+    *   @method windowResized
+    */
+
+    function windowResized() {
+        if (windowLastWidth !== fp.window.getWidth()) {
+            reloadWithDebounce();
+        }
+    }
+
+    /**
+    *   Add "resize" window event.
+    *
+    *   @method addWindowResizeEvent
+    */
+  
+    function addWindowResizeEvent() {
+        if (window.addEventListener) {
+            window.addEventListener('resize', windowResized, false);
+        } else if (window.attachEvent) {
+            window.attachEvent('onresize', windowResized);
+        }
+    }
+
+    /**
+    *   Return global responsive options
+    *
+    *   @method getResponsiveOptions
+    *   @returns {Object}
+    *       onResize {String} optional, can be 'all', 'up', 'down', 'none'
+    *       pixelRound {Number} optional
+    *       imageQuality {Number} optional
+    *       signature {String} optional
+    *       policy {String} optional
+    */
+
+    function getResponsiveOptions(){
+        return fp.responsiveOptions || {};
+    }
+
+
+    /**
+    *   Round the pixel size based on the pixel rounding parameter.
+    *
+    *   @method roundWithStep
+    *   @param {Number} value - value to be rounded
+    *   @param {Number} round - round step
+    *   @returns {number} rounded value
+    */
+
+    function roundWithStep(value, round) {
+        var pixelRounding = round === 0 ? 1 : round;
+        return Math.ceil(value / pixelRounding) * pixelRounding;
+    }
 
 });

@@ -52,7 +52,7 @@ filepicker.extend('util', function(){
         ret.origin = ret.protocol+'://'+ret.host+(ret.port ? ':'+ret.port : '');
         ret.rawUrl = (ret.origin + ret.path).replace('/convert', '');
         return ret;
-    }
+    };
 
     var endsWith = function(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
