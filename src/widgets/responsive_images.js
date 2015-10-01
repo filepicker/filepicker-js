@@ -19,7 +19,7 @@ filepicker.extend('responsiveImages', function(){
     };
 
     /**
-    *   Initialize
+    *   Module is initialized in finalize.js file
     *
     *   @method init
     */
@@ -64,11 +64,12 @@ filepicker.extend('responsiveImages', function(){
                 continue;
             }
 
-            var currentParams = getCurrentConvertParams(imageSrc),
-                currentDims = getElementDims(image);
+            var shouldBeEnlarged = getCurrentConvertParams(imageSrc).width < getElementDims(image).width;
 
-
-            construct(image);
+            if ((shouldBeEnlarged && changeOnResize === 'up') || 
+                (!shouldBeEnlarged && changeOnResize === 'down')) {
+                construct(image);
+            }
         }
     }
 
