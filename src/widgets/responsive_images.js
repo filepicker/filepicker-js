@@ -14,8 +14,8 @@ filepicker.extend('responsiveImages', function(){
 
 
     return {
-        getElementDims: getElementDims,
         init: init,
+        setResponsiveOptions: setResponsiveOptions
     };
 
     /**
@@ -187,6 +187,16 @@ filepicker.extend('responsiveImages', function(){
     }
 
     /**
+    *   @method getFpKeyAttr
+    *   @param {DOMElement} elem - DOM element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpKeyAttr(elem){
+        return elem.getAttribute('data-fp-apikey');
+    }
+
+    /**
     *   Parse url and return w & h values from query
     *
     *   @method getCurrentConvertParams
@@ -243,7 +253,18 @@ filepicker.extend('responsiveImages', function(){
                     w: roundWithStep(dims.width, pixelRound)
                 },
                 parsed.params
-            );
+            ),
+            apikey = getFpKeyAttr(elem);
+
+        /*
+            Accept data-fp-key attribute to set apikey.
+            However apikey is not reuqired for now.
+            Will be with conversion 2.0
+        */
+
+        if (apikey) {
+            fp.setKey(apikey);
+        }
 
         replaceSrc(elem, buildUrl(parsed.rawUrl, params));
     }
@@ -313,6 +334,30 @@ filepicker.extend('responsiveImages', function(){
     function getResponsiveOptions(){
         return fp.responsiveOptions || {};
     }
+
+    /**
+    *   Set global responsive options
+    *
+    *   @method setResponsiveOptions
+    *   @param {Object} options
+    *       onResize {String} optional, can be 'all', 'up', 'down', 'none'
+    *       pixelRound {Number} optional
+    *       imageQuality {Number} optional
+    *       signature {String} optional
+    *       policy {String} optional
+    */
+
+    function setResponsiveOptions(options){
+        options = options || {};
+
+        if (typeof options !== 'object') {
+            throw new fp.FilepickerException('Responsive options must be an object.');
+        }
+        
+        fp.responsiveOptions = options;
+        
+    }
+
 
 
     /**

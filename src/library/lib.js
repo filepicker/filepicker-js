@@ -17,12 +17,6 @@ filepicker.extend(function(){
     //Telling router how to call us
     FilepickerException.isClass = true;
 
-    var checkApiKey = function(){
-        if (!fp.apikey) {
-            throw new fp.FilepickerException('API Key not found');
-        }
-    };
-
     /**
      * Pops open the filepicker.io picker dialog to select a single file.
      * Arguments:
@@ -47,7 +41,7 @@ filepicker.extend(function(){
      * onProgress: @Function(@Object). Function called when there is progress event
      */
     var pick = function(options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -90,7 +84,7 @@ filepicker.extend(function(){
      * onProgress: @Function(@Object). Function called when there is progress event
      */
     var pickMultiple = function(options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -138,7 +132,7 @@ filepicker.extend(function(){
      * onProgress: @Function(@Object). Function called when there is progress event
      */
     var pickAndStore = function(picker_options, store_options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
         if (!picker_options || !store_options || 
                 typeof picker_options === 'function' || typeof picker_options === 'function') {
             throw new fp.FilepickerException('Not all required parameters given, missing picker or store options');
@@ -185,7 +179,7 @@ filepicker.extend(function(){
      *   102: Unknown error in picking folder
      */
     var pickFolder = function(options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -220,7 +214,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var read = function(input, options, onSuccess, onError, onProgress){
-        checkApiKey();
+        fp.util.checkApiKey();
         if (!input) {
             throw new fp.FilepickerException('No input given - nothing to read!');
         }
@@ -286,7 +280,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var write = function(fpfile, input, options, onSuccess, onError, onProgress){
-        checkApiKey();
+        fp.util.checkApiKey();
         if (!fpfile) {
             throw new fp.FilepickerException('No fpfile given - nothing to write to!');
         }
@@ -351,7 +345,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var writeUrl = function(fpfile, input, options, onSuccess, onError, onProgress){
-        checkApiKey();
+        fp.util.checkApiKey();
         if (!fpfile) {
             throw new fp.FilepickerException('No fpfile given - nothing to write to!');
         }
@@ -403,7 +397,7 @@ filepicker.extend(function(){
      *   132: Error in exporting
      */
     var exportFn = function(input, options, onSuccess, onError) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -441,7 +435,7 @@ filepicker.extend(function(){
 
     var processImage = function(input, options, onSuccess, onError, onProgress) {
         var convertUrl;
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -491,7 +485,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var store = function(input, options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -547,7 +541,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var storeUrl = function(input, options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -584,7 +578,7 @@ filepicker.extend(function(){
      *   162: Error fetching metadata
      */
     var stat = function(fpfile, options, onSuccess, onError) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -621,7 +615,7 @@ filepicker.extend(function(){
      *   172: The underlying content store cannot be reached
      */
     var remove = function(fpfile, options, onSuccess, onError) {
-        checkApiKey();
+        fp.util.checkApiKey();
 
         if (typeof options === 'function') {
             //Shift left
@@ -670,7 +664,7 @@ filepicker.extend(function(){
      * onProgress: @Function(Number). Function called on progress events
      */
     var convert = function(fpfile, convert_options, store_options, onSuccess, onError, onProgress) {
-        checkApiKey();
+        fp.util.checkApiKey();
         if (!fpfile) {
             throw new fp.FilepickerException('No fpfile given - nothing to convert!');
         }
@@ -735,12 +729,13 @@ filepicker.extend(function(){
     var constructWidget = function(base) {
         return fp.widgets.constructWidget(base);
     };
+
     var makeDropPane = function(div, options) {
         return fp.dragdrop.makeDropPane(div, options);
     };
 
     var setResponsiveOptions = function(options){
-        fp.responsiveOptions = options || {};
+        return fp.responsiveImages.setResponsiveOptions(options);
     };
 
     return {

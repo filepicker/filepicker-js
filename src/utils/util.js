@@ -138,6 +138,12 @@ filepicker.extend('util', function(){
         return obj2;
     };
 
+    var checkApiKey = function(){
+        if (!fp.apikey) {
+            throw new fp.FilepickerException('API Key not found');
+        }
+    };
+
 
     return {
         isArray: isArray,
@@ -154,6 +160,7 @@ filepicker.extend('util', function(){
         clone: clone,
         standardizeFPFile: standardizeFPFile,
         isCanvasSupported: isCanvasSupported,
-        extend: extend
+        extend: extend,
+        checkApiKey: checkApiKey
     };
 });
