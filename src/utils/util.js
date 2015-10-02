@@ -144,6 +144,34 @@ filepicker.extend('util', function(){
         }
     };
 
+    /**
+    *   Kind of shim for Object.keys method
+    *   It is not supported in IE < 9.
+    *   Return array of object keys
+    *
+    *   @method objectKeys
+    *   @param {Object} obj
+    *   @returns {Array} 
+    */
+
+    var objectKeys = function(obj) {
+        if (typeof Object.keys !== 'function') {
+            return function(obj) {
+                    var keys = [];
+
+                    for (var i in obj) {
+                        if (obj.hasOwnProperty(i)) {
+                            keys.push(i);
+                        }
+                    }
+
+                    return keys;
+                };
+        } else {
+            return Object.keys(obj);
+        }
+    };
+
 
     return {
         isArray: isArray,
@@ -161,6 +189,7 @@ filepicker.extend('util', function(){
         standardizeFPFile: standardizeFPFile,
         isCanvasSupported: isCanvasSupported,
         extend: extend,
-        checkApiKey: checkApiKey
+        checkApiKey: checkApiKey,
+        objectKeys: objectKeys,
     };
 });

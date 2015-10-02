@@ -227,7 +227,7 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function buildUrl(originalUrl, params) {
-        if (Object.keys(params).length) {
+        if (fp.util.objectKeys(params).length) {
             originalUrl += '/convert?' + fp.util.toQuery(params);
         }
         return originalUrl;
@@ -368,7 +368,7 @@ filepicker.extend('responsiveImages', function(){
     *   @method roundWithStep
     *   @param {Number} value - value to be rounded
     *   @param {Number} round - round step
-    *   @returns {number} rounded value
+    *   @returns {Number} rounded value
     */
 
     function roundWithStep(value, round) {
