@@ -107,7 +107,10 @@ filepicker.extend('responsiveImages', function(){
         dims.width = elem.offsetWidth;
         dims.height = elem.offsetHeight;
 
-        if (!dims.width && !dims.height) {
+        /*
+            width cant be 0
+        */
+        if (!dims.width) {
             return getElementDims(elem.parentNode);
         }
 
@@ -353,11 +356,10 @@ filepicker.extend('responsiveImages', function(){
         if (typeof options !== 'object') {
             throw new fp.FilepickerException('Responsive options must be an object.');
         }
-        
+
         fp.responsiveOptions = options;
         
     }
-
 
 
     /**
