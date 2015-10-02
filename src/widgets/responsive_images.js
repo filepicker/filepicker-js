@@ -126,16 +126,16 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function replaceSrc(elem, newSrc) {
-        
         var previousSrc = getSrcAttr(elem) || getFpSrcAttr(elem);
 
-        elem.src = newSrc;
-
-        if (previousSrc){
-            elem.onerror = function(){
-                elem.src = previousSrc;
-                elem.onerror = null;
-            };
+        if (previousSrc !== newSrc) {
+            elem.src = newSrc;
+            if (previousSrc){
+                elem.onerror = function(){
+                    elem.src = previousSrc;
+                    elem.onerror = null;
+                };
+            }
         }
     }
 
