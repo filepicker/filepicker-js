@@ -1,5 +1,5 @@
 {
-  "name": "filepicker-js",
+  "name": "filepicker",
   "version": "2.0.0",
   "description": "Filepicker javascript library",
   "main": "index.js",
@@ -9,8 +9,8 @@
     "build-min": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.min.js --compress --mangle",
     "build": "npm run build-src && npm run build-min",
     "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build && npm run jshint",
-    "linter": "jshint ./src/**/*",
-    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run jshint"
+    "linter": "jshint ./src/* ./src/**/*",
+    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run linter"
   },
   "repository": {
     "type": "git",
