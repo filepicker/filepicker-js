@@ -1,5 +1,5 @@
 {
-  "name": "filepicker",
+  "name": "filepicker-js",
   "version": "2.0.0",
   "description": "Filepicker javascript library",
   "main": "index.js",
