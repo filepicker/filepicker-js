@@ -49,6 +49,7 @@ filepicker.extend('exporter', function(){
                 fpfile.filename = data.payload.data.filename;
                 fpfile.mimetype = data.payload.data.type;
                 fpfile.size = data.payload.data.size;
+                fpfile.client = data.payload.data.client;
                 //TODO: get writeable
                 fpfile.isWriteable = true;
                 onSuccess(fpfile);
@@ -67,10 +68,12 @@ filepicker.extend('exporter', function(){
             //return immediately, but still async
             setTimeout(function(){
                 onSuccess({
+                    id:1,
                     url: 'https://www.filepicker.io/api/file/-nBq2onTSemLBxlcBWn1',
                     filename: 'test.png',
                     mimetype: 'image/png',
-                    size:58979
+                    size:58979,
+                    client: 'computer'
                 });
             }, 1);
             return;

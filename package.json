@@ -1,16 +1,18 @@
 {
   "name": "filepicker-js",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Filepicker javascript library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-src": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.js -b",
     "build-min": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.min.js --compress --mangle",
+    "prebuild":"rm -rf dist && mkdir dist",
+    "postbuild":"cp filepicker_debug.js dist/",
     "build": "npm run build-src && npm run build-min",
     "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build && npm run jshint",
-    "linter": "jshint ./src/**/*",
-    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run jshint"
+    "linter": "jshint ./src/* ./src/**/*",
+    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run linter"
   },
   "repository": {
     "type": "git",

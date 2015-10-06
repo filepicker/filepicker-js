@@ -124,6 +124,7 @@ filepicker.extend('picker', function(){
         addIfExist(data, fpfile, 'key');
         addIfExist(data, fpfile, 'container');
         addIfExist(data, fpfile, 'path');
+        addIfExist(data, fpfile, 'client');
 
         //TODO: get writeable
         fpfile.isWriteable = true;
@@ -168,10 +169,12 @@ filepicker.extend('picker', function(){
         if (options.debug) {
             
             var dumy_data = {
+                id:1,
                 url: 'https://www.filepicker.io/api/file/-nBq2onTSemLBxlcBWn1',
                 filename:'test.png',
                 mimetype: 'image/png',
-                size:58979
+                size:58979,
+                client:'computer'
             };
 
             var dumy_callback;
