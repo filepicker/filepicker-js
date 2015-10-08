@@ -3,7 +3,10 @@
 
 (function(){
     var fp = (function(){
-        var context = {};
+        window.filepicker = window.filepicker || {};
+
+        var context = window.filepicker
+
         var addObjectTo = function(name, obj, base){
             var path = name.split('.');
             for (var i = 0; i < path.length - 1; i++) {
@@ -25,7 +28,6 @@
         };
         
         var extendObject = function(name, obj, is_public) {
-            addObjectTo(name, obj, context);
             /*
                 make all functions public
             */
@@ -38,6 +40,7 @@
                 init_fn = pkg;
                 pkg = ''; 
             }
+
 
             if (pkg) {
                 pkg += '.';
@@ -68,4 +71,5 @@
             window.filepicker[attr] = fp[attr];
         }
     }
+
 })();
