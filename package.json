@@ -1,7 +1,7 @@
 {
   "name": "filepicker-js",
   "version": "2.1.0",
-  "description": "Filepicker javascript library",
+  "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

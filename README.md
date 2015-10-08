@@ -1,5 +1,5 @@
 # filepicker-js
-Filepicker javascript library. 
+Filepicker javascript client library. 
 
 ## Usage
 
@@ -17,12 +17,21 @@ If you want to load the javascript in a non-blocking fashion, you can use this i
 ```
 Script above is latest library release hosted on filepicker servers. 
 
-You can also download both the minified and non-minified versions of libary from ```dist``` directory in this repository.
 
-Filepicker library is avaliable via bower:
+Filepicker library is avaliable via bower [Bower friendly repositorium](https://github.com/krystiangw/filepicker-js-bower)
 
 ```
 $ bower install filepicker-js --save
+```
+
+And via npm + browserify
+```
+$ npm install filepicker-js --save
+```
+
+To use it with browseify place in your code:
+```
+var filepickerLibrary = require('filepicker-js');
 ```
 
 Library provide ```window.filepicker``` with methods:
