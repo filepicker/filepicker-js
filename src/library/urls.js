@@ -135,12 +135,26 @@ filepicker.extend('urls', function(){
 
     function constructConversionsQuery(conversions){
         conversions = conversions || [];
-        var allowed = conversions.filter(function(option){
-            if (allowedConversions.indexOf(option) > -1) {
-                return option;
+        var allowed = [], 
+            i , 
+            j;
+
+        /*
+            Use for in loop. 
+            Array.filter && Array.indexOf not supported in IE8
+        */
+
+        for (i in conversions) {
+            for (j in allowedConversions) {
+                if (conversions[i] === allowedConversions[j]) {
+                    allowed.push(conversions[i]);
+                }
             }
-        });
+        }
         
+        /*
+            Only crop by default
+        */
         if (!allowed.length) {
             allowed.push('crop');
         }
