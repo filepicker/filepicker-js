@@ -87,14 +87,22 @@ filepicker.extend('conversionsUtil', function(){
     var buildConversionUrl = function (originalUrl, optionsDict) {
         var conversionUrl = CONVERSION_DOMAIN + fp.apikey,
             majorOption,
-            minorOption;
+            minorOption,
+            length;
 
         optionsDict = optionsDict || {};
         
         for (majorOption in optionsDict) {
             conversionUrl += '/' + majorOption +'=';
+            length = fp.util.objectKeys(optionsDict[majorOption] || {}).length;
             for (minorOption in optionsDict[majorOption]) {
-                conversionUrl += minorOption + ':' + optionsDict[majorOption][minorOption] + ',';
+                conversionUrl += minorOption + ':' + optionsDict[majorOption][minorOption];
+                /*
+                    append comma if not last one
+                */
+                if (--length !== 0) {
+                    conversionUrl+=',';
+                }
             }
         }
         conversionUrl += '/' + originalUrl;

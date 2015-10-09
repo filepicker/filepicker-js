@@ -243,9 +243,9 @@ filepicker.extend('responsiveImages', function(){
                 resize : {
                     /*
                         set only width for now
-                        DOM element on init can has height=0
+                        DOM element on init could has height=0
                     */
-                    width : dims.width
+                    width : roundWithStep(dims.width, pixelRound)
                 }
             };
 
