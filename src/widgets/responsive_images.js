@@ -1,5 +1,11 @@
 'use strict';
 // responsive_images.js
+
+/*
+    responsive image widget 
+    TODO: security option
+*/
+
 filepicker.extend('responsiveImages', function(){
     var fp = this;
 
@@ -200,7 +206,7 @@ filepicker.extend('responsiveImages', function(){
     }
 
     /**
-    *   Parse url and return w & h values from query
+    *   Parse url and return width & height values from url resize option
     *
     *   @method getCurrentConvertParams
     *   @param {String} url - Image url
@@ -210,28 +216,10 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function getCurrentConvertParams(url){
-        var urlQueryParams = fp.util.parseUrl(url).params || {};
-
-        return {
-            width: urlQueryParams.w,
-            height: urlQueryParams.h
-        };
+        return fp.conversionsUtil.parseUrl(url).optionsDict.resize || {};
     }
 
-    /**
-    *   Build url based on original url and appended params
-    *
-    *   @method buildUrl
-    *   @param {String} originalUrl
-    *   @returns {Object} Return object with width and height values
-    */
 
-    function buildUrl(originalUrl, params) {
-        if (fp.util.objectKeys(params).length) {
-            originalUrl += '/convert?' + fp.util.toQuery(params);
-        }
-        return originalUrl;
-    }
 
     /**
     *   Get Image DOM elment and based on its data-fp-src attribute,
@@ -244,20 +232,22 @@ filepicker.extend('responsiveImages', function(){
     function construct(elem){
         var url = getFpSrcAttr(elem),
             dims = getElementDims(elem),
-            parsed = fp.util.parseUrl(url),
             /*
                 get image data-fp-pixel-round attr
                 OR global pixelRound option
                 OR 10 by default
             */
             pixelRound = getFpPixelRoundAttr(elem) || getResponsiveOptions().pixelRound || 10,
-            params = fp.util.extend(
-                {
-                    w: roundWithStep(dims.width, pixelRound)
-                },
-                parsed.params
-            ),
-            apikey = getFpKeyAttr(elem);
+            apikey = getFpKeyAttr(elem),
+            params = {
+                resize : {
+                    /*
+                        set only width for now
+                        DOM element on init can has height=0
+                    */
+                    width : dims.width
+                }
+            };
 
         /*
             Accept data-fp-key attribute to set apikey.
@@ -269,7 +259,9 @@ filepicker.extend('responsiveImages', function(){
             fp.setKey(apikey);
         }
 
-        replaceSrc(elem, buildUrl(parsed.rawUrl, params));
+        fp.util.checkApiKey();
+
+        replaceSrc(elem, fp.conversionsUtil.buildUrl(url, params));
     }
 
     /**
