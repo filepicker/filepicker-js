@@ -30,7 +30,7 @@ describe("The JSON library", function(){
         var input = {hello: "world"};
         var output = '{"hello":"world"}';
 
-        spyOn(JSON, 'stringify').andCallThrough();
+        spyOn(JSON, 'stringify').and.callThrough();
         expect(filepicker.json.encode(input)).toEqual(output);
         expect(JSON.stringify).toHaveBeenCalledWith(input);
     });
