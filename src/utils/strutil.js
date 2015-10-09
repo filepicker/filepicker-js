@@ -58,39 +58,12 @@ filepicker.extend('util', function(){
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
-    var toQuery = function(obj) {
-        var pairs = [];
-        for (var prop in obj) {
-            if (!obj.hasOwnProperty(prop)) {
-                continue;
-            }
-            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-                pairs.push(serialize(obj[prop]));
-                continue;
-            }
-            pairs.push(prop + '=' + obj[prop]);
-        }
-        return pairs.join('&');
-    };
-
-    // passed data  converted to a URL-encoded string
-    var serialize = function(obj) {
-        var str = [];
-        for(var p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-            }
-        }
-        return str.join('&');
-    };
 
     return {
         trim: trim,
         trimConvert: trimConvert,
         parseUrl: parseUrl,
         isUrl: isUrl,
-        endsWith: endsWith,
-        toQuery: toQuery,
-        serialize: serialize
+        endsWith: endsWith
     };
 });
