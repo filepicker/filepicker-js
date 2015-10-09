@@ -5,7 +5,7 @@
     var fp = (function(){
         window.filepicker = window.filepicker || {};
 
-        var context = window.filepicker
+        var context = window.filepicker;
 
         var addObjectTo = function(name, obj, base){
             var path = name.split('.');

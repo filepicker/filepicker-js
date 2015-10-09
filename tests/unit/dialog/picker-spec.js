@@ -4,7 +4,7 @@ describe("The picker module", function(){
         filepicker.cookies.THIRD_PARTY_COOKIES = undefined;
         
         runs(function(){
-            spyOn(filepicker.cookies, "checkThirdParty").andCallFake(function(callback){
+            spyOn(filepicker.cookies, "checkThirdParty").and.callFake(function(callback){
                 setTimeout(function(){
                     filepicker.cookies.THIRD_PARTY_COOKIES = true;
                     callback();

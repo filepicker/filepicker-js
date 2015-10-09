@@ -1,7 +1,6 @@
 
 window.CONVERSION_RESPONSES = {
     "/library/convert/success" : {
-        "regex": /library\/convert\/success\/convert/,
         "description": "The response for a successful conversion request from the v1 library",
         "request": {
             "form":{
@@ -23,7 +22,6 @@ window.CONVERSION_RESPONSES = {
     },
     "/library/convert/not_found" : {
         "description": "The response for a conversion request from the v1 library where the file isn't found",
-        "regex": /library\/convert\/not_found\/convert/,
         "request": {
             "form":{
                 "width": "64",
@@ -44,7 +42,6 @@ window.CONVERSION_RESPONSES = {
     },
     "/library/convert/not_authed" : {
         "description": "The response for a conversion request from the v1 library where convert isn't authed",
-        "regex": /library\/convert\/not_authed\/convert/,
         "request": {
             "form":{
                 "width": "64",
@@ -65,7 +62,6 @@ window.CONVERSION_RESPONSES = {
     },
     "/library/convert/bad_params" : {
         "description": "The response for a conversion request from the v1 library where the conversion parameters are bad",
-        "regex": /library\/convert\/bad_params\/convert/,
         "request": {
             "form":{
                 "width": "64",
@@ -86,7 +82,6 @@ window.CONVERSION_RESPONSES = {
     },
     "/library/convert/error" : {
         "description": "The response for a conversion request from the v1 library that failed mysteriously",
-        "regex": /library\/convert\/error\/convert/,
         "request": {
             "form":{
                 "width": "64",

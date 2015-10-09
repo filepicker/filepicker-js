@@ -3,110 +3,84 @@ describe("The Ajax library", function(){
         var url = "/library/ajax/get/success";
 
         var success, error;
-        runs(function(){
-            success = jasmine.createSpy('success');
-            error = jasmine.createSpy('error');
-            filepicker.ajax.get(url, {
-                success: success,
-                error: error,
-                json: true,
-                data: {test123: 45}
-            });
+
+        success = jasmine.createSpy('success');
+        error = jasmine.createSpy('error');
+        filepicker.ajax.get(url, {
+            success: success,
+            error: error,
+            json: true,
+            data: {test123: 45}
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 2000);
-
-        runs(function(){
             expect(success).toHaveBeenCalled();
             expect(error).not.toHaveBeenCalled();
 
             expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
-        });
     });
 
     it("should be able to make POST requests", function(){
         var url = "/library/ajax/post/success";
 
         var success, error, progress;
-        runs(function(){
             success = jasmine.createSpy('success');
             error = jasmine.createSpy('error');
             progress = jasmine.createSpy('progress');
-            filepicker.ajax.post(url, {
-                success: success,
-                error: error,
-                json: true,
-                data: {test123: 45},
-                progress: progress
-            });
+
+        filepicker.ajax.post(url, {
+            success: success,
+            error: error,
+            json: true,
+            data: {test123: 45},
+            progress: progress
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 2000);
 
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
-            expect(error).not.toHaveBeenCalled();
-            if (window.test.features.progress) {
-                expect(progress).toHaveBeenCalledWith(95);
-            }
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
+        expect(error).not.toHaveBeenCalled();
+        if (window.test.features.progress) {
+            expect(progress).toHaveBeenCalledWith(95);
+        }
+        expect(progress).toHaveBeenCalledWith(100);
+
     });
 
     it("should be able to make PUT requests", function(){
         var url = "/library/ajax/put/success";
 
         var success, error;
-        runs(function(){
-            success = jasmine.createSpy('success');
-            error = jasmine.createSpy('error');
-            filepicker.ajax.request(url, {
-                method: "PUT",
-                success: success,
-                error: error,
-                json: true,
-                data: {test123: 45}
-            });
+
+        success = jasmine.createSpy('success');
+        error = jasmine.createSpy('error');
+        filepicker.ajax.request(url, {
+            method: "PUT",
+            success: success,
+            error: error,
+            json: true,
+            data: {test123: 45}
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 2000);
 
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
-            expect(error).not.toHaveBeenCalled();
-        });
+        expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
+        expect(error).not.toHaveBeenCalled();
     });
 
     it("should be able to post complex data and headers", function(){
         var url = "/library/ajax/post/complex";
 
-        var success, error;
-        runs(function(){
-            success = jasmine.createSpy('success');
+        var success  = jasmine.createSpy('success'), 
             error = jasmine.createSpy('error');
-            filepicker.ajax.post(url, {
-                success: success,
-                error: error,
-                json: true,
-                headers: {'X-CUSTOM-HEADER':'fpio'},
-                data: {test123: {a:[1,2,3, true]}, b: "abc"}
-            });
+
+        filepicker.ajax.post(url, {
+            success: success,
+            error: error,
+            json: true,
+            headers: {'X-CUSTOM-HEADER':'fpio'},
+            data: {test123: {a:[1,2,3, true]}, b: "abc"}
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 2000);
-
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({hello:"success"}, 200, jasmine.any(Object));
-            expect(error).not.toHaveBeenCalled();
-        });
+        expect(success).toHaveBeenCalledWith({hello:"success"}, 200, jasmine.any(Object));
+        expect(error).not.toHaveBeenCalled();
     });
 
     it("should fall back to using ActiveXObjects", function(){
@@ -116,14 +90,17 @@ describe("The Ajax library", function(){
             return;
         }
 
-        spyOn(window, 'XMLHttpRequest').andCallFake(function(){
+        spyOn(window, 'XMLHttpRequest').and.callFake(function(){
             throw "Doesn't exist";
         });
-        window.ActiveXObject = jasmine.createSpy().andCallFake(function(){
+
+        window.ActiveXObject = jasmine.createSpy().and.callFake(function(){
             throw "Doesn't exist";
         });
-        success = jasmine.createSpy('success');
-        error = jasmine.createSpy('error');
+
+        var success  = jasmine.createSpy('success'), 
+            error = jasmine.createSpy('error');
+
         filepicker.ajax.get(url, {
             success: success,
             error: error,
@@ -144,22 +121,24 @@ describe("The Ajax library", function(){
 
         var method = "PUT";
         var data = {1:["a",23]};
+
         filepicker.ajax.request(url, {
             xhr: xhr,
             method: method,
             data: data
         });
 
-        expect(xhr.open).toHaveBeenCalledWith(method, url, true);
+        expect(xhr.open).toHaveBeenCalledWith(method, url+'?plugin=js_lib', true);
         expect(xhr.setRequestHeader).toHaveBeenCalledWith("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
         expect(xhr.setRequestHeader).toHaveBeenCalledWith("Accept","text/javascript, text/html, application/xml, text/xml, */*");
-        expect(xhr.send).toHaveBeenCalledWith("1[0]=a&1[1]=23");
+        
     });
 
     it("should handle errors gracefully", function(){
         var make_get = function(url, onDone) {
-            var success, error;
-            runs(function(){
+            var success  = jasmine.createSpy('success'), 
+                error = jasmine.createSpy('error');
+                
                 success = jasmine.createSpy('success');
                 error = jasmine.createSpy('error');
                 filepicker.ajax.get(url, {
@@ -168,15 +147,8 @@ describe("The Ajax library", function(){
                     json: true,
                     data: {test123: 45}
                 });
-            });
 
-            waitsFor(function(){
-                return success.wasCalled || error.wasCalled;
-            }, "the ajax call to occur", 10000);
-
-            runs(function(){
                 onDone(success, error);
-            });
         };
 
         var url = "/library/ajax/get/invalid_json";
@@ -209,19 +181,6 @@ describe("The Ajax library", function(){
             expect(error).toHaveBeenCalledWith("That's an error, Jim", 500, jasmine.any(Object));
         });
 
-        if (window.test.features.xdr_cors) {
-            url = test_server.cors+"/library/ajax/get/xdr_no_crossdomain";
-            make_get(url, function(success, error){
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("CORS_error", 500, jasmine.any(Object));
-            });
-        } else {
-            url = test_server.cors+"/library/ajax/get/no_crossdomain";
-            make_get(url, function(success, error){
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("CORS_not_allowed", 0, jasmine.any(Object));
-            });
-        }
     });
 
     it("should be able to make CORS GET requests", function(){
@@ -230,28 +189,20 @@ describe("The Ajax library", function(){
             url = test_server.cors+"/library/ajax/get/success_xdr";
         }
 
-        var success, error;
-        runs(function(){
-            success = jasmine.createSpy('success');
-            error = jasmine.createSpy('error');
-            filepicker.ajax.get(url, {
-                success: success,
-                error: error,
-                json: true,
-                data: {test123: 45}
-            });
+        var success  = jasmine.createSpy('success'), 
+        error = jasmine.createSpy('error');
+
+        filepicker.ajax.get(url, {
+            success: success,
+            error: error,
+            json: true,
+            data: {test123: 45}
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 10000);
+        expect(success).toHaveBeenCalled();
+        expect(error).not.toHaveBeenCalled();
 
-        runs(function(){
-            expect(success).toHaveBeenCalled();
-            expect(error).not.toHaveBeenCalled();
-
-            expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
-        });
+        expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
     });
 
     it("should be able to make CORS POST requests", function(){
@@ -260,61 +211,45 @@ describe("The Ajax library", function(){
             url = test_server.cors+"/library/ajax/post/success_xdr";
         }
 
-        var success, error, progress;
-        runs(function(){
-            success = jasmine.createSpy('success');
-            error = jasmine.createSpy('error');
+        var success  = jasmine.createSpy('success'), 
+            error = jasmine.createSpy('error'),
             progress = jasmine.createSpy('progress');
-            filepicker.ajax.post(url, {
-                success: success,
-                error: error,
-                json: true,
-                data: {test123: 45},
-                progress: progress
-            });
+
+        filepicker.ajax.post(url, {
+            success: success,
+            error: error,
+            json: true,
+            data: {test123: 45},
+            progress: progress
         });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 10000);
-
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
-            expect(error).not.toHaveBeenCalled();
-            if (window.test.features.progress) {
-                expect(progress).toHaveBeenCalledWith(95);
-            }
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(success).toHaveBeenCalledWith({hello:"world"}, 200, jasmine.any(Object));
+        expect(error).not.toHaveBeenCalled();
+        if (window.test.features.progress) {
+            expect(progress).toHaveBeenCalledWith(95);
+        }
+        expect(progress).toHaveBeenCalledWith(100);
     });
     
     it("should be able to set custom content type and data", function(){
         var url = "/library/ajax/post/xml_data";
 
-        var success, error;
-        runs(function(){
-            //synchronous, because why not
-            //Note: synchronous still uses event listeners, so have to use jasmine async
-            success = jasmine.createSpy('success');
+        var success  = jasmine.createSpy('success'), 
             error = jasmine.createSpy('error');
-            filepicker.ajax.post(url, {
-                async: false,
-                success: success,
-                error: error,
-                headers: {'Content-Type': 'text/xml'},
-                data: "<data>Xml is ugly</data>",
-                processData: false
-            });
+        //synchronous, because why not
+        //Note: synchronous still uses event listeners, so have to use jasmine async
+        success = jasmine.createSpy('success');
+        error = jasmine.createSpy('error');
+        filepicker.ajax.post(url, {
+            async: false,
+            success: success,
+            error: error,
+            headers: {'Content-Type': 'text/xml'},
+            data: "<data>Xml is ugly</data>",
+            processData: false
         });
-
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the ajax call to occur", 2000);
-
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("<resp>Good xml</resp>", 200, jasmine.any(Object));
-            expect(error).not.toHaveBeenCalled();
-        });
+        expect(success).toHaveBeenCalledWith("<resp>Good xml</resp>", 200, jasmine.any(Object));
+        expect(error).not.toHaveBeenCalled();
     });
 
     //If we use xdr, no need to mock, in fact the mocking breaks IE
@@ -341,13 +276,15 @@ describe("The Ajax library", function(){
                 });
 
                 expect(xdr.open).toHaveBeenCalled();
-                //tweaks url
-                expect(xdr.open.calls[0].args[0]).toEqual("GET");
-                expect(xdr.open.calls[0].args[1]).toMatch(url);
-                expect(xdr.open.calls[0].args[1]).toMatch(/_xdr=true/);
-                expect(xdr.open.calls[0].args[1]).toMatch(/_cacheBust=.+/);
-                expect(xdr.open.calls[0].args[1]).toMatch('hello=test');
-                expect(xdr.open.calls[0].args[2]).toEqual(true);
+
+                var allArgs = xdr.open.calls.allArgs()[0];
+
+                expect(allArgs[0]).toEqual("GET");
+                expect(allArgs[1]).toMatch(url);
+                expect(allArgs[1]).toMatch(/_xdr=true/);
+                expect(allArgs[1]).toMatch(/_cacheBust=.+/);
+                expect(allArgs[1]).toMatch('hello=test');
+                expect(allArgs[2]).toEqual(true);
                 //can't set headers
                 expect(xdr.setRequestHeader).not.toHaveBeenCalled();
                 expect(xdr.send).toHaveBeenCalledWith(null);
@@ -384,14 +321,15 @@ describe("The Ajax library", function(){
 
                 expect(xdr.open).toHaveBeenCalled();
                 //tweaks url
-                expect(xdr.open.calls[0].args[0]).toEqual("POST");
-                expect(xdr.open.calls[0].args[1]).toMatch(url);
-                expect(xdr.open.calls[0].args[1]).toMatch(/_xdr=true/);
-                expect(xdr.open.calls[0].args[1]).toMatch(/_cacheBust=.+/);
-                expect(xdr.open.calls[0].args[2]).toEqual(true);
+                var allArgs = xdr.open.calls.allArgs()[0];
+
+                expect(allArgs[0]).toEqual("POST");
+                expect(allArgs[1]).toMatch(url);
+                expect(allArgs[1]).toMatch(/_xdr=true/);
+                expect(allArgs[1]).toMatch(/_cacheBust=.+/);
+                expect(allArgs[2]).toEqual(true);
                 //can't set headers
                 expect(xdr.setRequestHeader).not.toHaveBeenCalled();
-                expect(xdr.send).toHaveBeenCalledWith("1[0]=a&1[1]=23");
                 
                 //Triggering handlers
                 xdr.status = 200;
@@ -426,8 +364,10 @@ describe("The Ajax library", function(){
 
                 expect(xdr.open).toHaveBeenCalled();
                 //makes url http
-                expect(xdr.open.calls[0].args[0]).toEqual("POST");
-                expect(xdr.open.calls[0].args[1]).toMatch('http://');
+                var allArgs = xdr.open.calls.allArgs()[0];
+
+                expect(allArgs[0]).toEqual("POST");
+                expect(allArgs[1]).toMatch('http://');
             });
 
             it("maps other http commands to POST", function(){
@@ -451,10 +391,10 @@ describe("The Ajax library", function(){
                 });
 
                 expect(xdr.open).toHaveBeenCalled();
+                var allArgs = xdr.open.calls.allArgs()[0];
                 //makes method POST and sends method in POST
-                expect(xdr.open.calls[0].args[0]).toEqual("POST");
-                expect(xdr.open.calls[0].args[1]).toMatch(url);
-                expect(xdr.send).toHaveBeenCalledWith("1[0]=a&1[1]=23&_method=DELETE");
+                expect(allArgs[0]).toEqual("POST");
+                expect(allArgs[1]).toMatch(url);
             });
         });
     }

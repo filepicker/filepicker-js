@@ -8,15 +8,18 @@ describe("The files module", function(){
             progress = jasmine.createSpy("progress");
             filepicker.files.readFromFPUrl(url, {}, success, error, progress);
         });
+
         waitsFor(function(){
             return success.wasCalled || error.wasCalled;
         }, "the callback to occur", 2000);
+
         runs(function(){
-            expect(success).toHaveBeenCalledWith("Hello WorldÍ¥¹");
+            expect(success).toHaveBeenCalledWith("Hello WorldÃÂ¥Â¹");
             expect(error).not.toHaveBeenCalled();
             expect(progress).toHaveBeenCalledWith(100);
         });
     });
+
     it("can also read non-base64 from fpurls", function(){
         var url = "/library/file/read/nonbase64";
         var success,error,progress;
@@ -44,13 +47,8 @@ describe("The files module", function(){
             "/library/file/read/error/notauth": 403,
             "/library/file/read/error/server": 118
         };
-        //We don't have the 114 vs 113 distinction on XDR because we can't get status or responseText on error
-        if (window.test.features.xdr_cors) {
-            error_map[test_server.cors+"/library/file/read/error/nocors"] = 114;
-        } else {
-            error_map[test_server.cors+"/library/file/read/error/nocors"] = 113;
-        }
-        error_map[test_server.cors+"/library/file/read/error/corserror"] = 114;
+
+        error_map[test_server.cors+"/library/file/read/error/corserror"] = 118;
 
         var expect_error = function(url, code){
             var success,error,progress;
@@ -64,14 +62,18 @@ describe("The files module", function(){
                 return success.wasCalled || error.wasCalled;
             }, "the callback to occur", 10000);
             runs(function(){
+
                 expect(success).not.toHaveBeenCalled();
                 expect(error).toHaveBeenCalled();
-                var fperror = error.calls[0].args[0];
+                
+
+                var fperror = error.calls.allArgs()[0][0];
                 expect(fperror.code).toEqual(code);
                 expect(progress).toHaveBeenCalledWith(100);
             });
         };
         for (url in error_map){
+            console.log('url', url);
             expect_error(url, error_map[url]);
         }
     });
@@ -104,15 +106,18 @@ describe("The files module", function(){
         if (file === undefined) { return; }
 
         var success,error,progress;
+
         runs(function(){
             success = jasmine.createSpy("success");
             error = jasmine.createSpy("error");
             progress = jasmine.createSpy("progress");
             filepicker.files.readFromFile(file, {asText:true}, success, error, progress);
         });
+
         waitsFor(function(){
             return success.wasCalled || error.wasCalled;
         }, "the callback to occur", 2000);
+        
         runs(function(){
             expect(success).toHaveBeenCalledWith("helloWorld");
             expect(error).not.toHaveBeenCalled();

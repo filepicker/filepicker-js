@@ -12,7 +12,7 @@ window.MODAL_RESPONSES = {
                 "Content-Type": "text/html"
             },
             "status": 200,
-            "body": "<html><body>This is a test modal frame</body></html>"
+            "responseText": "<html><body>This is a test modal frame</body></html>"
         }
     }
 }

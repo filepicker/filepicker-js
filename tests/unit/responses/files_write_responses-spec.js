@@ -9,7 +9,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": {"$contains":"text/plain"},
                 "Accept": {"$contains": "application/json"}
             },
-            "body":"cool beans",
+            "responseText":"cool beans",
             "method": "POST"
         },
         "response": {
@@ -17,7 +17,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/abc", "filename":"test.txt", "type":"text/plain","size": 10, "writeable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/abc", "filename":"test.txt", "type":"text/plain","size": 10, "writeable": true}
         }
     },
     "/library/file/write/file" : {
@@ -34,7 +34,7 @@ window.FILES_WRITE_RESPONSES = {
                 "fileUpload": {
                     "filename": {"$type":"string"},
                     "mimetype": "text/plain",
-                    "body": "Hello World456"
+                    "responseText": "Hello World456"
                 }
             },
             "method": "POST"
@@ -44,7 +44,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/nomnom", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
         }
     },
     "/library/file/write/domfile" : {
@@ -61,7 +61,7 @@ window.FILES_WRITE_RESPONSES = {
                 "fileUpload": {
                     "filename": {"$type":"string"},
                     "mimetype": "text/plain",
-                    "body": "Hello World789"
+                    "responseText": "Hello World789"
                 }
             },
             "method": "POST"
@@ -71,7 +71,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/nomnom2", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom2", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
         }
     },
     "/library/file/write/url" : {
@@ -94,7 +94,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/nomnom3", "filename":"google.html", "type":"text/html","size": 4556, "writeable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom3", "filename":"google.html", "type":"text/html","size": 4556, "writeable": true}
         }
     },
     "/library/file/store/domfile" : {
@@ -111,7 +111,7 @@ window.FILES_WRITE_RESPONSES = {
                 "fileUpload": {
                     "filename": {"$type":"string"},
                     "mimetype": "text/plain",
-                    "body": "BlahBlah"
+                    "responseText": "BlahBlah"
                 }
             },
             "method": "POST"
@@ -121,7 +121,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/yeah1", "filename":"test.txt", "type":"text/plain","size": 8, "writeable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/yeah1", "filename":"test.txt", "type":"text/plain","size": 8, "writeable": true}
         }
     },
     "/library/file/store/image" : {
@@ -134,7 +134,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": {"$contains":"image/png"},
                 "Accept": {"$contains": "application/json"}
             },
-            "body":"cooler beans",
+            "responseText":"cooler beans",
             "method": "POST"
         },
         "response": {
@@ -142,7 +142,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/yeah2", "filename":"test.png", "type":"image/png","size": 12, "isWriteable": false}
+            "responseText": {"url": "https://www.filepicker.io/api/file/yeah2", "filename":"test.png", "type":"image/png","size": 12, "isWriteable": false}
         }
     },
     "/library/file/store/url" : {
@@ -165,7 +165,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"url": "https://www.filepicker.io/api/file/yeah3", "filename":"imgix.html", "type":"text/html","size": 240, "isWriteable": true}
+            "responseText": {"url": "https://www.filepicker.io/api/file/yeah3", "filename":"imgix.html", "type":"text/html","size": 240, "isWriteable": true}
         }
     },
     "/library/file/stat/success/metadata" : {
@@ -188,7 +188,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "body": {"filename": "stattest.png", "mimetype":"image/png","size": 42, "uploaded": 1349935525383}
+            "responseText": {"filename": "stattest.png", "mimetype":"image/png","size": 42, "uploaded": 1349935525383}
         }
     },
     "/library/file/remove/success/remove" : {
@@ -210,7 +210,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "text/plain"
             },
             "status": 200,
-            "body": "Success"
+            "responseText": "Success"
         }
     }
 }

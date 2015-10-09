@@ -16,7 +16,7 @@ window.FILES_READ_RESPONSES = {
                 "Content-Type": "text/plain"
             },
             "status": 200,
-            "body": "SGVsbG8gV29ybGTDjcKlwrk="
+            "responseText": "SGVsbG8gV29ybGTDjcKlwrk="
         }
     },
     "/library/file/read/nonbase64" : {
@@ -36,7 +36,7 @@ window.FILES_READ_RESPONSES = {
                 "Content-Type": "text/plain"
             },
             "status": 200,
-            "body": "Hello World"
+            "responseText": "Hello World"
         }
     },
     "/library/file/read/error/notfound" : {
@@ -49,7 +49,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 404,
-            "body": "File not found"
+            "responseText": "File not found"
         }
     },
     "/library/file/read/error/notauth" : {
@@ -62,7 +62,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 403,
-            "body": "Not authorized"
+            "responseText": "Not authorized"
         }
     },
     "/library/file/read/error/badparam" : {
@@ -75,7 +75,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 400,
-            "body": "Bad params"
+            "responseText": "Bad params"
         }
     },
     "/library/file/read/error/server" : {
@@ -88,7 +88,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 500,
-            "body": "Server error (ish)"
+            "responseText": "Server error (ish)"
         }
     },
     "/library/file/read/error/nocors" : {
@@ -101,7 +101,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 200,
-            "body": "Ok, but not CORS"
+            "responseText": "Ok, but not CORS"
         }
     },
     "/library/file/read/error/corserror" : {
@@ -120,7 +120,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 500,
-            "body": "Server error (ish)"
+            "responseText": "Server error (ish)"
         }
     },
     "/library/file/readstore/store/success" : {
@@ -133,7 +133,7 @@ window.FILES_READ_RESPONSES = {
                 "fileUpload": {
                     "filename": {"$type":"string"},
                     "mimetype": "text/plain",
-                    "body": "Hello World234"
+                    "responseText": "Hello World234"
                 }
             },
             "headers": {
@@ -144,7 +144,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 200,
-            "body": {"url":"/library/file/readstore/read/success"}
+            "responseText": {"url":"/library/file/readstore/read/success"}
         }
     },
     "/library/file/readstore/read/success" : {
@@ -164,7 +164,7 @@ window.FILES_READ_RESPONSES = {
                 "Content-Type": "text/plain"
             },
             "status": 200,
-            "body": "SGVsbG8gV29ybGTDg8KNw4LCpcOCwrk="
+            "responseText": "SGVsbG8gV29ybGTDg8KNw4LCpcOCwrk="
         }
     }
 }

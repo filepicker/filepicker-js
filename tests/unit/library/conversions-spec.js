@@ -1,13 +1,13 @@
 describe("The Conversions library", function(){
 
 
-    beforeEach(function() {
-        jasmine.Ajax.install();
-    });
+    // beforeEach(function() {
+    //     jasmine.Ajax.install();
+    // });
 
-    afterEach(function() {
-      jasmine.Ajax.uninstall();
-    });
+    // afterEach(function() {
+    //   jasmine.Ajax.uninstall();
+    // });
 
 
     it("can perform basic conversions", function(){
@@ -20,7 +20,7 @@ describe("The Conversions library", function(){
         error = jasmine.createSpy('error');
         progress = jasmine.createSpy('progress');
 
-        jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
+        // jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
 
         filepicker.conversions.convert(fpurl, {width: 64, height: 128}, success, error, progress);
 
@@ -88,27 +88,26 @@ describe("The Conversions library", function(){
         };
 
 
-
         var testFn;
         for (param in valid_params) {
             testFn = function(){
                 var options = {};
                 options[param] = valid_params[param];
-                filepicker.conversions.convert(fpurl, options);
+                filepicker.conversions.convert(fpurl, options, function(){});
             };
 
             expect(testFn).not.toThrow();
-    
         }
 
         for (param in invalid_params) {
             testFn = function(){
                 var options = {};
                 options[param] = invalid_params[param];
-                filepicker.conversions.convert(fpurl, options);
+                filepicker.conversions.convert(fpurl, options, function(){});
             };
 
             expect(testFn).toThrow();
+
         }
     });
 
@@ -121,7 +120,7 @@ describe("The Conversions library", function(){
 
             var request = window.CONVERSION_RESPONSES[fpurl];
 
-            jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
+            // jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
 
             filepicker.conversions.convert(fpurl, {width: 64, height: 128}, success, error, progress);
 

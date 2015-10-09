@@ -129,7 +129,7 @@ describe("The Drag-Drop library", function(){
                 size: file.size
             };
             runs(function(){
-                spyOn(filepicker, "store").andCallFake(function(file, options, success, error, progress){
+                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
                     progress(100);
                     success(result);
                 });
@@ -231,7 +231,7 @@ describe("The Drag-Drop library", function(){
                 size: file2.size
             };
             runs(function(){
-                spyOn(filepicker, "store").andCallFake(function(file, options, success, error, progress){
+                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
                     progress(100);
                     if (file == file1) {
                         success(result1);
@@ -458,7 +458,7 @@ describe("The Drag-Drop library", function(){
 
             e.dataTransfer = {files: [file]};
             runs(function(){
-                spyOn(filepicker, "store").andCallFake(function(file, options, success, error, progress){
+                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
                     error("Internal server error (ish)");
                 });
                 pane[0].dispatchEvent(e);

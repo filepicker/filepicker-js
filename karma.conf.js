@@ -16,8 +16,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'dist/filepicker-spec.js',
+      'tests/unit/init-spec.js',
       'tests/unit/responses/*.js',
-      'tests/unit/server/*.js'
+      'tests/unit/server/files-spec.js'
     ],
 
 
