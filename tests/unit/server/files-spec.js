@@ -73,7 +73,6 @@ describe("The files module", function(){
             });
         };
         for (url in error_map){
-            console.log('url', url);
             expect_error(url, error_map[url]);
         }
     });
@@ -101,50 +100,39 @@ describe("The files module", function(){
         }
     };
 
-    it("can read from files", function(){
+    it("can read from files", function(done){
         var file = makeFile();
         if (file === undefined) { return; }
 
-        var success,error,progress;
+        var success = function(response){
+            expect(response).toBe("helloWorld");
+            done();
+        },
+        progress = function(progress){
+            expect(progress).toBe(100);
+        },
+        error = jasmine.createSpy("error");
 
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.readFromFile(file, {asText:true}, success, error, progress);
-        });
-
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("helloWorld");
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        filepicker.files.readFromFile(file, {asText:true}, success, error, progress);
+        expect(error).not.toHaveBeenCalled();
     });
 
-    it("can read from files as base64", function(){
+    it("can read from files as base64", function(done){
         var data = "Hello WorldÍ¥¹";
         var file = makeFile(data);
         if (file === undefined) { return; }
 
-        var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.readFromFile(file, {base64encode:true, asText: false}, success, error, progress);
-        });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("SGVsbG8gV29ybGTDg8KNw4LCpcOCwrk=");
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        var success = function(response){
+            expect(response).toBe("SGVsbG8gV29ybGTDjcKlwrk=");
+            done();
+        },
+        progress = function(progress){
+            expect(progress).toBe(100);
+        },
+        error = jasmine.createSpy("error");
+
+        filepicker.files.readFromFile(file, {base64encode:true, asText: false}, success, error, progress);
+        expect(error).not.toHaveBeenCalled();
     });
 
     it("can read from files even without FileReader by going to the server", function(){
@@ -161,31 +149,25 @@ describe("The files module", function(){
 
         var success,error,progress;
 
-        runs(function(){
-            //mock out FileReader
-            spyOn(window, "FileReader");
-            window.FileReader = null;
+        //mock out FileReader
+        spyOn(window, "FileReader");
+        window.FileReader = null;
 
-            //mock out store url constructor
-            spyOn(filepicker.urls, "constructStoreUrl").andReturn(
-                "/library/file/readstore/store/success");
+        //mock out store url constructor
+        spyOn(filepicker.urls, "constructStoreUrl").and.returnValue(
+            "/library/file/readstore/store/success");
 
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
 
-            filepicker.files.readFromFile(file, {base64encode:true, asText: false}, success, error, progress);
-        });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("SGVsbG8gV29ybGTDg8KNw4LCpcOCwrk=");
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(10);
-            expect(progress).toHaveBeenCalledWith(50);
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        filepicker.files.readFromFile(file, {base64encode:true, asText: false}, success, error, progress);
+
+        expect(success).toHaveBeenCalledWith("SGVsbG8gV29ybGTDg8KNw4LCpcOCwrk=");
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(10);
+        expect(progress).toHaveBeenCalledWith(50);
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("gracefully handles filereader errors", function(){
@@ -198,7 +180,7 @@ describe("The files module", function(){
         //mock out FileReader with own object
         var freader = jasmine.createSpyObj('file reader',
             ['readAsText','readAsBinaryString']);
-        spyOn(window, "FileReader").andReturn(freader);
+        spyOn(window, "FileReader").and.returnValue(freader);
 
         success = jasmine.createSpy("success");
         error = jasmine.createSpy("error");
@@ -214,30 +196,31 @@ describe("The files module", function(){
         evt.target.error.code = evt.target.error.NOT_FOUND_ERR = DOMException.NOT_FOUND_ERR;
         freader.onerror(evt);
         expect(error).toHaveBeenCalled();
-        fperror = error.calls[0].args[0];
+
+        fperror = error.calls.allArgs()[0][0];
         expect(fperror.code).toEqual(115);
-        error.reset();
+        error.calls.reset();
 
         evt.target.error.code = evt.target.error.NOT_READABLE_ERR = DOMException.NOT_READABLE_ERR;
         freader.onerror(evt);
         expect(error).toHaveBeenCalled();
-        fperror = error.calls[0].args[0];
+        fperror = error.calls.allArgs()[0][0];
         expect(fperror.code).toEqual(116);
-        error.reset();
+        error.calls.reset();
 
         evt.target.error.code = evt.target.error.ABORT_ERR = DOMException.ABORT_ERR;
         freader.onerror(evt);
         expect(error).toHaveBeenCalled();
-        fperror = error.calls[0].args[0];
+        fperror = error.calls.allArgs()[0][0];
         expect(fperror.code).toEqual(117);
-        error.reset();
+        error.calls.reset();
 
         evt.target.error.code = -1;
         freader.onerror(evt);
         expect(error).toHaveBeenCalled();
-        fperror = error.calls[0].args[0];
+        fperror = error.calls.allArgs()[0][0];
         expect(fperror.code).toEqual(118);
-        error.reset();
+        error.calls.reset();
 
         expect(success).not.toHaveBeenCalled();
     });
@@ -246,26 +229,21 @@ describe("The files module", function(){
         var url = "/library/file/write/text";
         var data = "cool beans";
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.writeDataToFPUrl(url, data, {}, success, error, progress);
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.writeDataToFPUrl(url, data, {}, success, error, progress);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/abc",
+            filename: "test.txt",
+            mimetype: "text/plain",
+            size: 10,
+            isWriteable: true,
+            key: "s3_key"
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/abc",
-                filename: "test.txt",
-                mimetype: "text/plain",
-                size: 10,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can write a file input to an fpurl", function(){
@@ -281,26 +259,22 @@ describe("The files module", function(){
         var input = {files: [file]};
 
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.writeFileInputToFPUrl(url, input, {}, success, error, progress);
+
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.writeFileInputToFPUrl(url, input, {}, success, error, progress);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/nomnom",
+            filename: "test.txt",
+            mimetype: "text/plain",
+            size: 14,
+            isWriteable: true,
+            key: "s3_key"
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/nomnom",
-                filename: "test.txt",
-                mimetype: "text/plain",
-                size: 14,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can write a DOM file to an fpurl", function(){
@@ -314,26 +288,21 @@ describe("The files module", function(){
         if (file === undefined) { return; }
 
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.writeFileToFPUrl(url, file, {}, success, error, progress);
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.writeFileToFPUrl(url, file, {}, success, error, progress);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/nomnom2",
+            filename: "test.txt",
+            mimetype: "text/plain",
+            size: 14,
+            isWriteable: true,
+            key: "s3_key"
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/nomnom2",
-                filename: "test.txt",
-                mimetype: "text/plain",
-                size: 14,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can write URL to an fpurl", function(){
@@ -341,32 +310,28 @@ describe("The files module", function(){
         var input_url = "http://www.google.com";
 
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.writeUrlToFPUrl(url, input_url, {mimetype:"text/html"}, success, error, progress);
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.writeUrlToFPUrl(url, input_url, {mimetype:"text/html"}, success, error, progress);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/nomnom3",
+            filename: "google.html",
+            mimetype: "text/html",
+            size: 4556,
+            isWriteable: true,
+            key: "s3_key"
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/nomnom3",
-                filename: "google.html",
-                mimetype: "text/html",
-                size: 4556,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can store a file input", function(){
         //we have to spy on the iframe since we can't create files
         spyOn(filepicker.iframeAjax, "post");
-        spyOn(filepicker.urls, "constructStoreUrl").andReturn("store_url");
+        spyOn(filepicker.urls, "constructStoreUrl").and.returnValue("store_url");
+
         var input = {
             value: "C:\\fakepath\\myfile.txt",
             name: "something else"
@@ -378,10 +343,12 @@ describe("The files module", function(){
         progress = jasmine.createSpy("progress");
 
         filepicker.files.storeFileInput(input, {}, success, error, progress);
+
         expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
-            storage: "S3",
+            location: "S3",
             filename: "myfile.txt"
         });
+
         expect(input.name).toEqual("fileUpload");
         expect(filepicker.iframeAjax.post).toHaveBeenCalledWith("store_url", {
             data: input,
@@ -390,13 +357,16 @@ describe("The files module", function(){
             success: jasmine.any(Function),
             error: jasmine.any(Function)
         });
-        var onSuccess = filepicker.iframeAjax.post.calls[0].args[1].success;
+
+        var onSuccess = filepicker.iframeAjax.post.calls.allArgs()[0][1].success;
+        fperror = error.calls
         var resp = {
             url: "https://www.filepicker.io/api/file/nomnom3",
             filename: "google.html",
             mimetype: "text/html",
             size: 4556,
-            isWriteable: true
+            isWriteable: true,
+            key: 's3_key'
         };
         onSuccess(resp);
         expect(input.name).toEqual("something else");
@@ -410,103 +380,89 @@ describe("The files module", function(){
         }
 
         var store_url = "/library/file/store/domfile";
-        spyOn(filepicker.urls, "constructStoreUrl").andReturn(store_url);
+        spyOn(filepicker.urls, "constructStoreUrl").and.returnValue(store_url);
         var data = "BlahBlah";
         var file = makeFile(data);
         if (file === undefined) { return; }
         file.name = "tester.txt";
 
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.storeFile(file, {}, success, error, progress);
-            expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
-                filename: 'tester.txt',
-                storage: 'S3'
-            });
+        
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.storeFile(file, {}, success, error, progress);
+        expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
+            filename: 'tester.txt',
+            location: 'S3'
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/yeah1",
-                filename: "test.txt",
-                mimetype: "text/plain",
-                size: 8,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/yeah1",
+            filename: "test.txt",
+            mimetype: "text/plain",
+            size: 8,
+            isWriteable: true,
+            key: 's3_key'
         });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can store raw data", function(){
         var store_url = "/library/file/store/image";
-        spyOn(filepicker.urls, "constructStoreUrl").andReturn(store_url);
+        spyOn(filepicker.urls, "constructStoreUrl").and.returnValue(store_url);
 
         var data = "cooler beans";
         var success,error,progress;
 
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.storeData(data, {mimetype:'image/png'}, success, error, progress);
-            expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
-                storage: 'S3',
-                mimetype: 'image/png'
-            });
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.storeData(data, {mimetype:'image/png'}, success, error, progress);
+        expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
+            location: 'S3',
+            mimetype: 'image/png'
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/yeah2",
-                filename: "test.png",
-                mimetype: "image/png",
-                size: 12,
-                isWriteable: false
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/yeah2",
+            filename: "test.png",
+            mimetype: "image/png",
+            size: 12,
+            isWriteable: false,
+            key: 's3_key'
         });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can store a URL", function(){
         var store_url = "/library/file/store/url";
-        spyOn(filepicker.urls, "constructStoreUrl").andReturn(store_url);
+        spyOn(filepicker.urls, "constructStoreUrl").and.returnValue(store_url);
 
         var url = "http://www.imgix.com/p12";
         var success,error,progress;
 
-        runs(function(){
             success = jasmine.createSpy("success");
             error = jasmine.createSpy("error");
             progress = jasmine.createSpy("progress");
-            filepicker.files.storeUrl(url, {storage: 'AZURE', filename:'imgix.html'}, success, error, progress);
+            filepicker.files.storeUrl(url, {location: 'azure', filename:'imgix.html'}, success, error, progress);
             expect(filepicker.urls.constructStoreUrl).toHaveBeenCalledWith({
-                storage: 'AZURE',
+                location: 'azure',
                 filename: 'imgix.html'
             });
+
+        expect(success).toHaveBeenCalledWith({
+            url: "https://www.filepicker.io/api/file/yeah3",
+            filename: "imgix.html",
+            mimetype: "text/html",
+            size: 240,
+            isWriteable: true,
+            key: 's3_key'
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                url: "https://www.filepicker.io/api/file/yeah3",
-                filename: "imgix.html",
-                mimetype: "text/html",
-                size: 240,
-                isWriteable: true
-            });
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
     it("can stat a FPUrl", function(){
@@ -519,23 +475,17 @@ describe("The files module", function(){
         };
         var success,error;
 
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            filepicker.files.stat(url, options, success, error);
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        filepicker.files.stat(url, options, success, error);
+
+        expect(success).toHaveBeenCalledWith({
+            filename: "stattest.png",
+            mimetype: "image/png",
+            size: 42,
+            uploaded: new Date(1349935525383)
         });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith({
-                filename: "stattest.png",
-                mimetype: "image/png",
-                size: 42,
-                uploaded: new Date(1349935525383)
-            });
-            expect(error).not.toHaveBeenCalled();
-        });
+        expect(error).not.toHaveBeenCalled();
     });
 
     it("can remove a FPUrl", function(){
@@ -544,17 +494,11 @@ describe("The files module", function(){
         filepicker.apikey = "12345";
         var success,error;
 
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            filepicker.files.remove(url, {}, success, error);
-        });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalled();
-            expect(error).not.toHaveBeenCalled();
-        });
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        filepicker.files.remove(url, {}, success, error);
+
+        expect(success).toHaveBeenCalled();
+        expect(error).not.toHaveBeenCalled();
     });
 });

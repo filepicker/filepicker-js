@@ -17,7 +17,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/abc", "filename":"test.txt", "type":"text/plain","size": 10, "writeable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/abc", "filename":"test.txt", "type":"text/plain","size": 10, "writeable": true, "key": "s3_key"})
         }
     },
     "/library/file/write/file" : {
@@ -44,7 +44,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/nomnom", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true, "key": "s3_key"})
         }
     },
     "/library/file/write/domfile" : {
@@ -71,7 +71,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom2", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/nomnom2", "filename":"test.txt", "type":"text/plain","size": 14, "writeable": true, "key": "s3_key"})
         }
     },
     "/library/file/write/url" : {
@@ -94,7 +94,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/nomnom3", "filename":"google.html", "type":"text/html","size": 4556, "writeable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/nomnom3", "filename":"google.html", "type":"text/html","size": 4556, "writeable": true, "key": "s3_key"})
         }
     },
     "/library/file/store/domfile" : {
@@ -121,7 +121,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/yeah1", "filename":"test.txt", "type":"text/plain","size": 8, "writeable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/yeah1", "filename":"test.txt", "type":"text/plain","size": 8, "writeable": true, "key": "s3_key"})
         }
     },
     "/library/file/store/image" : {
@@ -142,7 +142,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/yeah2", "filename":"test.png", "type":"image/png","size": 12, "isWriteable": false}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/yeah2", "filename":"test.png", "type":"image/png","size": 12, "isWriteable": false, "key": "s3_key"})
         }
     },
     "/library/file/store/url" : {
@@ -165,7 +165,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"url": "https://www.filepicker.io/api/file/yeah3", "filename":"imgix.html", "type":"text/html","size": 240, "isWriteable": true}
+            "responseText": JSON.stringify({"url": "https://www.filepicker.io/api/file/yeah3", "filename":"imgix.html", "type":"text/html","size": 240, "isWriteable": true, "key": "s3_key"})
         }
     },
     "/library/file/stat/success/metadata" : {
@@ -188,7 +188,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Content-Type": "application/json"
             },
             "status": 200,
-            "responseText": {"filename": "stattest.png", "mimetype":"image/png","size": 42, "uploaded": 1349935525383}
+            "responseText": JSON.stringify({"filename": "stattest.png", "mimetype":"image/png","size": 42, "uploaded": 1349935525383})
         }
     },
     "/library/file/remove/success/remove" : {

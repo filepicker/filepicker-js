@@ -18,7 +18,7 @@ module.exports = function(config) {
       'dist/filepicker-spec.js',
       'tests/unit/init-spec.js',
       'tests/unit/responses/*.js',
-      'tests/unit/server/files-spec.js'
+      'tests/unit/server/*-spec.js'
     ],
 
 

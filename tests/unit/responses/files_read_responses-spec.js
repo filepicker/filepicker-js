@@ -144,7 +144,7 @@ window.FILES_READ_RESPONSES = {
         },
         "response": {
             "status": 200,
-            "responseText": {"url":"/library/file/readstore/read/success"}
+            "responseText": JSON.stringify({"url":"/library/file/readstore/read/success"})
         }
     },
     "/library/file/readstore/read/success" : {
