@@ -1,5 +1,5 @@
-describe("The exporter module", function(done){
-    it("checks for third party cookies", function(){
+describe("The exporter module", function(){
+    it("checks for third party cookies", function(done){
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = undefined;
         
