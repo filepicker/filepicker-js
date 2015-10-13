@@ -14,7 +14,7 @@ describe("The handlers module", function(){
         msg = { id: id, payload: "good" };
         expect(filepicker.handlers.run(msg)).toBe(true);
         expect(handler).toHaveBeenCalledWith(msg);
-        handler.reset();
+        handler.calls.reset();
 
         //detaching
         filepicker.handlers.detach(id, handler);
@@ -44,9 +44,9 @@ describe("The handlers module", function(){
         expect(handler1).toHaveBeenCalledWith(msg);
         expect(handler2).toHaveBeenCalledWith(msg);
         expect(handler3).toHaveBeenCalledWith(msg);
-        handler1.reset();
-        handler2.reset();
-        handler3.reset();
+        handler1.calls.reset();
+        handler2.calls.reset();
+        handler3.calls.reset();
 
         //detaching one
         filepicker.handlers.detach(id, handler1);
@@ -55,8 +55,8 @@ describe("The handlers module", function(){
         expect(handler2).toHaveBeenCalledWith(msg);
         expect(handler3).toHaveBeenCalledWith(msg);
         
-        handler2.reset();
-        handler3.reset();
+        handler2.calls.reset();
+        handler3.calls.reset();
         
         //detatching others
         filepicker.handlers.detach(id);

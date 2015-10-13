@@ -1,5 +1,5 @@
 describe("The picker module", function(){
-    it("checks for third party cookies", function(){
+    it("checks for third party cookies", function(done){
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = undefined;
         
@@ -22,39 +22,43 @@ describe("The picker module", function(){
         expect(filepicker.window.open).not.toHaveBeenCalled();
 
         expect(filepicker.cookies.checkThirdParty).toHaveBeenCalled();
+        
         //now we call it
+
         window.setTimeout(function(){
             expect(filepicker.window.open).toHaveBeenCalled();
             //reset
             filepicker.cookies.THIRD_PARTY_COOKIES = cookies;
+            done();
         },100);
     });
 
-    it("can create a picker", function(){
+    it("can create a picker", function(done){
         var options = {
             openTo:"GOOGLE_DRIVE",
             mimetype: "image/*"
         };
-        var success = onSuccess;
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
+        
         spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
-        filepicker.picker.createPicker(options, success, error, false);
+        filepicker.picker.createPicker(options, onSuccess, error, false);
         filepicker.cookies.THIRD_PARTY_COOKIES = cookies;
 
         expect(filepicker.urls.constructPickUrl).toHaveBeenCalledWith(
             options, jasmine.any(String), false);
         var container = window.isPhantom ? "window" : "modal";
+
         expect(filepicker.window.open).toHaveBeenCalledWith(
             container, "pick_url", jasmine.any(Function));
 
         //firing callbacks
         var resp = {
-            url: "http://www.filepicker.io/api/file/blah5",
+            url: "http://www.filepicker.io/api/file/blah6",
             data: {
                 filename: "test.txt",
                 type: "text/plain",
@@ -62,16 +66,13 @@ describe("The picker module", function(){
                 key: "8904ksdf3_test.txt"
             }
         };
-
-        spyOn(filepicker.modal, "close");
         filepicker.handlers.run({
-            id: filepicker.urls.constructPickUrl.calls.allArgs()[0][0],
+            id: filepicker.urls.constructPickUrl.calls.allArgs()[0][1],
             type: "filepickerUrl",
             payload: resp
         });
-
-        function onSuccess(resp){
-            expect(success).toEqual({
+        function onSuccess(Blob){
+            expect(Blob).toEqual({
                 url: resp.url,
                 filename: resp.data.filename,
                 mimetype: resp.data.type,
@@ -79,7 +80,7 @@ describe("The picker module", function(){
                 key: resp.data.key,
                 isWriteable: true
             });
-            expect(filepicker.modal.close).toHaveBeenCalled();
+            done();
         }
     });
 
