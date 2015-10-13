@@ -12,4 +12,4 @@ install:
   - sudo apt-get install firefox
   - npm install
 script:
-  - npm run test
+  - xvfb-run npm run test
