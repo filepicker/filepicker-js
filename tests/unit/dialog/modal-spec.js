@@ -38,21 +38,15 @@ describe("The modal module", function(){
     });
 
     it("can close the modal", function(){
-        runs(function(){
-            var url = "/library/modal/basic";
-            filepicker.modal.generate(url);
-            expect(document.getElementById("filepicker_shade")).not.toEqual(null);
-            expect(document.getElementById("filepicker_dialog_container")).not.toEqual(null);
-        });
-        waitsFor(function(){
-            return window.frames[filepicker.window.WINDOW_NAME].location.href !== "";
-        }, "the iframe to load", 1000);
+        var url = "/library/modal/basic";
+        filepicker.modal.generate(url);
+        expect(document.getElementById("filepicker_shade")).not.toEqual(null);
+        expect(document.getElementById("filepicker_dialog_container")).not.toEqual(null);
+        
+        filepicker.modal.close();
 
-        runs(function(){
-            filepicker.modal.close();
-            expect(document.getElementById("filepicker_shade")).toEqual(null);
-            expect(document.getElementById("filepicker_dialog_container")).toEqual(null);
-        });
+        expect(document.getElementById("filepicker_shade")).toEqual(null);
+        expect(document.getElementById("filepicker_dialog_container")).toEqual(null);
     });
 
     it("prompts the user if trying to close through an upload", function(){

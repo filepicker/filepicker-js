@@ -63,12 +63,3 @@ features.fileupload = function(){
 };
 
 window.test.features = features.all();
-
-
-function runs(fn){
-    fn();
-}
-
-function waitsFor() {
-    return true;
-}

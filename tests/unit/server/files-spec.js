@@ -2,41 +2,33 @@ describe("The files module", function(){
     it("defaults to base64 when reading from fpurls", function(){
         var url = "/library/file/read/base64";
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.readFromFPUrl(url, {}, success, error, progress);
-        });
 
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("Hello WorldÃÂ¥Â¹");
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        success = jasmine.createSpy("success");
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.readFromFPUrl(url, {}, success, error, progress);
+   
+        expect(success).toHaveBeenCalledWith("Hello WorldÃÂ¥Â¹");
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
     });
 
-    it("can also read non-base64 from fpurls", function(){
+    it("can also read non-base64 from fpurls", function(done){
         var url = "/library/file/read/nonbase64";
         var success,error,progress;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
-            progress = jasmine.createSpy("progress");
-            filepicker.files.readFromFPUrl(url, {base64encode:false}, success, error, progress);
-        });
-        waitsFor(function(){
-            return success.wasCalled || error.wasCalled;
-        }, "the callback to occur", 2000);
-        runs(function(){
-            expect(success).toHaveBeenCalledWith("Hello World");
-            expect(error).not.toHaveBeenCalled();
-            expect(progress).toHaveBeenCalledWith(100);
-        });
+        
+        success = onSuccess;
+        error = jasmine.createSpy("error");
+        progress = jasmine.createSpy("progress");
+        filepicker.files.readFromFPUrl(url, {base64encode:false}, success, error, progress);
+        
+        expect(error).not.toHaveBeenCalled();
+        expect(progress).toHaveBeenCalledWith(100);
+
+        function onSuccess(response) {
+            expect(response).toEqual('Hello World');
+            done();
+        }
     });
 
     it("gracefully handles a variety of errors when reading from urls", function(){
@@ -52,25 +44,18 @@ describe("The files module", function(){
 
         var expect_error = function(url, code){
             var success,error,progress;
-            runs(function(){
-                success = jasmine.createSpy("success");
-                error = jasmine.createSpy("error");
-                progress = jasmine.createSpy("progress");
-                filepicker.files.readFromUrl(url, {base64encode:false}, success, error, progress);
-            });
-            waitsFor(function(){
-                return success.wasCalled || error.wasCalled;
-            }, "the callback to occur", 10000);
-            runs(function(){
+            
+            success = jasmine.createSpy("success");
+            error = jasmine.createSpy("error");
+            progress = jasmine.createSpy("progress");
+            filepicker.files.readFromUrl(url, {base64encode:false}, success, error, progress);
 
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalled();
-                
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalled();
 
-                var fperror = error.calls.allArgs()[0][0];
-                expect(fperror.code).toEqual(code);
-                expect(progress).toHaveBeenCalledWith(100);
-            });
+            var fperror = error.calls.allArgs()[0][0];
+            expect(fperror.code).toEqual(code);
+            expect(progress).toHaveBeenCalledWith(100);
         };
         for (url in error_map){
             expect_error(url, error_map[url]);
