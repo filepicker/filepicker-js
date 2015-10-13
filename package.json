@@ -4,7 +4,7 @@
   "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
-    "pretest": "uglifyjs ./src/setup-spec.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker-spec.js -b ",
+    "pretest": "npm run build && uglifyjs ./src/setup-spec.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker-spec.js -b ",
     "test": "karma start --single-run",
     "prebuild": "rm -rf dist && mkdir dist",
     "postbuild": "uglifyjs dist/filepicker.js -o ./dist/filepicker.min.js --compress --mangle && cp filepicker_debug.js dist/",
