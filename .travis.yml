@@ -10,5 +10,6 @@ install:
   - sudo apt-get update
   - sudo apt-get install xvfb
   - sudo apt-get install firefox
+  - npm install
 script:
   - npm run test
