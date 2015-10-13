@@ -3,37 +3,31 @@ describe("The picker module", function(){
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = undefined;
         
-        runs(function(){
-            spyOn(filepicker.cookies, "checkThirdParty").and.callFake(function(callback){
-                setTimeout(function(){
-                    filepicker.cookies.THIRD_PARTY_COOKIES = true;
-                    callback();
-                }, 10);
-            });
-            //to prevent modal
-            spyOn(filepicker.window, "open");
-            spyOn(filepicker.urls, "constructPickUrl");
-
-            var options = {};
-            var success = jasmine.createSpy("success");
-            var error = jasmine.createSpy("error");
-
-            filepicker.picker.createPicker(options, success, error, false);
-            //not called on this run
-            expect(filepicker.window.open).not.toHaveBeenCalled();
+        spyOn(filepicker.cookies, "checkThirdParty").and.callFake(function(callback){
+            setTimeout(function(){
+                filepicker.cookies.THIRD_PARTY_COOKIES = true;
+                callback();
+            }, 10);
         });
+        //to prevent modal
+        spyOn(filepicker.window, "open");
+        spyOn(filepicker.urls, "constructPickUrl");
 
-        waitsFor(function(){
-            return filepicker.cookies.THIRD_PARTY_COOKIES !== undefined;
-        }, "third party cookies to be set", 100);
+        var options = {};
+        var success = jasmine.createSpy("success");
+        var error = jasmine.createSpy("error");
 
-        runs(function(){
-            expect(filepicker.cookies.checkThirdParty).toHaveBeenCalled();
-            //now we call it
+        filepicker.picker.createPicker(options, success, error, false);
+        //not called on this run
+        expect(filepicker.window.open).not.toHaveBeenCalled();
+
+        expect(filepicker.cookies.checkThirdParty).toHaveBeenCalled();
+        //now we call it
+        window.setTimeout(function(){
             expect(filepicker.window.open).toHaveBeenCalled();
             //reset
             filepicker.cookies.THIRD_PARTY_COOKIES = cookies;
-        });
+        },100);
     });
 
     it("can create a picker", function(){
@@ -41,11 +35,11 @@ describe("The picker module", function(){
             openTo:"GOOGLE_DRIVE",
             mimetype: "image/*"
         };
-        var success = jasmine.createSpy("success");
+        var success = onSuccess;
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -71,19 +65,22 @@ describe("The picker module", function(){
 
         spyOn(filepicker.modal, "close");
         filepicker.handlers.run({
-            id: filepicker.urls.constructPickUrl.calls[0].args[1],
+            id: filepicker.urls.constructPickUrl.calls.allArgs()[0][0],
             type: "filepickerUrl",
             payload: resp
         });
-        expect(success).toHaveBeenCalledWith({
-            url: resp.url,
-            filename: resp.data.filename,
-            mimetype: resp.data.type,
-            size: resp.data.size,
-            key: resp.data.key,
-            isWriteable: true
-        });
-        expect(filepicker.modal.close).toHaveBeenCalled();
+
+        function onSuccess(resp){
+            expect(success).toEqual({
+                url: resp.url,
+                filename: resp.data.filename,
+                mimetype: resp.data.type,
+                size: resp.data.size,
+                key: resp.data.key,
+                isWriteable: true
+            });
+            expect(filepicker.modal.close).toHaveBeenCalled();
+        }
     });
 
     it("can create a multi-picker", function(){
@@ -95,7 +92,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_multi_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_multi_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -121,7 +118,7 @@ describe("The picker module", function(){
 
         spyOn(filepicker.modal, "close");
         filepicker.handlers.run({
-            id: filepicker.urls.constructPickUrl.calls[0].args[1],
+            id: filepicker.urls.constructPickUrl.calls.allArgs()[0][1],
             type: "filepickerUrl",
             payload: resp
         });
@@ -142,26 +139,21 @@ describe("The picker module", function(){
         };
 
         var success, error;
-        runs(function(){
-            success = jasmine.createSpy("success");
-            error = jasmine.createSpy("error");
 
-            spyOn(filepicker.window, "open");
+        success = onSuccess;
+        error = jasmine.createSpy("error");
 
-            filepicker.picker.createPicker(options, success, error, false);
-        });
-        waitsFor(function(){
-            return success.wasCalled;
-        }, "the success callback to occur", 50); //should be fast
+        spyOn(filepicker.window, "open");
 
-        runs(function(){
-            expect(success).toHaveBeenCalled();
-            var resp = success.calls[0].args[0];
+        filepicker.picker.createPicker(options, success, error, false);
+
+        function onSuccess(resp){
             expect(resp.url).toMatch("https://www.filepicker.io/api/file/");
             expect(resp.filename).toEqual("test.png");
             expect(resp.mimetype).toEqual("image/png");
             expect(resp.size).toEqual(58979);
-        });
+        }
+
     });
 
     it("normalizes options", function(){
@@ -174,7 +166,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -207,7 +199,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -221,11 +213,11 @@ describe("The picker module", function(){
             container, "pick_url", jasmine.any(Function));
 
         //firing onclose
-        var onclose = filepicker.window.open.calls[0].args[2];
+        var onclose = filepicker.window.open.calls.allArgs()[0][2];
         onclose();
         expect(success).not.toHaveBeenCalled();
         expect(error).toHaveBeenCalled();
-        expect(error.calls[0].args[0].code).toEqual(101);
+        expect(error.calls.allArgs()[0][0].code).toEqual(101);
     });
 
     it("keeps track of whether uploading is occurring", function(){
@@ -234,7 +226,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -248,7 +240,7 @@ describe("The picker module", function(){
             container, "pick_url", jasmine.any(Function));
 
         //firing the "upload" event
-        var id = filepicker.urls.constructPickUrl.calls[0].args[1];
+        var id = filepicker.urls.constructPickUrl.calls.allArgs()[0][1];
         filepicker.handlers.run({
             id: id+"-upload",
             type: "uploading",
@@ -290,7 +282,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
+        spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -315,7 +307,7 @@ describe("The picker module", function(){
             }
         };
 
-        var id = filepicker.urls.constructPickUrl.calls[0].args[1];
+        var id = filepicker.urls.constructPickUrl.calls.allArgs()[0][1];
         filepicker.handlers.run({
             id: id,
             type: "filepickerUrl",
@@ -333,35 +325,14 @@ describe("The picker module", function(){
         });
 
         expect(success).toHaveBeenCalled();
-        expect(success.calls.length).toEqual(2);
+        expect(success.calls.allArgs().length).toEqual(2);
         expect(error).toHaveBeenCalled();
-        expect(error.calls.length).toEqual(1);
-        expect(error.calls[0].args[0].code).toEqual(102);
+        expect(error.calls.allArgs().length).toEqual(1);
+        expect(error.calls.allArgs()[0][0].code).toEqual(102);
         //firing onclose - shouldn't cause an error
-        var onclose = filepicker.window.open.calls[0].args[2];
+        var onclose = filepicker.window.open.calls.allArgs()[0][2];
         onclose();
-        expect(success.calls.length).toEqual(2); //not 3
-        expect(error.calls.length).toEqual(1); //not two
-    });
-
-    it("will open in a window if needed", function(){
-        var options = {
-            container: "modal"
-        };
-        var success = jasmine.createSpy("success");
-        var error = jasmine.createSpy("error");
-
-        spyOn(filepicker.window, "open");
-        //force a window, not modal
-        spyOn(filepicker.window, "shouldForce").andReturn(true);
-        spyOn(filepicker.urls, "constructPickUrl").andReturn("pick_url");
-
-        var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
-        filepicker.cookies.THIRD_PARTY_COOKIES = true;
-        filepicker.picker.createPicker(options, success, error, false);
-        filepicker.cookies.THIRD_PARTY_COOKIES = cookies;
-
-        expect(filepicker.window.open).toHaveBeenCalledWith(
-            "window", "pick_url", jasmine.any(Function));
+        expect(success.calls.allArgs().length).toEqual(2); //not 3
+        expect(error.calls.allArgs().length).toEqual(1); //not two
     });
 });

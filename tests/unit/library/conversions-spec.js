@@ -20,7 +20,7 @@ describe("The Conversions library", function(){
         error = jasmine.createSpy('error');
         progress = jasmine.createSpy('progress');
 
-        // jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
+        // jasmine.Ajax.stubRequest(request.regex).and.returnValue(request.response);
 
         filepicker.conversions.convert(fpurl, {width: 64, height: 128}, success, error, progress);
 
@@ -120,7 +120,7 @@ describe("The Conversions library", function(){
 
             var request = window.CONVERSION_RESPONSES[fpurl];
 
-            // jasmine.Ajax.stubRequest(request.regex).andReturn(request.response);
+            // jasmine.Ajax.stubRequest(request.regex).and.returnValue(request.response);
 
             filepicker.conversions.convert(fpurl, {width: 64, height: 128}, success, error, progress);
 

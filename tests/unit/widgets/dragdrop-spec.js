@@ -3,13 +3,13 @@ describe("The Drag-Drop library", function(){
         expect(filepicker.dragdrop.enabled()).toBe(window.test.features.dragdrop);
         
         //we check that draggable is in document.createElement("span"), so fake that out
-        spyOn(document, "createElement").andReturn({});
+        spyOn(document, "createElement").and.returnValue({});
         expect(filepicker.dragdrop.enabled()).toBe(false);
     });
 
     it("will fail if dragdrop is not enabled", function(){
         //we check that draggable is in document.createElement("span"), so fake that out
-        spyOn(document, "createElement").andReturn({});
+        spyOn(document, "createElement").and.returnValue({});
         spyOn(console, "error");
         expect(filepicker.dragdrop.makeDropPane({}, {})).toBe(false);
         expect(console.error).toHaveBeenCalledWith("Your browser doesn't support drag-drop functionality");
@@ -22,17 +22,23 @@ describe("The Drag-Drop library", function(){
 
         var test2 = function(){
             //not in document
-            filepicker.dragdrop.makeDropPane($("#blah1234"));
+            filepicker.dragdrop.makeDropPane(document.getElementById("blah1234"));
         };
         expect(test1).toThrow();
         expect(test2).toThrow();
     });
     
     if (window.test.features.dragdrop) {
-        it("fails on empty uploads", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
 
+        function getTestDiv(){
+            var pane = document.createElement("div");
+            pane.appendChild(document.createTextNode("Test"));
+            document.getElementsByTagName('body')[0].appendChild(pane);
+            return pane;
+        };
+
+        it("fails on empty uploads", function(){
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -48,24 +54,15 @@ describe("The Drag-Drop library", function(){
             var e = document.createEvent('Event');
             e.initEvent("drop", true, false);
             e.dataTransfer = {files: []};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(onstart).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("NoFilesFound", "No files uploaded");
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+            expect(onstart).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalledWith("NoFilesFound", "No files uploaded");
+            pane.remove();
         });
 
         it("fails on uploading folders", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -81,25 +78,16 @@ describe("The Drag-Drop library", function(){
             var e = document.createEvent('Event');
             e.initEvent("drop", true, false);
             var item = {};
-            item.webkitGetAsEntry = jasmine.createSpy("getAsEntry").andReturn({isDirectory: true});
+            item.webkitGetAsEntry = jasmine.createSpy("getAsEntry").and.returnValue({isDirectory: true});
             e.dataTransfer = {items: [item]};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(onstart).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("WrongType", "Uploading a folder is not allowed");
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+            expect(onstart).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalledWith("WrongType", "Uploading a folder is not allowed");
+            pane.remove();
         });
         it("can process single uploads", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -128,28 +116,21 @@ describe("The Drag-Drop library", function(){
                 name: file.name,
                 size: file.size
             };
-            runs(function(){
-                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
-                    progress(100);
-                    success(result);
-                });
-                pane[0].dispatchEvent(e);
+
+            spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
+                progress(100);
+                success(result);
             });
-            waitsFor(function(){
-                return filepicker.store.wasCalled;
-            }, "the store to occur", 500);
-            runs(function(){
-                expect(error).not.toHaveBeenCalled();
-                expect(progress).toHaveBeenCalledWith(100);
-                expect(success).toHaveBeenCalledWith([result]);
-                pane.remove();
-            });
+
+            pane.dispatchEvent(e);
+            expect(error).not.toHaveBeenCalled();
+            expect(progress).toHaveBeenCalledWith(100);
+            expect(success).toHaveBeenCalledWith([result]);
+            pane.remove();
         });
 
         it("will error if multiple are dropped on a single", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -173,24 +154,16 @@ describe("The Drag-Drop library", function(){
 
             //Sending 3
             e.dataTransfer = {files: [file, file, file]};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(error).toHaveBeenCalledWith("TooManyFiles","Only one file at a time");
-                expect(progress).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                pane.remove();
-            });
+
+            pane.dispatchEvent(e);
+            expect(error).toHaveBeenCalledWith("TooManyFiles","Only one file at a time");
+            expect(progress).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            pane.remove();
         });
 
         it("can process multiple uploads", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -230,35 +203,28 @@ describe("The Drag-Drop library", function(){
                 name: file2.name,
                 size: file2.size
             };
-            runs(function(){
-                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
-                    progress(100);
-                    if (file == file1) {
-                        success(result1);
-                    } else if (file == file2) {
-                        success(result2);
-                    } else {
-                        error();
-                    }
-                });
-                pane[0].dispatchEvent(e);
+
+            spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
+                progress(100);
+                if (file == file1) {
+                    success(result1);
+                } else if (file == file2) {
+                    success(result2);
+                } else {
+                    error();
+                }
             });
-            waitsFor(function(){
-                return filepicker.store.calls.length == 2;
-            }, "the stores to occur", 500);
-            runs(function(){
-                expect(error).not.toHaveBeenCalled();
-                expect(progress).toHaveBeenCalledWith(50);
-                expect(progress).toHaveBeenCalledWith(100);
-                expect(success).toHaveBeenCalledWith([result1, result2]);
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+            expect(error).not.toHaveBeenCalled();
+            expect(progress).toHaveBeenCalledWith(50);
+            expect(progress).toHaveBeenCalledWith(100);
+            expect(success).toHaveBeenCalledWith([result1, result2]);
+            pane.remove();
         });
 
         it("can handle drag enter and leave events", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
 
+            var pane = getTestDiv();
             var dragEnter = jasmine.createSpy("dragEnter");
             var dragLeave = jasmine.createSpy("dragLeave");
 
@@ -266,58 +232,37 @@ describe("The Drag-Drop library", function(){
                 dragEnter: dragEnter,
                 dragLeave: dragLeave
             });
+            var e = document.createEvent('Event');
+            e.initEvent("dragenter", true, false);
+            pane.dispatchEvent(e);
 
-            var e;
-            runs(function(){
-                e = document.createEvent('Event');
-                e.initEvent("dragenter", true, false);
-                pane[0].dispatchEvent(e);
+            expect(dragEnter).toHaveBeenCalled();
+            expect(dragLeave).not.toHaveBeenCalled();
+            //Next, fire dragleave
+            dragEnter.calls.reset();
+            e = document.createEvent('Event');
+            e.initEvent("dragleave", true, false);
+            pane.dispatchEvent(e);
+            expect(dragEnter).not.toHaveBeenCalled();
+            expect(dragLeave).toHaveBeenCalled();
+            dragLeave.calls.reset();
+
+            //Next, fire dragover
+            e = document.createEvent('Event');
+            Object.defineProperty(e, "dataTransfer", {
+                configurable: true,
+                writable: true,
+                value : {}
             });
-
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the enter event to fire", 100);
-
-            runs(function(){
-                expect(dragEnter).toHaveBeenCalled();
-                expect(dragLeave).not.toHaveBeenCalled();
-                //Next, fire dragleave
-                dragEnter.reset();
-                e = document.createEvent('Event');
-                e.initEvent("dragleave", true, false);
-                pane[0].dispatchEvent(e);
-            });
-
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the leave event to fire", 100);
-
-            runs(function(){
-                expect(dragEnter).not.toHaveBeenCalled();
-                expect(dragLeave).toHaveBeenCalled();
-                dragLeave.reset();
-
-                //Next, fire dragover
-                e = document.createEvent('Event');
-                e.initEvent("dragover", true, false);
-                pane[0].dispatchEvent(e);
-            });
-
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the leave event to fire", 100);
-
-            runs(function(){
-                expect(dragEnter).not.toHaveBeenCalled();
-                expect(dragLeave).not.toHaveBeenCalled();
-                pane.remove();
-            });
+            e.initEvent("dragover", true, false);
+            pane.dispatchEvent(e);
+            expect(dragEnter).not.toHaveBeenCalled();
+            expect(dragLeave).not.toHaveBeenCalled();
+            pane.remove();
         });
 
         it("can filter on mimetypes", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -339,24 +284,16 @@ describe("The Drag-Drop library", function(){
                 size: 432
             };
             e.dataTransfer = {files: [file]};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(onstart).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("WrongType", "test.txt isn't the right type of file");
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+
+            expect(onstart).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalledWith("WrongType", "test.txt isn't the right type of file");
+            pane.remove();
         });
 
         it("can filter on extensions", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -378,24 +315,16 @@ describe("The Drag-Drop library", function(){
                 size: 432
             };
             e.dataTransfer = {files: [file]};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(onstart).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("WrongType", "test.txt isn't the right type of file");
-                pane.remove();
-            });
+
+            pane.dispatchEvent(e);
+            expect(onstart).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalledWith("WrongType", "test.txt isn't the right type of file");
+            pane.remove();
         });
 
         it("can filter on size", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -417,24 +346,16 @@ describe("The Drag-Drop library", function(){
                 size: 432
             };
             e.dataTransfer = {files: [file]};
-            runs(function(){
-                pane[0].dispatchEvent(e);
-            });
-            waitsFor(function(){
-                return e.currentTarget === null;
-            }, "the event to fire", 100);
-            runs(function(){
-                expect(onstart).not.toHaveBeenCalled();
-                expect(success).not.toHaveBeenCalled();
-                expect(error).toHaveBeenCalledWith("WrongSize", "test.txt is too large (432 Bytes)");
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+           
+            expect(onstart).not.toHaveBeenCalled();
+            expect(success).not.toHaveBeenCalled();
+            expect(error).toHaveBeenCalledWith("WrongSize", "test.txt is too large (432 Bytes)");
+            pane.remove();
         });
 
         it("handles upload errors gracefully", function(){
-            var pane = $("<div>Test</div>");
-            $("body").append(pane);
-
+            var pane = getTestDiv();
             var success = jasmine.createSpy("success");
             var error = jasmine.createSpy("error");
             var progress = jasmine.createSpy("progress");
@@ -457,20 +378,13 @@ describe("The Drag-Drop library", function(){
             };
 
             e.dataTransfer = {files: [file]};
-            runs(function(){
-                spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
-                    error("Internal server error (ish)");
-                });
-                pane[0].dispatchEvent(e);
+            spyOn(filepicker, "store").and.callFake(function(file, options, success, error, progress){
+                error("Internal server error (ish)");
             });
-            waitsFor(function(){
-                return filepicker.store.wasCalled;
-            }, "the store to occur", 500);
-            runs(function(){
-                expect(error).toHaveBeenCalledWith("UploadError", "Internal server error (ish)");
-                expect(success).not.toHaveBeenCalled();
-                pane.remove();
-            });
+            pane.dispatchEvent(e);
+            expect(error).toHaveBeenCalledWith("UploadError", "Internal server error (ish)");
+            expect(success).not.toHaveBeenCalled();
+            pane.remove();
         });
     }
 });

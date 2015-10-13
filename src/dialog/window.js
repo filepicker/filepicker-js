@@ -34,7 +34,7 @@ filepicker.extend('window', function(){
         return [winW, winH];
     };
 
-    var openWindow = function(container, mobileOption, src, onClose) {
+    var openWindow = function(container, src, onClose) {
         onClose = onClose || function(){};
         var isMobile = (fp.browser.isIOS() || fp.browser.isAndroid());
         if (!container && isMobile){
