@@ -6,5 +6,9 @@ cache:
     - node_modules
 before_install:
   - npm i -g npm@^2.0.0
+install:
+  - sudo apt-get update
+  - sudo apt-get install xvfb
+  - sudo apt-get install firefox
 script:
   - npm run test
