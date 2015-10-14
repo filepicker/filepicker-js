@@ -146,7 +146,7 @@ filepicker.extend('urls', function(){
 
         for (i in conversions) {
             for (j in allowedConversions) {
-                if (conversions[i] === allowedConversions[j]) {
+                if (conversions[i] === allowedConversions[j] && conversions.hasOwnProperty(i)) {
                     allowed.push(conversions[i]);
                 }
             }
