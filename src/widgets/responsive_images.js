@@ -21,7 +21,9 @@ filepicker.extend('responsiveImages', function(){
 
     return {
         init: init,
-        setResponsiveOptions: setResponsiveOptions
+        setResponsiveOptions: setResponsiveOptions,
+        getElementDims: getElementDims,
+        replaceSrc: replaceSrc,
     };
 
     /**
