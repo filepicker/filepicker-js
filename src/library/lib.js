@@ -759,6 +759,7 @@ filepicker.extend(function(){
         convert: convert,
         constructWidget: constructWidget,
         makeDropPane: makeDropPane,
-        FilepickerException: FilepickerException
+        FilepickerException: FilepickerException,
+        version: '2.1.1'
     };
 }, true);
