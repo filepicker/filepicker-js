@@ -243,7 +243,7 @@ filepicker.extend('picker', function(){
             handler = getPickHandler(onSuccessMark, onErrorMark, onProgress);
         }
 
-        fp.window.open(options.container, options.mobile, url, onClose);
+        fp.window.open(options.container, url, onClose);
         fp.handlers.attach(id, handler);
 
         var key = id+'-upload';
