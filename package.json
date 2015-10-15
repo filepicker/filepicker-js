@@ -4,6 +4,7 @@
   "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
+    "prepublish":"npm run build",
     "pretest": "npm run prebuild && uglifyjs ./src/setup-spec.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker-spec.js -b ",
     "test": "./node_modules/.bin/karma start --single-run",
     "prebuild": "rm -rf dist && mkdir dist",
