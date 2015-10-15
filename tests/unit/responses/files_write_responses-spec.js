@@ -201,7 +201,7 @@ window.FILES_WRITE_RESPONSES = {
                 "Accept": {"$contains": "text/html"}
             },
             "form":{
-                "key": "12345"
+                "key": "l5uQ3k7FQ5GoYCHyTdZV"
             },
             "method": "POST"
         },

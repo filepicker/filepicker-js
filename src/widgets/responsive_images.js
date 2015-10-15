@@ -24,6 +24,9 @@ filepicker.extend('responsiveImages', function(){
         setResponsiveOptions: setResponsiveOptions,
         getElementDims: getElementDims,
         replaceSrc: replaceSrc,
+        getCurrentResizeParams: getCurrentResizeParams,
+        construct: construct,
+        getResponsiveOptions: getResponsiveOptions
     };
 
     /**
@@ -72,7 +75,7 @@ filepicker.extend('responsiveImages', function(){
                 continue;
             }
 
-            var shouldBeEnlarged = getCurrentConvertParams(imageSrc).width < getElementDims(image).width;
+            var shouldBeEnlarged = getCurrentResizeParams(imageSrc).width < getElementDims(image).width;
 
             if ((shouldBeEnlarged && changeOnResize === 'up') || 
                 (!shouldBeEnlarged && changeOnResize === 'down')) {
@@ -210,14 +213,14 @@ filepicker.extend('responsiveImages', function(){
     /**
     *   Parse url and return width & height values from url resize option
     *
-    *   @method getCurrentConvertParams
+    *   @method getCurrentResizeParams
     *   @param {String} url - Image url
     *   @returns {Object} 
     *       width {Number}
     *       height {Number}
     */
 
-    function getCurrentConvertParams(url){
+    function getCurrentResizeParams(url){
         return fp.conversionsUtil.parseUrl(url).optionsDict.resize || {};
     }
 
