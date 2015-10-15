@@ -2,7 +2,9 @@
 'use strict';
 
 filepicker.extend(function(){
-    var fp = this;
+    var fp = this,
+        VERSION = '2.1.2.';
+        
     fp.API_VERSION = 'v2';
 
     var setKey = function(key) {
@@ -760,6 +762,6 @@ filepicker.extend(function(){
         constructWidget: constructWidget,
         makeDropPane: makeDropPane,
         FilepickerException: FilepickerException,
-        version: '2.1.1'
+        version: VERSION
     };
 }, true);

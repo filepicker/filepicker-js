@@ -1,4 +1,5 @@
-// setup.js
+// setup-spec.js
+// use only for test build
 'use strict';
 
 (function(){
