@@ -111,7 +111,7 @@ filepicker.extend('exporter', function(){
             }
         };
 
-        fp.window.open(options.container, options.mobile, fp.urls.constructExportUrl(input, options, id), onClose);
+        fp.window.open(options.container, fp.urls.constructExportUrl(input, options, id), onClose);
         fp.handlers.attach(id, getExportHandler(onSuccessMark, onErrorMark));
     };
 

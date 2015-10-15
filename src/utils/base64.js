@@ -119,9 +119,10 @@ filepicker.extend('base64', function(){
 
     // private method for UTF-8 decoding
     var _utf8_decode = function (utftext) {
-        var string = '';
-        var i = 0;
-        var c = c2 = 0;
+        var string = '',
+            i = 0,
+            c = 0,
+            c2 = 0;
 
         while ( i < utftext.length ) {
 

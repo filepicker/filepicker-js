@@ -1,16 +1,17 @@
 {
   "name": "filepicker-js",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build-src": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.js -b",
-    "build-min": "uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -o ./dist/filepicker.min.js --compress --mangle",
-    "prebuild":"rm -rf dist && mkdir dist",
-    "postbuild":"cp filepicker_debug.js dist/",
-    "build": "npm run build-src && npm run build-min",
-    "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build && npm run jshint",
+    "prepublish":"npm run build",
+    "pretest": "npm run prebuild && uglifyjs ./src/setup-spec.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker-spec.js -b ",
+    "test": "./node_modules/.bin/karma start --single-run",
+    "prebuild": "rm -rf dist && mkdir dist",
+    "postbuild": "uglifyjs dist/filepicker.js -o ./dist/filepicker.min.js --compress --mangle && cp filepicker_debug.js dist/",
+    "build": "uglifyjs ./src/setup.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker.js -b ",
+    "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build",
+    "watch-test": "onchange ./tests/unit/*.js ./tests/unit/**/*.js ./src/*.js ./src/**/*.js -- npm run test",
     "linter": "jshint ./src/* ./src/**/*",
     "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run linter"
   },
@@ -34,7 +35,12 @@
   },
   "homepage": "https://github.com/filepicker/filepicker-js",
   "devDependencies": {
+    "jasmine-core": "2.3.4",
     "jshint": "^2.8.0",
+    "karma": "0.13.10",
+    "karma-firefox-launcher": "0.1.6",
+    "karma-jasmine": "0.3.6",
+    "karma-jasmine-ajax": "0.1.13",
     "onchange": "^2.0.0",
     "uglify-js": "^2.4.24"
   },
