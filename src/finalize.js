@@ -7,7 +7,7 @@
         var fp = this;
         fp.util.addOnLoad(fp.cookies.checkThirdParty);
         fp.util.addOnLoad(fp.widgets.buildWidgets);
-        fp.util.addOnLoad(fp.responsiveImages.init);
+        fp.util.addOnLoad(fp.responsiveImages.activate);
     });
 
     //Now we wipe our superpowers

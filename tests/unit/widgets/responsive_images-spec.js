@@ -3,7 +3,8 @@ describe("The responsive widgets module", function(){
         defaultSrc = 'https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
         changedSrc = 'https://www.filepicker.io/api/file/lYoRE2ehRniSoCaAx1p2',
         processBase = 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/',
-        processUrl = 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY';
+        processUrl = 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
+        image;
 
 
 
@@ -22,7 +23,7 @@ describe("The responsive widgets module", function(){
 
     function createWidgetImage(src){
         src = src || defaultSrc;
-        image = createEmptyImage()
+        var image = createEmptyImage()
         image.setAttribute('data-fp-src', defaultSrc);
         return image;
     }
@@ -47,6 +48,18 @@ describe("The responsive widgets module", function(){
             element.fireEvent("on" + event.eventType, event);
         }
     }
+
+    afterEach(function(){
+        console.log('after ', arguments);
+        filepicker.responsiveImages.deactivate();
+        try {
+            if (image && image.parentNode) {
+                document.getElementsByTagName('body')[0].removeChild(image);
+            }
+        } catch(e){
+            console.error(e);
+        }
+    });
     
     it("should be able to check DOM element dims", function(){
         expect(
@@ -56,7 +69,7 @@ describe("The responsive widgets module", function(){
 
 
     it("should be able to replace Image tag source value", function(){
-        var image = createImage();
+        image = createImage();
         expect(image.src).toEqual(defaultSrc);
         filepicker.responsiveImages.replaceSrc(image, changedSrc);
         expect(image.src).toEqual(changedSrc);
@@ -67,7 +80,7 @@ describe("The responsive widgets module", function(){
 
 
     it("should return current resize params", function(){
-        var image = createImage();
+        image = createImage();
         var params = filepicker.responsiveImages.getCurrentResizeParams(processUrl);
         expect(params).toEqual({
             width: '615',
@@ -75,16 +88,23 @@ describe("The responsive widgets module", function(){
         });
     });
 
-    it('should be able to construct responsive image widget', function(){
-        var image = createImage();
+    it('should be able to construct responsive image widget with proper width', function(){
+        console.log('start -1');
+        image = createImage();
         image.setAttribute('data-fp-src', defaultSrc);
+        image.setAttribute('style', 'width:200px;');
+
         expect(image.src).toEqual(defaultSrc);
         filepicker.responsiveImages.construct(image);
-        expect(image.src).toEqual(processBase + 'resize=width:30/' + defaultSrc);
+        window.setTimeout(function(){
+            expect(image.src).toEqual(processBase + 'resize=width:200/' + defaultSrc);
+            console.log('end -1');
+        },250);
     });
 
 
     it('should be able to get and set responive options', function(){
+        console.log('start 0');
         expect(filepicker.responsiveImages.getResponsiveOptions()).toEqual({});
         var newOptions = {
             pixelRound: 100,
@@ -92,31 +112,38 @@ describe("The responsive widgets module", function(){
         };
         filepicker.responsiveImages.setResponsiveOptions(newOptions);
         expect(filepicker.responsiveImages.getResponsiveOptions()).toEqual(newOptions);
+        console.log('end 0');
     });
 
 
     it('should be able to init responsive view', function(done){
-        var image = createWidgetImage();
+        console.log('start 1');
+        image = createWidgetImage();
         expect(image.src).toEqual('');
-        filepicker.responsiveImages.init();
+        filepicker.responsiveImages.activate();
         window.setTimeout(function(){
             expect(image.src).toEqual(processBase + 'resize=width:1100/' + defaultSrc);
             done();
+            console.log('end 1');
         });
     });
 
     it('should be able to reload image on resize', function(done){
-        var image = createWidgetImage();
-        filepicker.responsiveImages.init();
+        console.log('start 2');
+        image = createWidgetImage();
+        filepicker.responsiveImages.activate();
+
+        expect(image.src).toEqual(processBase + 'resize=width:1100/' + defaultSrc);
+        // resize image DOM element
+        image.setAttribute('style', 'width:200px;');
+        triggerEvent(window, 'resize');
 
         window.setTimeout(function(){
-            expect(image.src).toEqual(processBase + 'resize=width:1100/' + defaultSrc);
-            image.setAttribute('style', 'width:200px;');
-            triggerEvent(window, 'resize');
-            window.setTimeout(function(){
-                expect(image.src).toEqual(processBase + 'resize=width:200/' + defaultSrc);
-                done();
-            }, 250);
+            expect(image.src).toEqual(processBase + 'resize=width:200/' + defaultSrc);
+            console.log('end 2');
+            done();
         }, 250);
+
     });
+
 });

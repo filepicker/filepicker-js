@@ -20,7 +20,8 @@ filepicker.extend('responsiveImages', function(){
 
 
     return {
-        init: init,
+        activate: activate,
+        deactivate: deactivate,
         setResponsiveOptions: setResponsiveOptions,
         getElementDims: getElementDims,
         replaceSrc: replaceSrc,
@@ -35,9 +36,17 @@ filepicker.extend('responsiveImages', function(){
     *   @method init
     */
 
-    function init(){
+    function activate(){
         constructAll();
         addWindowResizeEvent();
+    }
+
+    function deactivate(){
+        if (window.removeEventListener) {
+            window.removeEventListener('resize', windowResized, false);
+        } else if (window.detachEvent) {
+            window.detachEvent('onresize', windowResized);
+        }
     }
 
     /**
