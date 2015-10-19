@@ -27,26 +27,32 @@ filepicker.extend('responsiveImages', function(){
         replaceSrc: replaceSrc,
         getCurrentResizeParams: getCurrentResizeParams,
         construct: construct,
-        getResponsiveOptions: getResponsiveOptions
+        getResponsiveOptions: getResponsiveOptions,
+        roundWithStep: roundWithStep,
+        shouldConstruct: shouldConstruct,
+        addWindowResizeEvent: addWindowResizeEvent,
+        removeWindowResizeEvent:removeWindowResizeEvent
     };
 
     /**
-    *   Module is initialized in finalize.js file
+    *   Module is activated in finalize.js file
     *
-    *   @method init
+    *   @method activate
     */
 
     function activate(){
         constructAll();
-        addWindowResizeEvent();
+        addWindowResizeEvent(windowResized);
     }
 
+    /**
+    *   remove windowResized resize listener
+    *
+    *   @method deactivate
+    */
+
     function deactivate(){
-        if (window.removeEventListener) {
-            window.removeEventListener('resize', windowResized, false);
-        } else if (window.detachEvent) {
-            window.detachEvent('onresize', windowResized);
-        }
+        removeWindowResizeEvent(windowResized);
     }
 
     /**
@@ -57,40 +63,56 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function constructAll(){
-        var responsiveOptions = getResponsiveOptions(),
-            responsiveImages = document.querySelectorAll('img[data-fp-src]');
+        var responsiveImages = document.querySelectorAll('img[data-fp-src]');
 
         for (var i=0; i< responsiveImages.length; i++) {
-            var image = responsiveImages[i],
-                imageSrc = getSrcAttr(image),
-            /*
-                get image data-fp-on-resize attr
-                OR global option
-                OR 'all' by default
-            */
-                changeOnResize = getFpOnResizeAttr(image) || responsiveOptions.onResize || 'all';
-
-            /*
-                if there is not src attribute
-                OR onResize = 'all'
-                construct url immedialty
-            */
-
-            if (!imageSrc || changeOnResize === 'all') {
-                construct(image);
-            }
-
-            if (changeOnResize === 'none') {
-                continue;
-            }
-
-            var shouldBeEnlarged = getCurrentResizeParams(imageSrc).width < getElementDims(image).width;
-
-            if ((shouldBeEnlarged && changeOnResize === 'up') || 
-                (!shouldBeEnlarged && changeOnResize === 'down')) {
-                construct(image);
+            if (shouldConstruct(responsiveImages[i])) {
+                construct(responsiveImages[i]);
             }
         }
+    }
+
+
+    /**
+    *   Depend on responsive images options and current image size return true 
+    *   if image url should be constructed or false if not
+    *
+    *   @method shouldConstruct
+    *   @param {DOMElement} elem - Image element
+    *   @returns {Boolean}
+    */
+
+    function shouldConstruct(image){
+        var imageSrc = getSrcAttr(image),
+        /*
+            get image data-fp-on-resize attr
+            OR global option
+            OR 'all' by default
+        */
+            changeOnResize = getFpOnResizeAttr(image) || getResponsiveOptions().onResize || 'all';
+
+        /*
+            if there is not src attribute
+            OR onResize = 'all'
+            construct url immedialty
+        */
+
+        if (!imageSrc || changeOnResize === 'all') {
+            return true;
+        }
+
+        if (changeOnResize === 'none') {
+            return false;
+        }
+
+        var shouldBeEnlarged = getCurrentResizeParams(imageSrc).width < getElementDims(image).width;
+
+        if ((shouldBeEnlarged && changeOnResize === 'up') || 
+            (!shouldBeEnlarged && changeOnResize === 'down')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -263,18 +285,11 @@ filepicker.extend('responsiveImages', function(){
                 }
             };
 
-        /*
-            Accept data-fp-key attribute to set apikey.
-            However apikey is not reuqired for now.
-            Will be with conversion 2.0
-        */
-
         if (apikey) {
             fp.setKey(apikey);
         }
 
         fp.util.checkApiKey();
-
         replaceSrc(elem, fp.conversionsUtil.buildUrl(url, params));
     }
 
@@ -320,11 +335,25 @@ filepicker.extend('responsiveImages', function(){
     *   @method addWindowResizeEvent
     */
   
-    function addWindowResizeEvent() {
+    function addWindowResizeEvent(onWindowResized) {
         if (window.addEventListener) {
-            window.addEventListener('resize', windowResized, false);
+            window.addEventListener('resize', onWindowResized, false);
         } else if (window.attachEvent) {
-            window.attachEvent('onresize', windowResized);
+            window.attachEvent('onresize', onWindowResized);
+        }
+    }
+
+    /**
+    *   Remove "resize" window event.
+    *
+    *   @method removeWindowResizeEvent
+    */
+    
+    function removeWindowResizeEvent(onWindowResized) {
+        if (window.removeEventListener) {
+            window.removeEventListener('resize', onWindowResized, false);
+        } else if (window.detachEvent) {
+            window.detachEvent('onresize', onWindowResized);
         }
     }
 

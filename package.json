@@ -12,8 +12,8 @@
     "build": "uglifyjs ./src/setup.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker.js -b ",
     "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build",
     "watch-test": "onchange ./tests/unit/*.js ./tests/unit/**/*.js ./src/*.js ./src/**/*.js -- npm run test",
-    "linter": "jshint ./src/* ./src/**/* ./tests/unit/*.js ./tests/unit/**/*.js",
-    "watch-linter": "onchange ./src/*.js ./src/**/*.js ./tests/unit/*.js ./tests/unit/**/*.js -- npm run linter"
+    "linter": "jshint ./src/*.js ./src/**/*.js",
+    "watch-linter": "onchange ./src/*.js ./src/**/*.js -- npm run linter"
   },
   "repository": {
     "type": "git",
