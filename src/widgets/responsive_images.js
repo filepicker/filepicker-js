@@ -23,13 +23,14 @@ filepicker.extend('responsiveImages', function(){
         activate: activate,
         deactivate: deactivate,
         setResponsiveOptions: setResponsiveOptions,
+        getResponsiveOptions: getResponsiveOptions,
         getElementDims: getElementDims,
         replaceSrc: replaceSrc,
         getCurrentResizeParams: getCurrentResizeParams,
         construct: construct,
-        getResponsiveOptions: getResponsiveOptions,
-        roundWithStep: roundWithStep,
+        constructParams: constructParams,
         shouldConstruct: shouldConstruct,
+        roundWithStep: roundWithStep,
         addWindowResizeEvent: addWindowResizeEvent,
         removeWindowResizeEvent:removeWindowResizeEvent
     };
@@ -63,11 +64,15 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function constructAll(){
-        var responsiveImages = document.querySelectorAll('img[data-fp-src]');
+        var responsiveImages = document.querySelectorAll('img[data-fp-src]'),
+            responsiveOptions = getResponsiveOptions(),
+            element,
+            i;
 
-        for (var i=0; i< responsiveImages.length; i++) {
-            if (shouldConstruct(responsiveImages[i])) {
-                construct(responsiveImages[i]);
+        for (i=0; i< responsiveImages.length; i++) {
+            element = responsiveImages[i];
+            if (shouldConstruct(element)) {
+                construct(element, constructParams(element, responsiveOptions));
             }
         }
     }
@@ -241,6 +246,28 @@ filepicker.extend('responsiveImages', function(){
         return elem.getAttribute('data-fp-apikey');
     }
 
+
+    /**
+    *   @method getFpSignatureAttr
+    *   @param {DOMElement} elem - DOM element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpSignatureAttr(elem){
+        return elem.getAttribute('data-fp-signature');
+    }
+
+
+    /**
+    *   @method getFpPlicyAttr
+    *   @param {DOMElement} elem - DOM element
+    *   @returns {String} Return attribute value
+    */
+
+    function getFpPolicyAttr(elem){
+        return elem.getAttribute('data-fp-policy');
+    }
+
     /**
     *   Parse url and return width & height values from url resize option
     *
@@ -256,25 +283,49 @@ filepicker.extend('responsiveImages', function(){
     }
 
 
-
     /**
-    *   Get Image DOM elment and based on its data-fp-src attribute,
-    *   and current dimenisions - replace src attribute
+    *   Construct responsive image = set proper image source 
     *
     *   @method construct
     *   @param {DOMElement} elem - Image element
+    *   @param {Object} params - params to build
     */
 
-    function construct(elem){
+    function construct(elem, params){
         var url = getFpSrcAttr(elem),
-            dims = getElementDims(elem),
+            apikey = getFpKeyAttr(elem) || fp.apikey;
+
+        if (!fp.apikey) {
+            /*
+                do not overwrite apikey if not necessary
+            */
+            fp.setKey(apikey);
+            fp.util.checkApiKey();
+        }
+        
+        replaceSrc(elem, fp.conversionsUtil.buildUrl(url, params, apikey));
+    }
+
+
+    /**
+    *   Construct elemenet params based on 
+    *   element atributes and responsive options
+    *
+    *   @method construct
+    *   @param {DOMElement} elem - Image element
+    *   @param {Object} responsiveOptions
+    *   @returns {Object} params 
+    */
+
+    function constructParams(elem, responsiveOptions){
+        responsiveOptions = responsiveOptions|| {};
+        var dims = getElementDims(elem),
             /*
                 get image data-fp-pixel-round attr
                 OR global pixelRound option
                 OR 10 by default
             */
-            pixelRound = getFpPixelRoundAttr(elem) || getResponsiveOptions().pixelRound || 10,
-            apikey = getFpKeyAttr(elem),
+            pixelRound = getFpPixelRoundAttr(elem) || responsiveOptions.pixelRound || 10,
             params = {
                 resize : {
                     /*
@@ -283,14 +334,17 @@ filepicker.extend('responsiveImages', function(){
                     */
                     width : roundWithStep(dims.width, pixelRound)
                 }
-            };
+            },
+            signature = responsiveOptions.signature || getFpSignatureAttr(elem);
 
-        if (apikey) {
-            fp.setKey(apikey);
+        if (signature) {
+            params.security = {
+                signature: signature,
+                policy: responsiveOptions.policy || getFpPolicyAttr(elem)
+            };
         }
 
-        fp.util.checkApiKey();
-        replaceSrc(elem, fp.conversionsUtil.buildUrl(url, params));
+        return params;
     }
 
     /**

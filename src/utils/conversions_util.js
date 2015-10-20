@@ -81,11 +81,12 @@ filepicker.extend('conversionsUtil', function(){
     *   @method buildUrl
     *   @param {String} originalUrl
     *   @param {Object} optionsDict
+    *   @param {String} apikey
     *   @returns {String} Return conversion 2.0 url
     */
 
-    var buildConversionUrl = function (originalUrl, optionsDict) {
-        var conversionUrl = CONVERSION_DOMAIN + fp.apikey,
+    var buildConversionUrl = function (originalUrl, optionsDict, apikey) {
+        var conversionUrl = CONVERSION_DOMAIN + apikey,
             majorOption,
             minorOption,
             length;

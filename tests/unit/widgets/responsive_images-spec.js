@@ -1,4 +1,4 @@
-describe('The responsive widgets module', function(){
+describe('The responsive images module', function(){
     var origin = window.location.protocol + '//' + window.location.host,
         defaultSrc = 'https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
         changedSrc = 'https://www.filepicker.io/api/file/lYoRE2ehRniSoCaAx1p2',
@@ -179,60 +179,116 @@ describe('The responsive widgets module', function(){
     it('should recognize if image url should be constructed based on global options and image attributes', function(){
         var scenarios = [{
                 getElement:createEmptyImage,
-                expected: true,
+                shouldConstruct: true,
                 options: {}
             },
             {
                 getElement: getConstructedImage,
-                expected: false,
+                shouldConstruct: false,
                 options: {onResize:'none'}
             },
             {
                 getElement: getConstructedImage,
-                expected: true,
+                shouldConstruct: true,
                 options: {onResize:'down'}
             },
             {
                 getElement: getConstructedImage,
-                expected: false,
+                shouldConstruct: false,
                 options: {onResize:'up'}
             },
             {
                 getElement:function(){
                     return getConstructedImage({'data-fp-on-resize': 'none'})
                 },
-                expected: false,
+                shouldConstruct: false,
                 options: {}
             },
             {
                 getElement:function(){
                     return getConstructedImage({'data-fp-on-resize': 'all'})
                 },
-                expected: true,
+                shouldConstruct: true,
                 options: {onResize:'none'}
             },
             {
                 getElement:function(){
                     return getConstructedImage({'data-fp-on-resize': 'up'})
                 },
-                expected: false,
+                shouldConstruct: false,
                 options: {onResize:'down'}
             },
             {
                 getElement:function(){
                     return getConstructedImage({'data-fp-on-resize': 'down'})
                 },
-                expected: true,
+                shouldConstruct: true,
                 options: {onResize:'up'}
             }
         ];
 
         scenarios.forEach(function(scenario){
             filepicker.setResponsiveOptions(scenario.options || {});
-            expect(filepicker.responsiveImages.shouldConstruct(scenario.getElement())).toEqual(scenario.expected);
+            expect(filepicker.responsiveImages.shouldConstruct(scenario.getElement())).toEqual(scenario.shouldConstruct);
         });
 
     });
+
+    it('should construct proper params', function(){
+        var scenarios = [{
+                getElement:function(){
+                    return getConstructedImage({'data-fp-policy': 'xxx', 'data-fp-signature': 'yyy'});
+                },
+                params: {
+                    security: {
+                        policy: 'xxx',
+                        signature: 'yyy'
+                    },
+                    resize: {
+                        width: 100
+                    }
+                },
+                options: {}
+            },
+            {
+                getElement:function(){
+                    var image = getConstructedImage({'data-fp-policy': 'xxx', 'data-fp-signature': 'yyy'});
+                    image.setAttribute('width', 200);
+                    return image;
+                },
+                params: {
+                    security: {
+                        policy: 'xxx',
+                        signature: 'yyy'
+                    },
+                    resize: {
+                        width: 200
+                    }
+                },
+                options: {}
+            },
+            {
+                getElement:function(){
+                    var image = getConstructedImage();
+                    return image;
+                },
+                params: {
+                    security: {
+                        policy: 'zzz',
+                        signature: 'xxx'
+                    },
+                    resize: {
+                        width: 100
+                    }
+                },
+                options: {policy: 'zzz', signature: 'xxx'}
+            },
+        ];
+
+        scenarios.forEach(function(scenario){
+            expect(filepicker.responsiveImages.constructParams(scenario.getElement(), scenario.options)).toEqual(scenario.params);
+        });
+    })
 
 
     it('should listen for window resize', function(){
