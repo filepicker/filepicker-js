@@ -9,13 +9,10 @@
 filepicker.extend('responsiveImages', function(){
     var fp = this;
 
-    var WINDOW_RESIZE_TIMEOUT = 200,
-        windowLastWidth = 0;
-
+    var WINDOW_RESIZE_TIMEOUT = 200;
 
     var reloadWithDebounce = debounce(function () {
         constructAll();
-        windowLastWidth = fp.window.getWidth();
     }, WINDOW_RESIZE_TIMEOUT);
 
 
@@ -43,7 +40,7 @@ filepicker.extend('responsiveImages', function(){
 
     function activate(){
         constructAll();
-        addWindowResizeEvent(windowResized);
+        addWindowResizeEvent(reloadWithDebounce);
     }
 
     /**
@@ -53,7 +50,7 @@ filepicker.extend('responsiveImages', function(){
     */
 
     function deactivate(){
-        removeWindowResizeEvent(windowResized);
+        removeWindowResizeEvent(reloadWithDebounce);
     }
 
     /**
@@ -65,14 +62,13 @@ filepicker.extend('responsiveImages', function(){
 
     function constructAll(){
         var responsiveImages = document.querySelectorAll('img[data-fp-src]'),
-            responsiveOptions = getResponsiveOptions(),
             element,
             i;
 
         for (i=0; i< responsiveImages.length; i++) {
             element = responsiveImages[i];
             if (shouldConstruct(element)) {
-                construct(element, constructParams(element, responsiveOptions));
+                construct(element);
             }
         }
     }
@@ -288,12 +284,12 @@ filepicker.extend('responsiveImages', function(){
     *
     *   @method construct
     *   @param {DOMElement} elem - Image element
-    *   @param {Object} params - params to build
     */
 
-    function construct(elem, params){
+    function construct(elem){
         var url = getFpSrcAttr(elem),
-            apikey = getFpKeyAttr(elem) || fp.apikey;
+            apikey = getFpKeyAttr(elem) || fp.apikey,
+            responsiveOptions = getResponsiveOptions();
 
         if (!fp.apikey) {
             /*
@@ -302,8 +298,7 @@ filepicker.extend('responsiveImages', function(){
             fp.setKey(apikey);
             fp.util.checkApiKey();
         }
-        
-        replaceSrc(elem, fp.conversionsUtil.buildUrl(url, params, apikey));
+        replaceSrc(elem, fp.conversionsUtil.buildUrl(url, constructParams(elem, responsiveOptions), apikey));
     }
 
 
@@ -370,18 +365,6 @@ filepicker.extend('responsiveImages', function(){
         };
     }
 
-    /**
-    * Reload if the window width is different to last window width.
-    * This is used in the "resize" event listener callback.
-    *
-    *   @method windowResized
-    */
-
-    function windowResized() {
-        if (windowLastWidth !== fp.window.getWidth()) {
-            reloadWithDebounce();
-        }
-    }
 
     /**
     *   Add "resize" window event.
