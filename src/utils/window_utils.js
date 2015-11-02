@@ -1,6 +1,6 @@
 'use strict';
 // responsive_images.js
-filepicker.extend('window', function(){
+filepicker.extend('windowUtils', function(){
 
     return {
         getWidth:getWidth,
@@ -12,7 +12,7 @@ filepicker.extend('window', function(){
         * @returns {number}
     */
     function getWidth() {
-        return document.documentElement.clientWidth || document.body && document.body.clientWidth || 1024;
+        return document.documentElement.clientWidth || (document.body && document.body.clientWidth) || 1024;
     }
 
 
@@ -21,7 +21,7 @@ filepicker.extend('window', function(){
         * @returns {number}
     */
     function getHeight() {
-        return document.documentElement.clientHeight || document.body && document.body.clientHeight || 768;
+        return document.documentElement.clientHeight || (document.body && document.body.clientHeight) || 768;
     }
 
 });

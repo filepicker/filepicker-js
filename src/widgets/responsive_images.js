@@ -15,7 +15,6 @@ filepicker.extend('responsiveImages', function(){
         constructAll();
     }, WINDOW_RESIZE_TIMEOUT);
 
-
     return {
         activate: activate,
         deactivate: deactivate,
@@ -129,8 +128,8 @@ filepicker.extend('responsiveImages', function(){
     function getElementDims(elem){
         var dims = {};
         if (elem.parentNode === null) {
-            dims.width = fp.window.getWidth();
-            dims.height = fp.window.getWidth();
+            dims.width = fp.windowUtils.getWidth();
+            dims.height = fp.windowUtils.getWidth();
             return dims;
         }
 
