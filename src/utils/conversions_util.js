@@ -17,6 +17,7 @@ filepicker.extend('conversionsUtil', function(){
     *   @param {string} processUrl - conversion url
     *   @returns {String}
     *       url {String} Orignal image url
+    *       apikey {String} Apikey
     *       optionsDict {Object} -  conversionName : value
     */
 
@@ -27,17 +28,23 @@ filepicker.extend('conversionsUtil', function(){
                 optionsDict: {}
             };
         }
+
         /*
             - strip off process domain
         */
         processUrl = processUrl.replace(CONVERSION_DOMAIN, '');
         var originalUrl = processUrl.substring(processUrl.indexOf('/http') + 1);
+            
         /*
             - strip off original Url
             - strip of apikey ( to first slash )
         */
-        processUrl = processUrl.replace('/' + originalUrl, '').replace(processUrl.indexOf('/'), '');
-        
+        processUrl = processUrl.replace('/' + originalUrl, '');
+
+        var apikey = processUrl.substring(0, processUrl.indexOf('/'));
+
+        processUrl = processUrl.replace(apikey + '/', '');
+
         var segments = processUrl.split('/'),
             optionsDict = {},
             majorOption,
@@ -45,6 +52,7 @@ filepicker.extend('conversionsUtil', function(){
             minorOption,
             i,
             j;
+        
 
         for (i in segments) {
             /*
@@ -66,11 +74,14 @@ filepicker.extend('conversionsUtil', function(){
                         optionsDict[majorOption[0]][minorOption[0]] = minorOption[1];
                     }
                 }
+            } else if (segments[i]){
+                optionsDict[segments[i]] = null;
             }
         }
 
         return {
             url: originalUrl,
+            apikey: apikey,
             optionsDict: optionsDict
         };
     };
@@ -94,8 +105,11 @@ filepicker.extend('conversionsUtil', function(){
         optionsDict = optionsDict || {};
         
         for (majorOption in optionsDict) {
-            conversionUrl += '/' + majorOption +'=';
+            conversionUrl += '/' + majorOption;
             length = fp.util.objectKeys(optionsDict[majorOption] || {}).length;
+            if (length) {
+                conversionUrl+='=';
+            }
             for (minorOption in optionsDict[majorOption]) {
                 conversionUrl += minorOption + ':' + optionsDict[majorOption][minorOption];
                 /*

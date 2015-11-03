@@ -2,8 +2,8 @@ describe('The responsive images module', function(){
     var origin = window.location.protocol + '//' + window.location.host,
         defaultSrc = 'https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
         changedSrc = 'https://www.filepicker.io/api/file/lYoRE2ehRniSoCaAx1p2',
-        processBase = 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/',
-        processUrl = 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY';
+        processBase = filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/',
+        processUrl = filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY';
 
 
 
