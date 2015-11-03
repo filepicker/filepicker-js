@@ -476,7 +476,7 @@ describe("The files module", function(){
     it("can remove a FPUrl", function(){
         var url = "/library/file/remove/success";
         //we need a key for removes
-        filepicker.apikey = "12345";
+        filepicker.apikey = "l5uQ3k7FQ5GoYCHyTdZV";
         var success,error;
 
         success = jasmine.createSpy("success");

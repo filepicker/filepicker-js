@@ -508,6 +508,9 @@ filepicker.extend('widgets', function(){
             constructDragWidget(base);
         } else if (base_type === 'filepicker-preview'){
             constructPreview(base);
+        // responsive image widget 
+        } else if (base.getAttribute('data-fp-src')){
+            fp.responsiveImages.construct(base);
         } else {
             constructExportWidget(base);
         }

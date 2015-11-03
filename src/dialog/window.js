@@ -13,27 +13,6 @@ filepicker.extend('window', function(){
     var WINDOW_PROPERTIES = 'left=100,top=100,height=600,width=800,menubar=no,toolbar=no,location=no,personalbar=no,status=no,resizable=yes,scrollbars=yes,dependent=yes,dialog=yes';
     var CLOSE_CHECK_INTERVAL = 100;
 
-    var getWindowSize = function(){
-        var winW,
-            winH;
-
-        if (document.body && document.body.offsetWidth) {
-            winW = document.body.offsetWidth;
-            winH = document.body.offsetHeight;
-        }
-        if (document.compatMode === 'CSS1Compat' &&
-                document.documentElement &&
-                document.documentElement.offsetWidth ) {
-            winW = document.documentElement.offsetWidth;
-            winH = document.documentElement.offsetHeight;
-        }
-        if (window.innerWidth && window.innerHeight) {
-            winW = window.innerWidth;
-            winH = window.innerHeight;
-        }
-        return [winW, winH];
-    };
-
     var openWindow = function(container, src, onClose) {
         onClose = onClose || function(){};
         var isMobile = (fp.browser.isIOS() || fp.browser.isAndroid());
@@ -74,7 +53,6 @@ filepicker.extend('window', function(){
 
     return {
         open: openWindow,
-        WINDOW_NAME: WINDOW_NAME,
-        getSize: getWindowSize
+        WINDOW_NAME: WINDOW_NAME
     };
 });

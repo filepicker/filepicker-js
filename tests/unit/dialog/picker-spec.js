@@ -58,7 +58,7 @@ describe("The picker module", function(){
 
         //firing callbacks
         var resp = {
-            url: "http://www.filepicker.io/api/file/blah6",
+            url: "http://www.filepicker.io/api/file/blah5",
             data: {
                 filename: "test.txt",
                 type: "text/plain",
@@ -71,6 +71,7 @@ describe("The picker module", function(){
             type: "filepickerUrl",
             payload: resp
         });
+
         function onSuccess(Blob){
             expect(Blob).toEqual({
                 url: resp.url,

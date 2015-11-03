@@ -50,13 +50,14 @@ filepicker.extend('util', function(){
             segments: a.pathname.replace(/^\//,'').split('/')
         };
         ret.origin = ret.protocol+'://'+ret.host+(ret.port ? ':'+ret.port : '');
-
+        ret.rawUrl = (ret.origin + ret.path).replace('/convert', '');
         return ret;
     };
 
     var endsWith = function(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
+
 
     return {
         trim: trim,
