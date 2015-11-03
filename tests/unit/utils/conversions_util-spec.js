@@ -1,7 +1,8 @@
-describe("Conversions util", function(){
+'use strict';
+describe('Conversions util', function(){
     var scenarios = [
         {
-            url: 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
+            url: filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
             apikey: 'l5uQ3k7FQ5GoYCHyTdZV',
             response: {
                 url: 'https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
@@ -17,7 +18,7 @@ describe("Conversions util", function(){
             }
         },
         {
-            url: 'http://process.filepickercdn.com/l5uQ3k7FQ5GoYCHyTdZV/resize=width:2222/security=policy:yyy,signature:xxx/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
+            url: filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/resize=width:2222/security=policy:yyy,signature:xxx/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',
             apikey: 'l5uQ3k7FQ5GoYCHyTdZV',
             response: {
                 url: 'https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY',

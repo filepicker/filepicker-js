@@ -8,7 +8,7 @@
 
 filepicker.extend('conversionsUtil', function(){
     var fp = this,
-        CONVERSION_DOMAIN = 'http://process.filepickercdn.com/';
+        CONVERSION_DOMAIN = (window.location.protocol || 'https') + '//process.filepicker.io/';
 
     /**
     *   Return parsed conversion 2.0 url
