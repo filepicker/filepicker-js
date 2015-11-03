@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.2.0 (3.11.2015)
+- Add responsive images feature. [#1](https://github.com/filepicker/filepicker-js/pull/1)
+
 ### 2.1.3 (15.10.2015)
 - Add prepublish action. Make sure to build dist version before publishing to npm.
 
