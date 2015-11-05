@@ -15,8 +15,9 @@ If you want to load the javascript in a non-blocking fashion, you can use this i
 (function(a){if(window.filepicker){return}var b=a.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===a.location.protocol?"https:":"http:")+"//api.filepicker.io/v2/filepicker.js";var c=a.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d={};d._queue=[];var e="pick,pickMultiple,pickAndStore,read,write,writeUrl,export,convert,store,storeUrl,remove,stat,setKey,constructWidget,makeDropPane".split(",");var f=function(a,b){return function(){b.push([a,arguments])}};for(var g=0;g<e.length;g++){d[e[g]]=f(e[g],d._queue)}window.filepicker=d})(document);
 </script>
 ```
-Script above use latest library release hosted on filepicker servers.
-You can also use specific version. Eg. Version 2.1.3 is hosted under:
+Script above use latest library release. Assets are compressed (gzipped) and served via CDN.
+You can also link to specific version.
+
 [https://api.filepicker.io/v2/filepicker-2.1.3.js](https://api.filepicker.io/v2/filepicker-2.1.3.js)
 [https://api.filepicker.io/v2/filepicker-2.1.3.min.js](https://api.filepicker.io/v2/filepicker-2.1.3.min.js)
 

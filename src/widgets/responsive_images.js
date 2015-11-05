@@ -202,16 +202,6 @@ filepicker.extend('responsiveImages', function(){
     }
 
     /**
-    *   @method getFpImageQualityAttr
-    *   @param {DOMElement} elem - Image element
-    *   @returns {String} Return attribute value
-    */
-
-    function getFpImageQualityAttr(elem) {
-        return elem.getAttribute('fp-image-quality');
-    }
-
-    /**
     *   @method getSrcAttr
     *   @param {DOMElement} elem - Image element
     *   @returns {String} Return attribute value
@@ -400,7 +390,6 @@ filepicker.extend('responsiveImages', function(){
     *   @returns {Object}
     *       onResize {String} optional, can be 'all', 'up', 'down', 'none'
     *       pixelRound {Number} optional
-    *       imageQuality {Number} optional
     *       signature {String} optional
     *       policy {String} optional
     */
@@ -411,12 +400,11 @@ filepicker.extend('responsiveImages', function(){
 
     /**
     *   Set global responsive options
-    *
+    *`
     *   @method setResponsiveOptions
     *   @param {Object} options
     *       onResize {String} optional, can be 'all', 'up', 'down', 'none'
     *       pixelRound {Number} optional
-    *       imageQuality {Number} optional
     *       signature {String} optional
     *       policy {String} optional
     */
