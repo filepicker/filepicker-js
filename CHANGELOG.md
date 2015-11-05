@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.2.1 (5.11.2015)
+- Add custom text option to the widget options. [#4](https://github.com/filepicker/filepicker-js/pull/4)
+
 ### 2.2.0 (3.11.2015)
 - Add responsive images feature. [#1](https://github.com/filepicker/filepicker-js/pull/1)
 
