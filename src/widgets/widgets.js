@@ -67,7 +67,8 @@ filepicker.extend('widgets', function(){
             'data-fp-crop-max': 'cropMax',
             'data-fp-crop-min': 'cropMin',
             'data-fp-show-close': 'showClose',
-            'data-fp-conversions': 'conversions'
+            'data-fp-conversions': 'conversions',
+            'data-fp-custom-text': 'customText'
         },
             pickOnlyOptionsMap = {
             'data-fp-mimetypes': 'mimetypes',
