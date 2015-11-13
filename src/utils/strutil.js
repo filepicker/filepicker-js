@@ -59,11 +59,17 @@ filepicker.extend('util', function(){
     };
 
 
+    var appendQueryToUrl = function(url, key, value){
+        return  url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + value;
+    };
+
+
     return {
         trim: trim,
         trimConvert: trimConvert,
         parseUrl: parseUrl,
         isUrl: isUrl,
-        endsWith: endsWith
+        endsWith: endsWith,
+        appendQueryToUrl: appendQueryToUrl
     };
 });

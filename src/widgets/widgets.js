@@ -517,8 +517,11 @@ filepicker.extend('widgets', function(){
         }
     };
 
+
     var constructPreview = function(domElement) {
-        var url = domElement.getAttribute('data-fp-url');
+        var url = domElement.getAttribute('data-fp-url'),
+            css = domElement.getAttribute('data-fp-custom-css');
+
         if (!url || !fp.util.isFPUrl(url)) {    
             return true;
         } else {
@@ -526,6 +529,9 @@ filepicker.extend('widgets', function(){
         }
 
         var iframe = document.createElement('iframe');
+        if (css){
+            url = fp.util.appendQueryToUrl(url, 'css', css);
+        }
         iframe.src = url;
 
         /* Set full size so it gets size from parrent element  */
@@ -535,6 +541,7 @@ filepicker.extend('widgets', function(){
         
         domElement.appendChild(iframe);
     };
+
 
     function appendStyle(){
         try {
