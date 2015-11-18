@@ -23,6 +23,7 @@ filepicker.extend('urls', function(){
             (options.mimetypes !== undefined ? '&m='+options.mimetypes.join(',') : '')+
             (options.extensions !== undefined ? '&ext='+options.extensions.join(',') : '')+
             (options.maxSize ? '&maxSize='+options.maxSize: '')+
+            (options.customSourceContainer ? '&customSourceContainer='+options.customSourceContainer: '')+
             (options.maxFiles ? '&maxFiles='+options.maxFiles: '')+
             (options.folders !== undefined ? '&folders='+options.folders : '')+
             (options.storeLocation ? '&storeLocation='+options.storeLocation : '')+
