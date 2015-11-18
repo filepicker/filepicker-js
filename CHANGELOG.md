@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.3.0 (18.11.2015)
+- Add custom source bucket name as a picker option (#5)(https://github.com/filepicker/filepicker-js/pull/5)
+- Add custom css url option for viewer (#6)(https://github.com/filepicker/filepicker-js/pull/6)
+
 ### 2.2.1 (5.11.2015)
 - Add custom text option to the widget options. [#4](https://github.com/filepicker/filepicker-js/pull/4)
 
