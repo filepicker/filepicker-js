@@ -24,6 +24,7 @@ filepicker.extend('urls', function(){
             (options.extensions !== undefined ? '&ext='+options.extensions.join(',') : '')+
             (options.maxSize ? '&maxSize='+options.maxSize: '')+
             (options.customSourceContainer ? '&customSourceContainer='+options.customSourceContainer: '')+
+            (options.customSourcePath ? '&customSourcePath='+options.customSourcePath: '')+
             (options.maxFiles ? '&maxFiles='+options.maxFiles: '')+
             (options.folders !== undefined ? '&folders='+options.folders : '')+
             (options.storeLocation ? '&storeLocation='+options.storeLocation : '')+
