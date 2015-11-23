@@ -1,6 +1,6 @@
 {
   "name": "filepicker-js",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
