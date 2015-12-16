@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.3 (16.12.2015)
+- Hotfix. Missing slash in processing base url. 
+
 ### 2.3.2 (16.12.2015)
 - Set dynamicly domain for processing.
 
