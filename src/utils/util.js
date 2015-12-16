@@ -75,7 +75,7 @@ filepicker.extend('util', function(){
 
     //should probably be moved to strutils
     var isFPUrl = function(url) {
-        return typeof url === 'string' && url.match('www.filepicker.io/api/file/');
+        return typeof url === 'string' && url.match(fp.urls.BASE + '/api/file/');
     };
 
     // What about cdn 
