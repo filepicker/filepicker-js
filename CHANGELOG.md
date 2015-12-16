@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.2 (16.12.2015)
+- Set dynamicly domain for processing.
+
 ### 2.3.1 (23.11.2015)
 - Add custom source path as a picker option (#7)(https://github.com/filepicker/filepicker-js/pull/7)
 
