@@ -23,12 +23,10 @@ filepicker.extend('browser', function(){
         return language;
     };
 
-    var isMobile = isIOS() || isAndroid();
-    
     return {
-        isIOS: isIOS,
-        isAndroid: isAndroid,
         getLanguage: getLanguage,
-        isMobile: isMobile
+        isMobile: function() {
+            return isIOS() || isAndroid();
+        }
     };
 });

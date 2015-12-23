@@ -30,7 +30,7 @@ filepicker.extend('exporter', function(){
             options.openTo = fp.services[options.openTo] || options.openTo;
         }
 
-        fp.util.setDefault(options, 'container', fp.browser.isMobile ? 'window' : 'modal');
+        fp.util.setDefault(options, 'container', fp.browser.isMobile() ? 'window' : 'modal');
     };
 
     var getExportHandler = function(onSuccess, onError) {

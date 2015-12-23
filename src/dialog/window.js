@@ -15,7 +15,7 @@ filepicker.extend('window', function(){
 
     var openWindow = function(container, src, onClose) {
         onClose = onClose || function(){};
-        if (!container && fp.browser.isMobile){
+        if (!container && fp.browser.isMobile()){
             container = 'window';
         } else if (!container) {
             container = 'modal';
