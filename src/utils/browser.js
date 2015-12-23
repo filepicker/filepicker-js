@@ -25,6 +25,9 @@ filepicker.extend('browser', function(){
 
     return {
         getLanguage: getLanguage,
+        openInModal: function() {
+            return !(isIOS() || isAndroid()) || !!window.navigator.standalone;
+        },
         isMobile: function() {
             return isIOS() || isAndroid();
         }
