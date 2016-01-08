@@ -39,4 +39,41 @@ describe("The utils library", function(){
         start.c = "123";
         expect(start.c).not.toEqual(end.c);
     });
+
+    it("can build api url from filestack cdn url", function(){
+        var urls = [
+            {
+                input: 'https://cdn.filestackcontent.com/zEJ90dDpS2iPriLsKY9Y',
+                output: filepicker.urls.BASE+'/api/file/zEJ90dDpS2iPriLsKY9Y'
+            },
+            {
+                input: 'https://cdn.filestackcontent.com/zEJ90dDpS2iPriLsKY9Y/convert?foo=bar',
+                output: filepicker.urls.BASE+'/api/file/zEJ90dDpS2iPriLsKY9Y/convert?foo=bar'
+            },
+            {
+                input: 'https://cdn.filestackcontent.com/zEJ90dDpS2iPriLsKY9Y/remove',
+                output: filepicker.urls.BASE+'/api/file/zEJ90dDpS2iPriLsKY9Y/remove'
+            },
+            {
+                input: 'http://cdn.filestackcontent.com/zEJ90dDpS2iPriLsKY9Y/convert?foo=bar',
+                output: filepicker.urls.BASE+'/api/file/zEJ90dDpS2iPriLsKY9Y/convert?foo=bar'
+            },
+            {
+                input: 'http://www.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y',
+                output: 'http://www.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y',
+            },
+            {
+                input: 'cdn.filestackcontent.dev:8080/no7gIBeQRhWq7Ce9FRrw',
+                output: filepicker.urls.BASE+'/api/file/no7gIBeQRhWq7Ce9FRrw'
+            },
+            {
+                input: 'https://api.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y',
+                output: 'https://api.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y'
+            },
+        ];
+
+        urls.forEach(function(item){
+            expect(filepicker.util.getFPUrl(item.input)).toEqual(item.output);
+        });
+    });
 });

@@ -36,13 +36,13 @@
   "homepage": "https://github.com/filepicker/filepicker-js",
   "devDependencies": {
     "jasmine-core": "2.3.4",
-    "jshint": "^2.8.0",
-    "karma": "0.13.10",
+    "jshint": "2.8.0",
+    "karma": "0.13.19",
     "karma-firefox-launcher": "0.1.6",
     "karma-jasmine": "0.3.6",
     "karma-jasmine-ajax": "0.1.13",
-    "onchange": "^2.0.0",
-    "uglify-js": "^2.4.24"
+    "onchange": "2.0.0",
+    "uglify-js": "2.4.24"
   },
   "dependencies": {}
 }
