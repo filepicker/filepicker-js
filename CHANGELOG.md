@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.4 (12.01.2016)
+- Add custom source container and path options for html widgets attributes list. (#13)(https://github.com/filepicker/filepicker-js/pull/13)
+
 ### 2.3.3 (16.12.2015)
 - Hotfix. Missing slash in processing base url. 
 
