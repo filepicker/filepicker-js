@@ -64,6 +64,12 @@ filepicker.extend('exporter', function(){
     var createExporter = function(input, options, onSuccess, onError) {
         normalizeOptions(options);
 
+        var api = {
+            close: function () {
+                fp.modal.close();
+            }
+        };
+
         if (options.debug) {
             //return immediately, but still async
             setTimeout(function(){
@@ -76,7 +82,7 @@ filepicker.extend('exporter', function(){
                     client: 'computer'
                 });
             }, 1);
-            return;
+            return api;
         }
 
         if (fp.cookies.THIRD_PARTY_COOKIES === undefined) {
@@ -88,11 +94,11 @@ filepicker.extend('exporter', function(){
                     alreadyHandled = true;
                 }
             });
-            return;
+            return api;
         }
 
         var id = fp.util.getId();
-        
+
         //Wrapper around on success to make sure we don't also fire on close
         var finished = false;
         var onSuccessMark = function(fpfile){
@@ -113,6 +119,8 @@ filepicker.extend('exporter', function(){
 
         fp.window.open(options.container, fp.urls.constructExportUrl(input, options, id), onClose);
         fp.handlers.attach(id, getExportHandler(onSuccessMark, onErrorMark));
+
+        return api;
     };
 
     return {

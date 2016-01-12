@@ -432,7 +432,7 @@ filepicker.extend(function(){
         if (options.suggestedFilename) {
             options.suggestedFilename = encodeURI(options.suggestedFilename);
         }
-        fp.exporter.createExporter(fp_url, options, onSuccess, onError);
+        return fp.exporter.createExporter(fp_url, options, onSuccess, onError);
     };
 
 

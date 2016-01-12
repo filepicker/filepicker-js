@@ -69,20 +69,23 @@ describe("The main lib module", function(){
       // TODO we should actually check if dialog appeared on screen,
       // and that after calling close it disappeared.
 
-      var picker = filepicker.pick();
-      expect(picker.close).toBeDefined();
+      var dialog = filepicker.pick();
+      expect(dialog.close).toBeDefined();
 
-      picker = filepicker.pickMultiple();
-      expect(picker.close).toBeDefined();
+      dialog = filepicker.pickMultiple();
+      expect(dialog.close).toBeDefined();
 
-      picker = filepicker.pickAndStore({}, {});
-      expect(picker.close).toBeDefined();
+      dialog = filepicker.pickAndStore({}, {});
+      expect(dialog.close).toBeDefined();
 
-      picker = filepicker.pickFolder();
-      expect(picker.close).toBeDefined();
+      dialog = filepicker.pickFolder();
+      expect(dialog.close).toBeDefined();
 
-      picker = filepicker.processImage('/api/file/');
-      expect(picker.close).toBeDefined();
+      dialog = filepicker.processImage('/api/file/');
+      expect(dialog.close).toBeDefined();
+
+      dialog = filepicker.export('https://www.filestackapi.com/api/file/qHi4LxRh28IeEBdJcFpw');
+      expect(dialog.close).toBeDefined();
     });
 
 });
