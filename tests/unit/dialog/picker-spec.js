@@ -2,7 +2,7 @@ describe("The picker module", function(){
     it("checks for third party cookies", function(done){
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
         filepicker.cookies.THIRD_PARTY_COOKIES = undefined;
-        
+
         spyOn(filepicker.cookies, "checkThirdParty").and.callFake(function(callback){
             setTimeout(function(){
                 filepicker.cookies.THIRD_PARTY_COOKIES = true;
@@ -22,7 +22,7 @@ describe("The picker module", function(){
         expect(filepicker.window.open).not.toHaveBeenCalled();
 
         expect(filepicker.cookies.checkThirdParty).toHaveBeenCalled();
-        
+
         //now we call it
 
         window.setTimeout(function(){
@@ -41,7 +41,7 @@ describe("The picker module", function(){
         var error = jasmine.createSpy("error");
 
         spyOn(filepicker.window, "open");
-        
+
         spyOn(filepicker.urls, "constructPickUrl").and.returnValue("pick_url");
 
         var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
@@ -81,8 +81,34 @@ describe("The picker module", function(){
                 key: resp.data.key,
                 isWriteable: true
             });
-            done();
+            // Wait with done call to make sure dialog has destroyed itself.
+            // TODO is this really the way it should be? Should't onSuccess
+            // be called after whole dialog window is for sure gone?
+            setTimeout(done, 10);
         }
+    });
+
+    it("can close opened picker", function(){
+
+        function isPickerPresent() {
+            return document.getElementById('filepicker_dialog') !== null;
+        }
+
+        var options = {
+            openTo:"GOOGLE_DRIVE",
+            mimetype: "image/*"
+        };
+
+        var cookies = filepicker.cookies.THIRD_PARTY_COOKIES;
+        filepicker.cookies.THIRD_PARTY_COOKIES = true;
+        var picker = filepicker.picker.createPicker(options);
+        filepicker.cookies.THIRD_PARTY_COOKIES = cookies;
+
+        expect(isPickerPresent()).toBe(true);
+
+        picker.close();
+
+        expect(isPickerPresent()).toBe(false);
     });
 
     it("can create a multi-picker", function(){

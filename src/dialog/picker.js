@@ -166,8 +166,14 @@ filepicker.extend('picker', function(){
     var createPicker = function(options, onSuccess, onError, multiple, folder, onProgress, convertFile) {
         normalizeOptions(options);
 
+        var api = {
+            close: function () {
+                filepicker.modal.close();
+            }
+        };
+
         if (options.debug) {
-            
+
             var dumy_data = {
                 id:1,
                 url: 'https://www.filepicker.io/api/file/-nBq2onTSemLBxlcBWn1',
@@ -189,7 +195,7 @@ filepicker.extend('picker', function(){
             setTimeout(function(){
                 onSuccess(dumy_callback);
             }, 1);
-            return;
+            return api;
         }
 
         if (fp.cookies.THIRD_PARTY_COOKIES === undefined) {
@@ -201,7 +207,7 @@ filepicker.extend('picker', function(){
                     alreadyHandled = true;
                 }
             });
-            return;
+            return api;
         }
 
         var id = fp.util.getId();
@@ -250,9 +256,11 @@ filepicker.extend('picker', function(){
         fp.handlers.attach(key, getUploadingHandler(function(){
             fp.handlers.detach(key);
         }));
+
+        return api;
     };
 
-    function filterDataType(data, onProgress){ 
+    function filterDataType(data, onProgress){
         if (data.type === 'filepickerProgress'){
             fp.uploading = true;
             if (onProgress) {
