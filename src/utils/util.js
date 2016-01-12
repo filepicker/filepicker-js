@@ -83,6 +83,19 @@ filepicker.extend('util', function(){
         return typeof url === 'string' && url.match('/api/file/');
     };
 
+    /*
+        Check if url is cdn url. If so replace with api type url.
+    */
+    var getFPUrl = function(url){
+        if (typeof url === 'string') {
+            var matched = url.match(/cdn.filestackcontent.[\S]*\/([\S]{20,})/);
+            if (matched && matched.length > 1) {
+                return fp.urls.BASE + '/api/file/' + matched[1];
+            }
+        }
+        return url;
+    };
+
     var consoleWrap = function(fn) {
         return function(){
             if (window.console && typeof window.console[fn] === 'function') {
@@ -183,6 +196,7 @@ filepicker.extend('util', function(){
         typeOf: typeOf,
         addOnLoad: addOnLoad,
         isFPUrl: isFPUrl,
+        getFPUrl: getFPUrl,
         isFPUrlCdn: isFPUrlCdn,
         console: console,
         clone: clone,

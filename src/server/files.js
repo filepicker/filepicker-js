@@ -335,7 +335,7 @@ filepicker.extend('files', function(){
         fp.util.setDefault(options, 'location', 'S3');
 
         fp.ajax.post(fp.urls.constructStoreUrl(options), {
-            data: {'url': input},
+            data: {'url': fp.util.getFPUrl(input)},
             json: true,
             success: function(json) {
                 //Massaging the response - we want a mimetype for fpfiles not a type

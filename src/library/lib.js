@@ -3,7 +3,7 @@
 
 filepicker.extend(function(){
     var fp = this,
-        VERSION = '2.3.3';
+        VERSION = '2.3.4';
         
     fp.API_VERSION = 'v2';
 
@@ -304,14 +304,15 @@ filepicker.extend(function(){
         onProgress = onProgress || function(){};
 
         var fp_url;
-        if (fp.util.isFPUrl(fpfile)) {
+        if (fp.util.isFPUrl(fp.util.getFPUrl(fpfile))) {
             fp_url = fpfile;
         } else if (fpfile.url) {
             fp_url = fpfile.url;
         } else {
             throw new fp.FilepickerException('Invalid file to write to: '+fpfile+'. Not a filepicker url or FPFile object.');
         }
-        fp_url = fp.util.trimConvert(fp_url);
+        fp_url = fp.util.trimConvert(fp.util.getFPUrl(fp_url));
+
         if (typeof input === 'string') {
             fp.files.writeDataToFPUrl(fp_url, input, options, onSuccess, onError, onProgress);
         } else {
@@ -369,13 +370,14 @@ filepicker.extend(function(){
         onProgress = onProgress || function(){};
 
         var fp_url;
-        if (fp.util.isFPUrl(fpfile)) {
+        if (fp.util.isFPUrl(fp.util.getFPUrl(fpfile))) {
             fp_url = fpfile;
         } else if (fpfile.url) {
             fp_url = fpfile.url;
         } else {
             throw new fp.FilepickerException('Invalid file to write to: '+fpfile+'. Not a filepicker url or FPFile object.');
         }
+        fp_url = fp.util.getFPUrl(fp_url);
 
         fp.files.writeUrlToFPUrl(fp.util.trimConvert(fp_url), input, options, onSuccess, onError, onProgress);
     };
@@ -593,16 +595,15 @@ filepicker.extend(function(){
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
 
-
         var fp_url;
-        if (fp.util.isFPUrl(fpfile)) {
+        if (fp.util.isFPUrl(fp.util.getFPUrl(fpfile))) {
             fp_url = fpfile;
         } else if (fpfile.url) {
             fp_url = fpfile.url;
         } else {
             throw new fp.FilepickerException('Invalid file to get metadata for: '+fpfile+'. Not a filepicker url or FPFile object.');
         }
-
+        fp_url = fp.util.getFPUrl(fp_url);
         fp.files.stat(fp.util.trimConvert(fp_url), options, onSuccess, onError);
     };
 
@@ -631,13 +632,14 @@ filepicker.extend(function(){
         onError = onError || fp.errors.handleError;
 
         var fp_url;
-        if (fp.util.isFPUrl(fpfile)) {
+        if (fp.util.isFPUrl(fp.util.getFPUrl(fpfile))) {
             fp_url = fpfile;
         } else if (fpfile.url) {
             fp_url = fpfile.url;
         } else {
             throw new fp.FilepickerException('Invalid file to remove: '+fpfile+'. Not a filepicker url or FPFile object.');
         }
+        fp_url = fp.util.getFPUrl(fp_url);
         fp.files.remove(fp.util.trimConvert(fp_url), options, onSuccess, onError);
     };
 
@@ -697,7 +699,7 @@ filepicker.extend(function(){
         options.storeAccess = store_options.access || 'private';
 
         var fp_url;
-        if (fp.util.isFPUrl(fpfile)) {
+        if (fp.util.isFPUrl(fp.util.getFPUrl(fpfile))) {
             fp_url = fpfile;
         } else if (fpfile.url) {
             fp_url = fpfile.url;
@@ -709,6 +711,7 @@ filepicker.extend(function(){
         } else {
             throw new fp.FilepickerException('Invalid file to convert: '+fpfile+'. Not a filepicker url or FPFile object.');
         }
+        fp_url = fp.util.getFPUrl(fp_url);
 
         if (fp_url.indexOf('/convert') > -1) {
             var restConvertOptions = fp.util.parseUrl(fp_url).params;
