@@ -168,7 +168,7 @@ filepicker.extend('picker', function(){
 
         var api = {
             close: function () {
-                filepicker.modal.close();
+                fp.modal.close();
             }
         };
 
