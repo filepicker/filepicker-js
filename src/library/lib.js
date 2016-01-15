@@ -3,8 +3,7 @@
 
 filepicker.extend(function(){
     var fp = this,
-        VERSION = '2.3.4';
-        
+        VERSION = '2.3.5';
     fp.API_VERSION = 'v2';
 
     var setKey = function(key) {
@@ -56,9 +55,9 @@ filepicker.extend(function(){
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
 
-        fp.picker.createPicker(options, onSuccess, onError, false, false, onProgress);
+        return fp.picker.createPicker(options, onSuccess, onError, false, false, onProgress);
     };
-    
+
     /**
      * Pops open the filepicker.io picker dialog to select multiple files.
      * Arguments:
@@ -100,7 +99,7 @@ filepicker.extend(function(){
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
 
-        fp.picker.createPicker(options, onSuccess, onError, true, false, onProgress);
+        return fp.picker.createPicker(options, onSuccess, onError, true, false, onProgress);
     };
 
     /**
@@ -135,7 +134,7 @@ filepicker.extend(function(){
      */
     var pickAndStore = function(picker_options, store_options, onSuccess, onError, onProgress) {
         fp.util.checkApiKey();
-        if (!picker_options || !store_options || 
+        if (!picker_options || !store_options ||
                 typeof picker_options === 'function' || typeof picker_options === 'function') {
             throw new fp.FilepickerException('Not all required parameters given, missing picker or store options');
         }
@@ -164,7 +163,7 @@ filepicker.extend(function(){
             success = function(resp){onSuccess([resp]);};
         }
 
-        fp.picker.createPicker(options, success, onError, multiple, false, onProgress);
+        return fp.picker.createPicker(options, success, onError, multiple, false, onProgress);
     };
 
     /**
@@ -194,7 +193,7 @@ filepicker.extend(function(){
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
 
-        fp.picker.createPicker(options, onSuccess, onError, false, true, onProgress);
+        return fp.picker.createPicker(options, onSuccess, onError, false, true, onProgress);
     };
 
     /**
@@ -228,7 +227,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -297,7 +296,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -363,7 +362,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -433,7 +432,7 @@ filepicker.extend(function(){
         if (options.suggestedFilename) {
             options.suggestedFilename = encodeURI(options.suggestedFilename);
         }
-        fp.exporter.createExporter(fp_url, options, onSuccess, onError);
+        return fp.exporter.createExporter(fp_url, options, onSuccess, onError);
     };
 
 
@@ -470,7 +469,7 @@ filepicker.extend(function(){
         options.backgroundUpload = true;
         options.hide = false;
 
-        fp.picker.createPicker(options, onSuccess, onError, false, false, onProgress, true);
+        return fp.picker.createPicker(options, onSuccess, onError, false, false, onProgress, true);
     };
 
     /**
@@ -554,7 +553,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -590,7 +589,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -626,7 +625,7 @@ filepicker.extend(function(){
             onSuccess = options;
             options = {};
         }
-    
+
         options = options || {};
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
@@ -680,7 +679,7 @@ filepicker.extend(function(){
             onSuccess = store_options;
             store_options = {};
         }
-    
+
         var options = !!convert_options ? fp.util.clone(convert_options) : {};
         store_options = store_options || {};
         onSuccess = onSuccess || function(){};

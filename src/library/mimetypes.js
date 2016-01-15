@@ -12,7 +12,8 @@ filepicker.extend('mimetypes', function(){
         '.jpg':'image/jpeg',
         '.jpeg':'image/jpeg',
         '.jpe':'image/jpeg',
-        '.imp':'application/x-impressionist'
+        '.imp':'application/x-impressionist',
+        '.vob': 'video/dvd'
     };
 
     var mimetype_bad_array = [ 'application/octet-stream',
@@ -66,7 +67,7 @@ filepicker.extend('mimetypes', function(){
 
         var test_parts = test.split('/'),
             against_parts = against.split('/');
-            
+
         //comparing types
         if (against_parts[0] === '*') {return true;}
         if (against_parts[0] !== test_parts[0]) {return false;}

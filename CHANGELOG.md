@@ -1,20 +1,24 @@
 ## Changelog
 
+### 2.3.5 (15.01.2016)
+- Add ability to close opened dialog from JavaScript. [#15](https://github.com/filepicker/filepicker-js/pull/15)
+- Reckognize .vob file extension.
+
 ### 2.3.4 (12.01.2016)
-- Add custom source container and path options for html widgets attributes list. (#13)(https://github.com/filepicker/filepicker-js/pull/13)
+- Add custom source container and path options for html widgets attributes list. [#13](https://github.com/filepicker/filepicker-js/pull/13)
 
 ### 2.3.3 (16.12.2015)
-- Hotfix. Missing slash in processing base url. 
+- Hotfix. Missing slash in processing base url.
 
 ### 2.3.2 (16.12.2015)
 - Set dynamicly domain for processing.
 
 ### 2.3.1 (23.11.2015)
-- Add custom source path as a picker option (#7)(https://github.com/filepicker/filepicker-js/pull/7)
+- Add custom source path as a picker option [#7](https://github.com/filepicker/filepicker-js/pull/7)
 
 ### 2.3.0 (18.11.2015)
-- Add custom source bucket name as a picker option (#5)(https://github.com/filepicker/filepicker-js/pull/5)
-- Add custom css url option for viewer (#6)(https://github.com/filepicker/filepicker-js/pull/6)
+- Add custom source bucket name as a picker option [#5](https://github.com/filepicker/filepicker-js/pull/5)
+- Add custom css url option for viewer [#6](https://github.com/filepicker/filepicker-js/pull/6)
 
 ### 2.2.1 (5.11.2015)
 - Add custom text option to the widget options. [#4](https://github.com/filepicker/filepicker-js/pull/4)
