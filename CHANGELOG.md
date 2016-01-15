@@ -1,8 +1,11 @@
 ## Changelog
 
+### 2.3.6 (15.01.2016)
+- Bugfix for dialog close method.
+
 ### 2.3.5 (15.01.2016)
 - Add ability to close opened dialog from JavaScript. [#15](https://github.com/filepicker/filepicker-js/pull/15)
-- Reckognize .vob file extension.
+- Reckognize .vob file extension. [#16](https://github.com/filepicker/filepicker-js/pull/16)
 
 ### 2.3.4 (12.01.2016)
 - Add custom source container and path options for html widgets attributes list. [#13](https://github.com/filepicker/filepicker-js/pull/13)
