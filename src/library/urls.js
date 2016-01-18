@@ -115,6 +115,7 @@ filepicker.extend('urls', function(){
             (options.imageMax ? '&imax='+options.imageMax.join(',') : '')+
             (options.imageDim ? '&idim='+options.imageDim.join(',') : '')+
             (options.imageQuality ? '&iq='+options.imageQuality : '')+
+            (options.noFileReader ? '&nfl='+options.noFileReader : '')+
             (fp.util.isCanvasSupported() ? '' : '&canvas=false')+
             (options.redirectUrl ? '&redirect_url='+options.redirectUrl : '')+
             /*
@@ -137,12 +138,12 @@ filepicker.extend('urls', function(){
 
     function constructConversionsQuery(conversions){
         conversions = conversions || [];
-        var allowed = [], 
-            i , 
+        var allowed = [],
+            i ,
             j;
 
         /*
-            Use for in loop. 
+            Use for in loop.
             Array.filter && Array.indexOf not supported in IE8
         */
 
@@ -153,7 +154,7 @@ filepicker.extend('urls', function(){
                 }
             }
         }
-        
+
         /*
             Only crop by default
         */
@@ -171,7 +172,7 @@ filepicker.extend('urls', function(){
         COMM: dialog_base + '/dialog/comm_iframe/',
         FP_COMM_FALLBACK: dialog_base + '/dialog/comm_hash_iframe/',
         STORE: store_url,
-        PICK: pick_url, 
+        PICK: pick_url,
         EXPORT: export_url,
         constructPickUrl: constructPickUrl,
         constructConvertUrl: constructConvertUrl,
