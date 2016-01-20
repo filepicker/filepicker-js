@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.7 (20.01.2016)
+- Parse options.noFileReader parameter for server vars [#17](https://github.com/filepicker/filepicker-js/pull/17)
+
 ### 2.3.6 (15.01.2016)
 - Bugfix for dialog close method.
 
