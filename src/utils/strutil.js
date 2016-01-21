@@ -58,6 +58,10 @@ filepicker.extend('util', function(){
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     };
 
+    var getExtension = function(filename){
+        var matched = filename.match(/\.\w*$/);
+        return matched && matched.length ? matched[0] : null;
+    };
 
     var appendQueryToUrl = function(url, key, value){
         return  url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + value;
@@ -70,6 +74,7 @@ filepicker.extend('util', function(){
         parseUrl: parseUrl,
         isUrl: isUrl,
         endsWith: endsWith,
-        appendQueryToUrl: appendQueryToUrl
+        appendQueryToUrl: appendQueryToUrl,
+        getExtension: getExtension
     };
 });

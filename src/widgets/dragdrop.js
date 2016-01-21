@@ -219,6 +219,7 @@ filepicker.extend('dragdrop', function(){
                     found = false;
                     file = files[i];
                     filename = file.name || file.fileName || 'Unknown file';
+
                     for (var j = 0; j < mimetypes.length; j++) {
                         var mimetype = fp.mimetypes.getMimetype(file);
                         found = found || fp.mimetypes.matchesMimetype(mimetype, mimetypes[j]);
@@ -255,8 +256,21 @@ filepicker.extend('dragdrop', function(){
         };
 
         var verifyUploadUrl = function(url){
-            var found, j;
+            var DEFAULT_IMAGE_TAG_EXTENSION = '.jpg';
+            var found, j,
+                urlExtension = fp.util.getExtension(url) || DEFAULT_IMAGE_TAG_EXTENSION,
+                urlMimetype = fp.mimetypes.getMimetypeByExtension(urlExtension);
+
+            for (j = 0; j < mimetypes.length; j++) {
+                found = found || fp.mimetypes.matchesMimetype(urlMimetype, mimetypes[j]);
+            }
+
+            if (!found) {
+                onError('WrongType', url + ' isn\'t the right type of file');
+                return false;
+            }
             if (extensions) {
+                found = false;
                 for (j = 0; j < extensions.length; j++) {
                     found = found || fp.util.endsWith(url, extensions[j]);
                 }
@@ -272,15 +286,25 @@ filepicker.extend('dragdrop', function(){
 
 
         var getImageSrcDrop = function(event){
-            if (event.dataTransfer && typeof event.dataTransfer.getData === 'function') {
-                var data = event.dataTransfer.getData('text/html'),
-                    results = data.match(/<img.*?src="(.*?)"/i);
+            var url, matched;
 
-                if (results.length > 1) {
-                    return results[1];
+            if (event.dataTransfer && typeof event.dataTransfer.getData === 'function') {
+                url = event.dataTransfer.getData('text');
+
+                try {
+                    // invalid 'text/html' arg on IE10
+                    url = url || event.dataTransfer.getData('text/html');
+                } catch(e) {
+                    fp.util.console.error(e);
                 }
+
+                if (url && !fp.util.isUrl(url)){
+                    matched = url.match(/<img.*?src="(.*?)"/i);
+                    url = matched && matched.length > 1 ? matched[1] : null;
+                }
+
             }
-            return null;
+            return url;
         };
 
         return true;

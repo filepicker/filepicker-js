@@ -201,6 +201,7 @@ filepicker.extend('mimetypes', function(){
 
     return {
         getMimetype: getMimetype,
-        matchesMimetype: matchesMimetype
+        matchesMimetype: matchesMimetype,
+        getMimetypeByExtension: getMimetypeByExtension
     };
 });
