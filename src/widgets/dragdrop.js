@@ -4,7 +4,7 @@ filepicker.extend('dragdrop', function(){
     var fp = this;
 
     var canDragDrop = function(){
-        return (!!window.FileReader || navigator.userAgent.indexOf('Safari') >= 0) && 
+        return (!!window.FileReader || navigator.userAgent.indexOf('Safari') >= 0) &&
         ('draggable' in document.createElement('span'));
     };
 
@@ -107,7 +107,6 @@ filepicker.extend('dragdrop', function(){
                 e.preventDefault();
 
             if (!enabled()) { return false; }
-
             //check for folders
             var i; var items; var entry;
             if (e.dataTransfer.items) {
@@ -122,15 +121,30 @@ filepicker.extend('dragdrop', function(){
                 }
             }
 
-            var files = e.dataTransfer.files;
-            var total = files.length;
-            if (verifyUpload(files)) {
-                onStart(files);
-                //disabling
-                div.setAttribute('disabled', 'disabled');
-                for (i = 0; i < files.length; i++) {
-                    fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
+            var files = e.dataTransfer.files,
+                total = files.length,
+                url = getImageSrcDrop(e);
+
+            if (files.length) {
+                if (verifyUpload(files)) {
+                    onStart(files);
+                    //disabling
+                    div.setAttribute('disabled', 'disabled');
+                    for (i = 0; i < files.length; i++) {
+                        fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
+                    }
                 }
+            } else if (url) {
+                if (verifyUploadUrl(url)) {
+                    fp.storeUrl(
+                        url,
+                        getSuccessHandler(0, 1),
+                        errorHandler,
+                        getProgressHandler(0, 1)
+                    );
+                }
+            } else {
+                onError('NoFilesFound', 'No files uploaded');
             }
             return false;
         });
@@ -138,9 +152,9 @@ filepicker.extend('dragdrop', function(){
         var reenablePane = function(){
             // Re-enabling
             div.setAttribute('disabled', 'enabled');
-            
+
             // For IE
-            if (window.$) {  
+            if (window.$) {
                 window.$(div).prop('disabled', false);
             }
             // TODO find way to upgrade it in IE without jQuery
@@ -238,6 +252,35 @@ filepicker.extend('dragdrop', function(){
                 onError('NoFilesFound', 'No files uploaded');
             }
             return false;
+        };
+
+        var verifyUploadUrl = function(url){
+            var found, j;
+            if (extensions) {
+                for (j = 0; j < extensions.length; j++) {
+                    found = found || fp.util.endsWith(url, extensions[j]);
+                }
+
+                if (!found) {
+                    onError('WrongType', url + ' isn\'t the right type of file');
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
+
+        var getImageSrcDrop = function(event){
+            if (event.dataTransfer && typeof event.dataTransfer.getData === 'function') {
+                var data = event.dataTransfer.getData('text/html'),
+                    results = data.match(/<img.*?src="(.*?)"/i);
+
+                if (results.length > 1) {
+                    return results[1];
+                }
+            }
+            return null;
         };
 
         return true;
