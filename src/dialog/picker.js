@@ -43,7 +43,7 @@ filepicker.extend('picker', function(){
         if (options.openTo) {
             options.openTo = fp.services[options.openTo] || options.openTo;
         }
-        fp.util.setDefault(options, 'container', fp.browser.isMobile ? 'window' : 'modal');
+        fp.util.setDefault(options, 'container', fp.browser.openInModal() ? 'modal' : 'window');
     };
 
     var getPickHandler = function(onSuccess, onError, onProgress) {
