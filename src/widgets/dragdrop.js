@@ -135,14 +135,22 @@ filepicker.extend('dragdrop', function(){
                     }
                 }
             } else if (url) {
-                if (verifyUploadUrl(url)) {
-                    fp.storeUrl(
-                        url,
-                        getSuccessHandler(0, 1),
-                        errorHandler,
-                        getProgressHandler(0, 1)
-                    );
-                }
+                fp.storeUrl(
+                    url,
+                    function(blob){
+                        var successHandlerForOneFile = getSuccessHandler(0, 1);
+                        var blobToCheck = fp.util.clone(blob);
+                        blobToCheck.name = blobToCheck.filename;
+
+                        if (verifyUpload([blobToCheck])){
+                            successHandlerForOneFile(blob);
+                        } else {
+                            fp.files.remove(blob.url, store_options, function(){}, function(){});
+                        }
+                    },
+                    errorHandler,
+                    getProgressHandler(0, 1)
+                );
             } else {
                 onError('NoFilesFound', 'No files uploaded');
             }
@@ -253,35 +261,6 @@ filepicker.extend('dragdrop', function(){
                 onError('NoFilesFound', 'No files uploaded');
             }
             return false;
-        };
-
-        var verifyUploadUrl = function(url){
-            var DEFAULT_IMAGE_TAG_EXTENSION = '.jpg';
-            var found, j,
-                urlExtension = fp.util.getExtension(url) || DEFAULT_IMAGE_TAG_EXTENSION,
-                urlMimetype = fp.mimetypes.getMimetypeByExtension(urlExtension);
-
-            for (j = 0; j < mimetypes.length; j++) {
-                found = found || fp.mimetypes.matchesMimetype(urlMimetype, mimetypes[j]);
-            }
-
-            if (!found) {
-                onError('WrongType', url + ' isn\'t the right type of file');
-                return false;
-            }
-            if (extensions) {
-                found = false;
-                for (j = 0; j < extensions.length; j++) {
-                    found = found || fp.util.endsWith(url, extensions[j]);
-                }
-
-                if (!found) {
-                    onError('WrongType', url + ' isn\'t the right type of file');
-                    return false;
-                }
-            }
-
-            return true;
         };
 
 
