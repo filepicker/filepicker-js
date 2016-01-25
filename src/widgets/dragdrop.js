@@ -123,7 +123,7 @@ filepicker.extend('dragdrop', function(){
 
             var files = e.dataTransfer.files,
                 total = files.length,
-                url = getImageSrcDrop(e);
+                imageSrc = getImageSrcDrop(e);
 
             if (files.length) {
                 if (verifyUpload(files)) {
@@ -134,27 +134,30 @@ filepicker.extend('dragdrop', function(){
                         fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
                     }
                 }
-            } else if (url) {
+            } else if (imageSrc) {
+                var progressHandlerForOneFile = getProgressHandler(0, 1);
                 fp.storeUrl(
-                    url,
-                    function(blob){
-                        var successHandlerForOneFile = getSuccessHandler(0, 1);
-                        var blobToCheck = fp.util.clone(blob);
-                        blobToCheck.name = blobToCheck.filename;
-
-                        if (verifyUpload([blobToCheck])){
-                            successHandlerForOneFile(blob);
-                        } else {
-                            fp.files.remove(blob.url, store_options, function(){}, function(){});
-                        }
-                    },
+                    imageSrc,
+                    onSuccessSrcUpload,
                     errorHandler,
-                    getProgressHandler(0, 1)
+                    progressHandlerForOneFile
                 );
             } else {
                 onError('NoFilesFound', 'No files uploaded');
             }
             return false;
+
+            function onSuccessSrcUpload(blob){
+                var successHandlerForOneFile = getSuccessHandler(0, 1);
+                var blobToCheck = fp.util.clone(blob);
+                blobToCheck.name = blobToCheck.filename;
+
+                if (verifyUpload([blobToCheck])){
+                    successHandlerForOneFile(blob);
+                } else {
+                    fp.files.remove(blob.url, store_options, function(){}, function(){});
+                }
+            }
         });
 
         var reenablePane = function(){
@@ -227,7 +230,6 @@ filepicker.extend('dragdrop', function(){
                     found = false;
                     file = files[i];
                     filename = file.name || file.fileName || 'Unknown file';
-
                     for (var j = 0; j < mimetypes.length; j++) {
                         var mimetype = fp.mimetypes.getMimetype(file);
                         found = found || fp.mimetypes.matchesMimetype(mimetype, mimetypes[j]);
