@@ -123,7 +123,7 @@ filepicker.extend('dragdrop', function(){
 
             var files = e.dataTransfer.files,
                 total = files.length,
-                imageSrc = getImageSrcDrop(e);
+                imageSrc = getImageSrcDrop(e.dataTransfer);
 
             if (files.length) {
                 if (verifyUpload(files)) {
@@ -266,15 +266,15 @@ filepicker.extend('dragdrop', function(){
         };
 
 
-        var getImageSrcDrop = function(event){
+        var getImageSrcDrop = function(dataTransfer){
             var url, matched;
 
-            if (event.dataTransfer && typeof event.dataTransfer.getData === 'function') {
-                url = event.dataTransfer.getData('text');
+            if (dataTransfer && typeof dataTransfer.getData === 'function') {
+                url = dataTransfer.getData('text');
 
                 try {
                     // invalid 'text/html' arg on IE10
-                    url = url || event.dataTransfer.getData('text/html');
+                    url = url || dataTransfer.getData('text/html');
                 } catch(e) {
                     fp.util.console.error(e);
                 }
