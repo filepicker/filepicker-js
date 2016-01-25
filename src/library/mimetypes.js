@@ -16,7 +16,6 @@ filepicker.extend('mimetypes', function(){
         '.vob': 'video/dvd'
     };
 
-
     var mimetype_bad_array = [ 'application/octet-stream',
                                 'application/download',
                                 'application/force-download',
@@ -41,7 +40,7 @@ filepicker.extend('mimetypes', function(){
         var filename = file.name || file.fileName;
         var extension = filename.match(/\.\w*$/);
         if (extension) {
-            return getMimetypeByExtension(extension[0]);
+            return mimetype_extension_map[extension[0].toLowerCase()] || '';
         } else {
             if (file.type){
                 //Might be a bad type, but better then nothing
@@ -50,10 +49,6 @@ filepicker.extend('mimetypes', function(){
                 return '';
             }
         }
-    };
-
-    var getMimetypeByExtension = function(extension){
-        return mimetype_extension_map[extension.toLowerCase()] || '';
     };
 
     var matchesMimetype = function(test, against) {
@@ -83,7 +78,6 @@ filepicker.extend('mimetypes', function(){
 
     return {
         getMimetype: getMimetype,
-        matchesMimetype: matchesMimetype,
-        getMimetypeByExtension: getMimetypeByExtension
+        matchesMimetype: matchesMimetype
     };
 });
