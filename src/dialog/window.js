@@ -15,11 +15,10 @@ filepicker.extend('window', function(){
 
     var openWindow = function(container, src, onClose) {
         onClose = onClose || function(){};
-        var isMobile = (fp.browser.isIOS() || fp.browser.isAndroid());
-        if (!container && isMobile){
-            container = 'window';
-        } else if (!container) {
+        if (!container && fp.browser.openInModal()){
             container = 'modal';
+        } else if (!container) {
+            container = 'window';
         }
 
         if (container === 'window') {

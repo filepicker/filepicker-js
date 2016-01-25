@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.8 (22.01.2016)
+- Handle safari standalone mode [#11](https://github.com/filepicker/filepicker-js/pull/11)
+
 ### 2.3.7 (20.01.2016)
 - Parse options.noFileReader parameter for server vars [#17](https://github.com/filepicker/filepicker-js/pull/17)
 
