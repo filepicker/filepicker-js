@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.0 (26.01.2016)
+- Add functionality for uploading image tag url using drag&drop pane. [#18](https://github.com/filepicker/filepicker-js/pull/18)
+
 ### 2.3.8 (22.01.2016)
 - Handle safari standalone mode [#11](https://github.com/filepicker/filepicker-js/pull/11)
 
