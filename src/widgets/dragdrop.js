@@ -4,7 +4,7 @@ filepicker.extend('dragdrop', function(){
     var fp = this;
 
     var canDragDrop = function(){
-        return (!!window.FileReader || navigator.userAgent.indexOf('Safari') >= 0) && 
+        return (!!window.FileReader || navigator.userAgent.indexOf('Safari') >= 0) &&
         ('draggable' in document.createElement('span'));
     };
 
@@ -104,33 +104,21 @@ filepicker.extend('dragdrop', function(){
 
         div.addEventListener('drop', function(e) {
             e.stopPropagation();
-                e.preventDefault();
+            e.preventDefault();
 
             if (!enabled()) { return false; }
 
-            //check for folders
-            var i; var items; var entry;
-            if (e.dataTransfer.items) {
-                items = e.dataTransfer.items;
-                for (i = 0; i < items.length; i++) {
-                    entry = items[i] && items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : undefined;
+            if (isFolderDropped(e)){ return false; }
 
-                    if (entry && !!entry.isDirectory) {
-                        onError('WrongType', 'Uploading a folder is not allowed');
-                        return false;
-                    }
-                }
-            }
+            var files = e.dataTransfer.files,
+                imageSrc = getImageSrcDrop(e.dataTransfer);
 
-            var files = e.dataTransfer.files;
-            var total = files.length;
-            if (verifyUpload(files)) {
-                onStart(files);
-                //disabling
-                div.setAttribute('disabled', 'disabled');
-                for (i = 0; i < files.length; i++) {
-                    fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
-                }
+            if (files.length) {
+                uploadDroppedFiles(files);
+            } else if (imageSrc) {
+                uploadImageSrc(imageSrc);
+            } else {
+                onError('NoFilesFound', 'No files uploaded');
             }
             return false;
         });
@@ -138,9 +126,9 @@ filepicker.extend('dragdrop', function(){
         var reenablePane = function(){
             // Re-enabling
             div.setAttribute('disabled', 'enabled');
-            
+
             // For IE
-            if (window.$) {  
+            if (window.$) {
                 window.$(div).prop('disabled', false);
             }
             // TODO find way to upgrade it in IE without jQuery
@@ -240,7 +228,86 @@ filepicker.extend('dragdrop', function(){
             return false;
         };
 
+
+        var getImageSrcDrop = function(dataTransfer){
+            var url, matched;
+
+            if (dataTransfer && typeof dataTransfer.getData === 'function') {
+                url = dataTransfer.getData('text');
+
+                try {
+                    // invalid 'text/html' arg on IE10
+                    url = url || dataTransfer.getData('text/html');
+                } catch(e) {
+                    fp.util.console.error(e);
+                }
+
+                if (url && !fp.util.isUrl(url)){
+                    matched = url.match(/<img.*?src="(.*?)"/i);
+                    url = matched && matched.length > 1 ? matched[1] : null;
+                }
+
+            }
+            return url;
+        };
+
         return true;
+
+        function onSuccessSrcUpload(blob){
+            var successHandlerForOneFile = getSuccessHandler(0, 1);
+            var blobToCheck = fp.util.clone(blob);
+            blobToCheck.name = blobToCheck.filename;
+
+            if (verifyUpload([blobToCheck])){
+                successHandlerForOneFile(blob);
+            } else {
+                fp.files.remove(blob.url, store_options, function(){}, function(){});
+            }
+        }
+
+        function uploadDroppedFiles(files){
+            var total = files.length,
+                i;
+
+            if (verifyUpload(files)) {
+                onStart(files);
+                //disabling
+                div.setAttribute('disabled', 'disabled');
+                for (i = 0; i < files.length; i++) {
+                    fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
+                }
+            }
+        }
+
+        function uploadImageSrc(imageSrc){
+            var progressHandlerForOneFile = getProgressHandler(0, 1);
+            fp.storeUrl(
+                imageSrc,
+                onSuccessSrcUpload,
+                errorHandler,
+                progressHandlerForOneFile
+            );
+        }
+
+        function isFolderDropped(event){
+            //check for folders
+            var entry,
+                items,
+                i;
+
+            if (event.dataTransfer.items) {
+                items = event.dataTransfer.items;
+                for (i = 0; i < items.length; i++) {
+                    entry = items[i] && items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : undefined;
+
+                    if (entry && !!entry.isDirectory) {
+                        onError('WrongType', 'Uploading a folder is not allowed');
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     };
 
     return {
