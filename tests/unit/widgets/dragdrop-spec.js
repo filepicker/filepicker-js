@@ -1,7 +1,7 @@
 describe("The Drag-Drop library", function(){
     it("can determine if dragdrop is enabled", function(){
         expect(filepicker.dragdrop.enabled()).toBe(window.test.features.dragdrop);
-        
+
         //we check that draggable is in document.createElement("span"), so fake that out
         spyOn(document, "createElement").and.returnValue({});
         expect(filepicker.dragdrop.enabled()).toBe(false);
@@ -27,7 +27,7 @@ describe("The Drag-Drop library", function(){
         expect(test1).toThrow();
         expect(test2).toThrow();
     });
-    
+
     if (window.test.features.dragdrop) {
 
         function getTestDiv(){
@@ -86,6 +86,7 @@ describe("The Drag-Drop library", function(){
             expect(error).toHaveBeenCalledWith("WrongType", "Uploading a folder is not allowed");
             pane.remove();
         });
+
         it("can process single uploads", function(){
             var pane = getTestDiv();
             var success = jasmine.createSpy("success");
@@ -261,6 +262,97 @@ describe("The Drag-Drop library", function(){
             pane.remove();
         });
 
+       it("can process and upload dropped html tag with proper url", function(){
+            var pane = getTestDiv();
+            var success = jasmine.createSpy("success");
+            var error = jasmine.createSpy("error");
+            var progress = jasmine.createSpy("progress");
+            var onstart = jasmine.createSpy("onstart");
+
+            filepicker.dragdrop.makeDropPane(pane, {
+                onStart: onstart,
+                onSuccess: success,
+                onError: error,
+                onProgress: progress,
+                multiple: false
+            });
+
+            var e = document.createEvent('Event');
+            e.initEvent("drop", true, false);
+
+            e.dataTransfer = {
+                files: [],
+                getData: function(){
+                    return "http://dummyUrl.com/test.png";
+                }
+            };
+
+            var result = {
+                url: "http://www.filepicker.io/api/file/blah3",
+                filename: "test.png",
+                size: 1234,
+                mimetype: "image/png"
+            };
+
+            spyOn(filepicker, "storeUrl").and.callFake(function(url, success, error, progress){
+                progress(100);
+                success(result);
+            });
+
+            pane.dispatchEvent(e);
+            expect(error).not.toHaveBeenCalled();
+            expect(progress).toHaveBeenCalledWith(100);
+            expect(success).toHaveBeenCalledWith([result]);
+            pane.remove();
+        });
+
+
+       it("can process and upload dropped image tag wrapped by other html element", function(){
+            var pane = getTestDiv();
+            var success = jasmine.createSpy("success");
+            var error = jasmine.createSpy("error");
+            var progress = jasmine.createSpy("progress");
+            var onstart = jasmine.createSpy("onstart");
+
+            filepicker.dragdrop.makeDropPane(pane, {
+                onStart: onstart,
+                onSuccess: success,
+                onError: error,
+                onProgress: progress,
+                multiple: false
+            });
+
+            var e = document.createEvent('Event');
+            e.initEvent("drop", true, false);
+
+            e.dataTransfer = {
+                files: [],
+                getData: function(){
+                    return '<div id="wrapper">'+
+                                '<img src="http://dummyUrl.com/test.png"/>' +
+                            '</div';
+                }
+            };
+
+            var result = {
+                url: "http://www.filepicker.io/api/file/blah3",
+                filename: "test.png",
+                size: 1234,
+                mimetype: "image/png"
+            };
+
+            spyOn(filepicker, "storeUrl").and.callFake(function(url, success, error, progress){
+                progress(100);
+                success(result);
+            });
+
+            pane.dispatchEvent(e);
+            expect(error).not.toHaveBeenCalled();
+            expect(progress).toHaveBeenCalledWith(100);
+            expect(success).toHaveBeenCalledWith([result]);
+            pane.remove();
+        });
+
         it("can filter on mimetypes", function(){
             var pane = getTestDiv();
             var success = jasmine.createSpy("success");
@@ -347,7 +439,7 @@ describe("The Drag-Drop library", function(){
             };
             e.dataTransfer = {files: [file]};
             pane.dispatchEvent(e);
-           
+
             expect(onstart).not.toHaveBeenCalled();
             expect(success).not.toHaveBeenCalled();
             expect(error).toHaveBeenCalledWith("WrongSize", "test.txt is too large (432 Bytes)");
