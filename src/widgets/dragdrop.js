@@ -104,60 +104,23 @@ filepicker.extend('dragdrop', function(){
 
         div.addEventListener('drop', function(e) {
             e.stopPropagation();
-                e.preventDefault();
+            e.preventDefault();
 
             if (!enabled()) { return false; }
-            //check for folders
-            var i; var items; var entry;
-            if (e.dataTransfer.items) {
-                items = e.dataTransfer.items;
-                for (i = 0; i < items.length; i++) {
-                    entry = items[i] && items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : undefined;
 
-                    if (entry && !!entry.isDirectory) {
-                        onError('WrongType', 'Uploading a folder is not allowed');
-                        return false;
-                    }
-                }
-            }
+            if (isFolderDropped(e)){ return false; }
 
             var files = e.dataTransfer.files,
-                total = files.length,
                 imageSrc = getImageSrcDrop(e.dataTransfer);
 
             if (files.length) {
-                if (verifyUpload(files)) {
-                    onStart(files);
-                    //disabling
-                    div.setAttribute('disabled', 'disabled');
-                    for (i = 0; i < files.length; i++) {
-                        fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
-                    }
-                }
+                uploadDroppedFiles(files);
             } else if (imageSrc) {
-                var progressHandlerForOneFile = getProgressHandler(0, 1);
-                fp.storeUrl(
-                    imageSrc,
-                    onSuccessSrcUpload,
-                    errorHandler,
-                    progressHandlerForOneFile
-                );
+                uploadImageSrc(imageSrc);
             } else {
                 onError('NoFilesFound', 'No files uploaded');
             }
             return false;
-
-            function onSuccessSrcUpload(blob){
-                var successHandlerForOneFile = getSuccessHandler(0, 1);
-                var blobToCheck = fp.util.clone(blob);
-                blobToCheck.name = blobToCheck.filename;
-
-                if (verifyUpload([blobToCheck])){
-                    successHandlerForOneFile(blob);
-                } else {
-                    fp.files.remove(blob.url, store_options, function(){}, function(){});
-                }
-            }
         });
 
         var reenablePane = function(){
@@ -289,6 +252,62 @@ filepicker.extend('dragdrop', function(){
         };
 
         return true;
+
+        function onSuccessSrcUpload(blob){
+            var successHandlerForOneFile = getSuccessHandler(0, 1);
+            var blobToCheck = fp.util.clone(blob);
+            blobToCheck.name = blobToCheck.filename;
+
+            if (verifyUpload([blobToCheck])){
+                successHandlerForOneFile(blob);
+            } else {
+                fp.files.remove(blob.url, store_options, function(){}, function(){});
+            }
+        }
+
+        function uploadDroppedFiles(files){
+            var total = files.length,
+                i;
+
+            if (verifyUpload(files)) {
+                onStart(files);
+                //disabling
+                div.setAttribute('disabled', 'disabled');
+                for (i = 0; i < files.length; i++) {
+                    fp.store(files[i], store_options, getSuccessHandler(i, total), errorHandler, getProgressHandler(i, total));
+                }
+            }
+        }
+
+        function uploadImageSrc(imageSrc){
+            var progressHandlerForOneFile = getProgressHandler(0, 1);
+            fp.storeUrl(
+                imageSrc,
+                onSuccessSrcUpload,
+                errorHandler,
+                progressHandlerForOneFile
+            );
+        }
+
+        function isFolderDropped(event){
+            //check for folders
+            var entry,
+                items,
+                i;
+
+            if (event.dataTransfer.items) {
+                items = event.dataTransfer.items;
+                for (i = 0; i < items.length; i++) {
+                    entry = items[i] && items[i].webkitGetAsEntry ? items[i].webkitGetAsEntry() : undefined;
+
+                    if (entry && !!entry.isDirectory) {
+                        onError('WrongType', 'Uploading a folder is not allowed');
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     };
 
     return {
