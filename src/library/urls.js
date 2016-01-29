@@ -30,6 +30,7 @@ filepicker.extend('urls', function(){
             (options.storeLocation ? '&storeLocation='+options.storeLocation : '')+
             (options.storePath ? '&storePath='+options.storePath : '')+
             (options.storeContainer ? '&storeContainer='+options.storeContainer : '')+
+            (options.storeRegion ? '&storeRegion='+options.storeRegion : '')+
             (options.storeAccess ? '&storeAccess='+options.storeAccess : '')+
             (options.webcamDim ? '&wdim='+options.webcamDim.join(',') : '')+
             constructConversionsQuery(options.conversions);
