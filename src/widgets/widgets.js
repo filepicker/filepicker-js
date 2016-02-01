@@ -95,12 +95,12 @@ filepicker.extend('widgets', function(){
             'data-fp-webcam-dim': 'webcamDim'
         };
 
-        setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap, null);
+        setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap);
 
         if (mode === 'export') {
             setAttrIfExists('suggestedFilename', fpoptions, 'data-fp-suggestedFilename', domElement);
         } else if (mode === 'pick') {
-            setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap, null);
+            setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap);
             setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap, "webcam")
         }
 
