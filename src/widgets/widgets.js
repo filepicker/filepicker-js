@@ -38,10 +38,7 @@ filepicker.extend('widgets', function(){
         }
     };
 
-    var setAttrIfExistsArray = function(fpoptions, domElement, optionsObj, customOptObj) {
-        if (customOptObj) {
-            optionsObj = optionsObj[customOptObj];
-        }
+    var setAttrIfExistsArray = function(fpoptions, domElement, optionsObj) {
         for (var option in optionsObj) {
             setAttrIfExists(optionsObj[option], fpoptions, option, domElement);
         }
@@ -101,7 +98,8 @@ filepicker.extend('widgets', function(){
             setAttrIfExists('suggestedFilename', fpoptions, 'data-fp-suggestedFilename', domElement);
         } else if (mode === 'pick') {
             setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap);
-            setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap, "webcam")
+            fpoptions.webcam = {};
+            setAttrIfExistsArray(fpoptions.webcam, domElement, webcamOptionsMap)
         }
 
         var services = domElement.getAttribute('data-fp-services');
