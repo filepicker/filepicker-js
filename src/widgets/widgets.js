@@ -38,7 +38,10 @@ filepicker.extend('widgets', function(){
         }
     };
 
-    var setAttrIfExistsArray = function(fpoptions, domElement, optionsObj) {
+    var setAttrIfExistsArray = function(fpoptions, domElement, optionsObj, customOptObj) {
+        if (customOptObj) {
+            optionsObj = optionsObj[customOptObj];
+        }
         for (var option in optionsObj) {
             setAttrIfExists(optionsObj[option], fpoptions, option, domElement);
         }
@@ -69,7 +72,7 @@ filepicker.extend('widgets', function(){
             'data-fp-show-close': 'showClose',
             'data-fp-conversions': 'conversions',
             'data-fp-custom-text': 'customText',
-            'data-fp-custom-source-conatiner': 'customSourceContainer',
+            'data-fp-custom-source-container': 'customSourceContainer',
             'data-fp-custom-source-path': 'customSourcePath'
         },
             pickOnlyOptionsMap = {
@@ -86,15 +89,19 @@ filepicker.extend('widgets', function(){
             'data-fp-image-dim': 'imageDim',
             'data-fp-image-max': 'imageMax',
             'data-fp-image-min': 'imageMin',
+        },
+            webcamOptionsMap = {
+            'data-fp-video-recording-resolution': 'videoRes',
             'data-fp-webcam-dim': 'webcamDim'
         };
 
-        setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap);
+        setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap, null);
 
         if (mode === 'export') {
             setAttrIfExists('suggestedFilename', fpoptions, 'data-fp-suggestedFilename', domElement);
         } else if (mode === 'pick') {
-            setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap);
+            setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap, null);
+            setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap, "webcam")
         }
 
         var services = domElement.getAttribute('data-fp-services');
