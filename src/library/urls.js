@@ -18,6 +18,7 @@ filepicker.extend('urls', function(){
     var allowedConversions = ['crop', 'rotate', 'filter'];
 
     var constructPickUrl = function(options, id, multiple) {
+        console.log(options);
         return pick_url+ constructModalQuery(options, id)+
             (multiple ? '&multi='+!!multiple : '')+
             (options.mimetypes !== undefined ? '&m='+options.mimetypes.join(',') : '')+
@@ -32,6 +33,7 @@ filepicker.extend('urls', function(){
             (options.storeContainer ? '&storeContainer='+options.storeContainer : '')+
             (options.storeAccess ? '&storeAccess='+options.storeAccess : '')+
             ((options.webcam && options.webcam.webcamDim) ? '&wdim='+options.webcam.webcamDim.join(',') : '')+
+            (options.webcamDim ? '&wdim='+options.webcamDim.join(',') : '')+
             ((options.webcam && options.webcam.videoRes) ? '&videoRes='+options.webcam.videoRes: '')+
             constructConversionsQuery(options.conversions);
     };
