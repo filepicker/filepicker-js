@@ -18,7 +18,6 @@ filepicker.extend('urls', function(){
     var allowedConversions = ['crop', 'rotate', 'filter'];
 
     var constructPickUrl = function(options, id, multiple) {
-        console.log(options);
         return pick_url+ constructModalQuery(options, id)+
             (multiple ? '&multi='+!!multiple : '')+
             (options.mimetypes !== undefined ? '&m='+options.mimetypes.join(',') : '')+
