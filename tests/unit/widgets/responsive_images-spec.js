@@ -5,7 +5,13 @@ describe('The responsive images module', function(){
         processBase = filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/',
         processUrl = filepicker.conversionsUtil.CONVERSION_DOMAIN + 'l5uQ3k7FQ5GoYCHyTdZV/resize=width:615,height:100/other=test:testValue/https://www.filepicker.io/api/file/daiHESM6QziofNYWl7rY';
 
-
+    afterEach(function () {
+        // Remove all images which might have been added during test.
+        var images = document.querySelectorAll('img');
+        for (var i = 0; i < images.length; i += 1) {
+            document.body.removeChild(images[i]);
+        }
+    });
 
     function createEmptyImage(){
         var image = document.createElement('img');
@@ -22,6 +28,27 @@ describe('The responsive images module', function(){
         return image;
     }
 
+    // Note: createImage2 is intended to replace all uses of createImage
+    // after full refactoring.
+    function createImage2(options) {
+        var image = document.createElement('img');
+
+        if (options.src !== undefined) {
+            image.setAttribute('src', options.src);
+        }
+        if (options.dataFpSrc !== undefined) {
+            image.setAttribute('data-fp-src', options.dataFpSrc);
+        }
+        if (options.size) {
+            image.style.width = options.size[0] + 'px';
+            image.style.height = options.size[1] + 'px';
+        }
+
+        document.getElementsByTagName('body')[0].appendChild(image);
+
+        return image;
+    };
+
     function createWidgetImage(src){
         src = src || defaultSrc;
         var image = createEmptyImage()
@@ -33,7 +60,7 @@ describe('The responsive images module', function(){
         attr = attr || {};
         var image = createWidgetImage(),
             key;
-        
+
         for (key in attr) {
             if (attr.hasOwnProperty(key)){
                 image.setAttribute(key, attr[key]);
@@ -75,7 +102,7 @@ describe('The responsive images module', function(){
             console.error(e);
         }
     });
-    
+
     it("should be able to check DOM element dims", function(){
         expect(
             filepicker.responsiveImages.getElementDims(createImage())
@@ -303,6 +330,57 @@ describe('The responsive images module', function(){
         onWindowResize.calls.reset();
         triggerEvent(window, 'resize');
         expect(onWindowResize).not.toHaveBeenCalled();
+    });
+
+    it('makes all files responsive after calling filepicker.responsive()', function(){
+        var image1 = createImage2({
+            src: 'nothing',
+            dataFpSrc: 'example.com/image1.jpg',
+            size: [200, 100]
+        });
+        var image2 = createImage2({
+            src: 'nothing',
+            dataFpSrc: 'example.com/image2.jpg',
+            size: [400, 300]
+        });
+
+        filepicker.responsive();
+
+        expect(image1.src).toContain('resize=width:200');
+        expect(image1.src).toContain('example.com/image1.jpg');
+
+        expect(image2.src).toContain('resize=width:400');
+        expect(image2.src).toContain('example.com/image2.jpg');
+    });
+
+    it('makes only one image responsive when passed to filepicker.responsive(<img>)', function(){
+        var image1 = createImage2({
+            src: 'example.com/image1.jpg',
+            size: [200, 100]
+        });
+        var image2 = createImage2({
+            src: 'nothing',
+            dataFpSrc: 'example.com/image2.jpg'
+        });
+
+        filepicker.responsive(image1);
+
+        expect(image1.src).toContain('resize=width:200');
+        expect(image1.src).toContain('example.com/image1.jpg');
+
+        // image2 shouldn't be touched after this test
+        expect(image2.getAttribute('src')).toBe('nothing');
+    });
+
+    it('throws when non-dom-image-element passed to filepicker.responsive()', function(){
+        [
+            document.createElement('div'),
+            '<img src="nothing.png">'
+        ].forEach(function (item) {
+            expect(function () {
+                filepicker.responsive(item);
+            }).toThrow(new Error('Passed object is not an image'));
+        })
     });
 
 });

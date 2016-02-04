@@ -742,6 +742,10 @@ filepicker.extend(function(){
         return fp.responsiveImages.setResponsiveOptions(options);
     };
 
+    var responsive = function(){
+        fp.responsiveImages.update.apply(null, arguments);
+    };
+
     return {
         setKey: setKey,
         setResponsiveOptions: setResponsiveOptions,
@@ -764,6 +768,7 @@ filepicker.extend(function(){
         constructWidget: constructWidget,
         makeDropPane: makeDropPane,
         FilepickerException: FilepickerException,
+        responsive: responsive,
         version: VERSION
     };
 }, true);
