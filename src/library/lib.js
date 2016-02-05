@@ -451,9 +451,9 @@ filepicker.extend(function(){
         onSuccess = onSuccess || function(){};
         onError = onError || fp.errors.handleError;
 
-        if (typeof input === 'string' && fp.util.isFPUrlCdn(input)) {
+        if (typeof input === 'string') {
             convertUrl = input;
-        } else if (input.url && fp.util.isFPUrl(input.url)) {
+        } else if (input.url) {
             convertUrl = input.url;
             //make use of what we know
             if (!options.filename) {
