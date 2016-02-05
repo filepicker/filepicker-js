@@ -62,10 +62,7 @@ filepicker.extend('responsiveImages', function(){
                 throw new Error('Passed object is not an image');
             }
         } else {
-            var responsiveImages = document.querySelectorAll('img[data-fp-src]');
-            for (var i = 0; i < responsiveImages.length; i++) {
-                construct(responsiveImages[i]);
-            }
+            constructAll(true);
         }
     }
 
@@ -76,14 +73,14 @@ filepicker.extend('responsiveImages', function(){
     *   @method constructAll
     */
 
-    function constructAll(){
+    function constructAll(forceConstruct){
         var responsiveImages = document.querySelectorAll('img[data-fp-src]'),
             element,
             i;
 
         for (i=0; i< responsiveImages.length; i++) {
             element = responsiveImages[i];
-            if (shouldConstruct(element)) {
+            if (shouldConstruct(element) || forceConstruct === true) {
                 construct(element);
             }
         }
