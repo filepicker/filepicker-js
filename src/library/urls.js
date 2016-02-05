@@ -41,8 +41,8 @@ filepicker.extend('urls', function(){
             url = encodeURIComponent(url);
         }
         return convert_url+ constructModalQuery(options, id)+
-        '&curl='+url+
-        constructConversionsQuery(options.conversions);
+        (options.mimetype ? '&m='+options.mimetype : '')+
+        '&curl='+url+constructConversionsQuery(options.conversions);
     };
 
 
