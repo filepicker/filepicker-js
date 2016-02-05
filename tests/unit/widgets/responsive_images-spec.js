@@ -377,9 +377,12 @@ describe('The responsive images module', function(){
             document.createElement('div'),
             '<img src="nothing.png">'
         ].forEach(function (item) {
-            expect(function () {
+            try {
                 filepicker.responsive(item);
-            }).toThrow(new Error('Passed object is not an image'));
+                throw 'make sure code throws';
+            } catch (err) {
+                expect(err.text).toBe('Passed object is not an image');
+            }
         })
     });
 

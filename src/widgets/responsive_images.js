@@ -59,7 +59,7 @@ filepicker.extend('responsiveImages', function(){
             if (element.nodeName === 'IMG') {
                 construct(element);
             } else {
-                throw new Error('Passed object is not an image');
+                throw new fp.FilepickerException('Passed object is not an image');
             }
         } else {
             constructAll(true);
