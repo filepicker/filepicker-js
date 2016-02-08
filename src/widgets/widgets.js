@@ -69,7 +69,7 @@ filepicker.extend('widgets', function(){
             'data-fp-show-close': 'showClose',
             'data-fp-conversions': 'conversions',
             'data-fp-custom-text': 'customText',
-            'data-fp-custom-source-conatiner': 'customSourceContainer',
+            'data-fp-custom-source-container': 'customSourceContainer',
             'data-fp-custom-source-path': 'customSourcePath'
         },
             pickOnlyOptionsMap = {
@@ -511,7 +511,7 @@ filepicker.extend('widgets', function(){
             constructDragWidget(base);
         } else if (base_type === 'filepicker-preview'){
             constructPreview(base);
-        // responsive image widget 
+        // responsive image widget
         } else if (base.getAttribute('data-fp-src')){
             fp.responsiveImages.construct(base);
         } else {
@@ -524,7 +524,7 @@ filepicker.extend('widgets', function(){
         var url = domElement.getAttribute('data-fp-url'),
             css = domElement.getAttribute('data-fp-custom-css');
 
-        if (!url || !fp.util.isFPUrl(url)) {    
+        if (!url || !fp.util.isFPUrl(url)) {
             return true;
         } else {
             url = url.replace('api/file/', 'api/preview/');
@@ -540,7 +540,7 @@ filepicker.extend('widgets', function(){
 
         iframe.width = '100%';
         iframe.height = '100%';
-        
+
         domElement.appendChild(iframe);
     };
 
