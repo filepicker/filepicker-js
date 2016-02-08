@@ -2,7 +2,7 @@
 // responsive_images.js
 
 /*
-    responsive image widget 
+    responsive image widget
     TODO: security option
 */
 
@@ -18,6 +18,7 @@ filepicker.extend('responsiveImages', function(){
     return {
         activate: activate,
         deactivate: deactivate,
+        update: update,
         setResponsiveOptions: setResponsiveOptions,
         getResponsiveOptions: getResponsiveOptions,
         getElementDims: getElementDims,
@@ -52,21 +53,34 @@ filepicker.extend('responsiveImages', function(){
         removeWindowResizeEvent(reloadWithDebounce);
     }
 
+    function update(element){
+        if (element !== undefined) {
+            // If <img> given as a parameter then just process it directly.
+            if (element.nodeName === 'IMG') {
+                construct(element);
+            } else {
+                throw new fp.FilepickerException('Passed object is not an image');
+            }
+        } else {
+            constructAll(true);
+        }
+    }
+
     /**
-    *   Search for all images with data-fp-src attribute 
+    *   Search for all images with data-fp-src attribute
     *   and rebuild its source url if needed
     *
     *   @method constructAll
     */
 
-    function constructAll(){
+    function constructAll(forceConstruct){
         var responsiveImages = document.querySelectorAll('img[data-fp-src]'),
             element,
             i;
 
         for (i=0; i< responsiveImages.length; i++) {
             element = responsiveImages[i];
-            if (shouldConstruct(element)) {
+            if (shouldConstruct(element) || forceConstruct === true) {
                 construct(element);
             }
         }
@@ -74,7 +88,7 @@ filepicker.extend('responsiveImages', function(){
 
 
     /**
-    *   Depend on responsive images options and current image size return true 
+    *   Depend on responsive images options and current image size return true
     *   if image url should be constructed or false if not
     *
     *   @method shouldConstruct
@@ -107,7 +121,7 @@ filepicker.extend('responsiveImages', function(){
 
         var shouldBeEnlarged = getCurrentResizeParams(imageSrc).width < getElementDims(image).width;
 
-        if ((shouldBeEnlarged && changeOnResize === 'up') || 
+        if ((shouldBeEnlarged && changeOnResize === 'up') ||
             (!shouldBeEnlarged && changeOnResize === 'down')) {
             return true;
         }
@@ -136,7 +150,7 @@ filepicker.extend('responsiveImages', function(){
         /*
            Hack for images with an alt and no src tag.
            Example: <img data-src="img.jpg" alt="An Image"/>
-           Since the image has no parsable src yet, the browser actually 
+           Since the image has no parsable src yet, the browser actually
            reports the width of the alt construct.
            We return the parent nodes sizes instead.
         */
@@ -258,7 +272,7 @@ filepicker.extend('responsiveImages', function(){
     *
     *   @method getCurrentResizeParams
     *   @param {String} url - Image url
-    *   @returns {Object} 
+    *   @returns {Object}
     *       width {Number}
     *       height {Number}
     */
@@ -269,14 +283,14 @@ filepicker.extend('responsiveImages', function(){
 
 
     /**
-    *   Construct responsive image = set proper image source 
+    *   Construct responsive image = set proper image source
     *
     *   @method construct
     *   @param {DOMElement} elem - Image element
     */
 
     function construct(elem){
-        var url = getFpSrcAttr(elem),
+        var url = getFpSrcAttr(elem) || getSrcAttr(elem),
             apikey = getFpKeyAttr(elem) || fp.apikey,
             responsiveOptions = getResponsiveOptions();
 
@@ -292,13 +306,13 @@ filepicker.extend('responsiveImages', function(){
 
 
     /**
-    *   Construct elemenet params based on 
+    *   Construct elemenet params based on
     *   element atributes and responsive options
     *
     *   @method construct
     *   @param {DOMElement} elem - Image element
     *   @param {Object} responsiveOptions
-    *   @returns {Object} params 
+    *   @returns {Object} params
     */
 
     function constructParams(elem, responsiveOptions){
@@ -360,7 +374,7 @@ filepicker.extend('responsiveImages', function(){
     *
     *   @method addWindowResizeEvent
     */
-  
+
     function addWindowResizeEvent(onWindowResized) {
         if (window.addEventListener) {
             window.addEventListener('resize', onWindowResized, false);
@@ -374,7 +388,7 @@ filepicker.extend('responsiveImages', function(){
     *
     *   @method removeWindowResizeEvent
     */
-    
+
     function removeWindowResizeEvent(onWindowResized) {
         if (window.removeEventListener) {
             window.removeEventListener('resize', onWindowResized, false);
@@ -417,7 +431,7 @@ filepicker.extend('responsiveImages', function(){
         }
 
         fp.responsiveOptions = options;
-        
+
     }
 
 
