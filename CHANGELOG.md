@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.4.2 (08.02.2016)
+- Responsive images lookup can be triggered at any time. [#23](https://github.com/filepicker/filepicker-js/pull/23)
+- Fix typo in ```data-fp-custom-source-conatiner``` attribute name. [#27](https://github.com/filepicker/filepicker-js/pull/27)
+
 ### 2.4.1 (05.02.2016)
 - Allow every image to be processed. [#25](https://github.com/filepicker/filepicker-js/pull/25)
 
