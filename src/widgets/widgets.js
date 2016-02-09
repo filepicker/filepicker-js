@@ -80,12 +80,16 @@ filepicker.extend('widgets', function(){
             'data-fp-store-location': 'storeLocation',
             'data-fp-store-path': 'storePath',
             'data-fp-store-container': 'storeContainer',
+            'data-fp-store-region': 'storeRegion',
             'data-fp-store-access': 'storeAccess',
             // v2
             'data-fp-image-quality': 'imageQuality',
             'data-fp-image-dim': 'imageDim',
             'data-fp-image-max': 'imageMax',
             'data-fp-image-min': 'imageMin',
+        },
+            webcamOptionsMap = {
+            'data-fp-video-recording-resolution': 'videoRes',
             'data-fp-webcam-dim': 'webcamDim'
         };
 
@@ -95,6 +99,8 @@ filepicker.extend('widgets', function(){
             setAttrIfExists('suggestedFilename', fpoptions, 'data-fp-suggestedFilename', domElement);
         } else if (mode === 'pick') {
             setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap);
+            fpoptions.webcam = {};
+            setAttrIfExistsArray(fpoptions.webcam, domElement, webcamOptionsMap);
         }
 
         var services = domElement.getAttribute('data-fp-services');
@@ -369,6 +375,7 @@ filepicker.extend('widgets', function(){
             location: fpoptions.storeLocation,
             path: fpoptions.storePath,
             container: fpoptions.storeContainer,
+            region: fpoptions.storeRegion,
             access: fpoptions.storeAccess,
             policy: fpoptions.policy,
             signature: fpoptions.signature,
