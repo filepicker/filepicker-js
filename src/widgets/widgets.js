@@ -100,7 +100,7 @@ filepicker.extend('widgets', function(){
         } else if (mode === 'pick') {
             setAttrIfExistsArray(fpoptions, domElement, pickOnlyOptionsMap);
             fpoptions.webcam = {};
-            setAttrIfExistsArray(fpoptions.webcam, domElement, webcamOptionsMap)
+            setAttrIfExistsArray(fpoptions.webcam, domElement, webcamOptionsMap);
         }
 
         var services = domElement.getAttribute('data-fp-services');
