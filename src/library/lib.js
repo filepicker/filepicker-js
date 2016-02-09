@@ -148,6 +148,7 @@ filepicker.extend(function(){
         options.storeLocation = store_options.location || 'S3';
         options.storePath = store_options.path;
         options.storeContainer = store_options.storeContainer || store_options.container;
+        options.storeRegion = store_options.storeRegion;
         options.storeAccess = store_options.access || 'private';
 
         //If multiple, path must end in /

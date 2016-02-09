@@ -24,6 +24,7 @@ filepicker.extend('conversions', function(){
         signature:'string',
         storeAccess:'string',
         storeContainer:'string',
+        storeRegion:'string',
         storeLocation:'string',
         storePath:'string',
         text:'string',

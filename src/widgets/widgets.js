@@ -80,6 +80,7 @@ filepicker.extend('widgets', function(){
             'data-fp-store-location': 'storeLocation',
             'data-fp-store-path': 'storePath',
             'data-fp-store-container': 'storeContainer',
+            'data-fp-store-region': 'storeRegion',
             'data-fp-store-access': 'storeAccess',
             // v2
             'data-fp-image-quality': 'imageQuality',
@@ -374,6 +375,7 @@ filepicker.extend('widgets', function(){
             location: fpoptions.storeLocation,
             path: fpoptions.storePath,
             container: fpoptions.storeContainer,
+            region: fpoptions.storeRegion,
             access: fpoptions.storeAccess,
             policy: fpoptions.policy,
             signature: fpoptions.signature,
