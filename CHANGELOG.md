@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.4.3 (09.02.2016)
+- Add storeRegion option to the picker. [#19](https://github.com/filepicker/filepicker-js/pull/19)
+- Added option for setting video & webcam resolution [#20](https://github.com/filepicker/filepicker-js/pull/20)
+
 ### 2.4.2 (08.02.2016)
 - Responsive images lookup can be triggered at any time. [#23](https://github.com/filepicker/filepicker-js/pull/23)
 - Fix typo in ```data-fp-custom-source-conatiner``` attribute name. [#27](https://github.com/filepicker/filepicker-js/pull/27)
