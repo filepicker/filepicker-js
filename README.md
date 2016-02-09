@@ -74,19 +74,32 @@ npm run watch-linter
 
 2. Set git tag with current version.
 
-3. Use ansible script to deploy current version for filepicker.
+3. Be sure to update [npm package version](https://www.npmjs.com/package/filepicker-js) :
+```
+npm publish
+```
 
-# Filepicker
+4. And [Bower-friendly version of filepicker-js](https://github.com/filepicker/filepicker-js-bower)
+
+
+## Deployment
+### Filepicker
+
+Use ansible script to deploy current version for filepicker.
 
 ```
 source ../vagrant/aws/new && ansible-playbook -i env/production/inventory filepicker_api/deploy_js_library_v2.yml
 ```
 
-# optionally to deploy from branch othter than master
+* optionally to deploy from branch othter than master
+```
 -e emergency_deploy="yes"
+```
 
-# optionally not to overwrite edge version
+* optionally not to overwrite edge version
+```
 -e edge_version="no"
+```
 
 It overwrites [filepicker.js](https://api.filepicker.io/v2/filepicker.js) with current version. It creates versioned files, eg for v2.4.0:
 
@@ -94,7 +107,7 @@ It overwrites [filepicker.js](https://api.filepicker.io/v2/filepicker.js) with c
 *  [filepicker-2.4.0.min.js](https://api.filepicker.io/v2/filepicker-2.4.0.min.js)
 *  [filepicker_debug-2.4.0.js](https://api.filepicker.io/v2/filepicker_debug-2.4.0.js)
 
-# Filestack
+### Filestack
 
 ```
 source ~/.filepicker/aws_new && ansible-playbook -i env/production filestack_api/build_js.yml
@@ -102,10 +115,3 @@ source ~/.filepicker/aws_new && ansible-playbook -i env/production filestack_api
 
 Its working basically the same. The only diffrents is domain and file name it creates.
 [https://api.filestackapi.com/filestack.js](https://api.filestackapi.com/filestack.js)
-
-4. Be sure to update [npm package version](https://www.npmjs.com/package/filepicker-js) :
-```
-npm publish
-```
-
-5. And [Bower-friendly version of filepicker-js](https://github.com/filepicker/filepicker-js-bower)
