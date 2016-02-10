@@ -30,6 +30,7 @@ filepicker.extend('services', function(){
         CUSTOMSOURCE: 22,
         CLOUDDRIVE: 23,
         GENERIC: 24,
-        CONVERT: 25
+        CONVERT: 25,
+        AUDIO: 26
     };
 }, true);
