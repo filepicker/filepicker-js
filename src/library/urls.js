@@ -35,6 +35,8 @@ filepicker.extend('urls', function(){
             ((options.webcam && options.webcam.webcamDim) ? '&wdim='+options.webcam.webcamDim.join(',') : '')+
             (options.webcamDim ? '&wdim='+options.webcamDim.join(',') : '')+
             ((options.webcam && options.webcam.videoRes) ? '&videoRes='+options.webcam.videoRes: '')+
+            ((options.webcam && options.webcam.videoLen) ? '&videoLen='+options.webcam.videoLen: '')+
+            ((options.webcam && options.webcam.audioLen) ? '&audioLen='+options.webcam.audioLen: '')+
             constructConversionsQuery(options.conversions);
     };
 

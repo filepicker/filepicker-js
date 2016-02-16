@@ -90,7 +90,9 @@ filepicker.extend('widgets', function(){
         },
             webcamOptionsMap = {
             'data-fp-video-recording-resolution': 'videoRes',
-            'data-fp-webcam-dim': 'webcamDim'
+            'data-fp-webcam-dim': 'webcamDim',
+            'data-fp-video-length': 'videoLen',
+            'data-fp-audio-length': 'audioLen'
         };
 
         setAttrIfExistsArray(fpoptions, domElement, generalOptionsMap);

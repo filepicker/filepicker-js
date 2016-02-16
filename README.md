@@ -1,5 +1,5 @@
 # filepicker-js
-Filepicker javascript client library. 
+Filepicker javascript client library.
 
 ## Usage
 
@@ -50,14 +50,68 @@ Next thing to do is setting apikey. If you dont have one - register free account
 
 ## Contributing
 Contributing welcomed. First install npm dependencies.
-``` 
+```
 npm install
-``` 
+```
 To watch changes and build script run:
-``` 
+```
 npm run watch
-``` 
+```
 With jshint:
-``` 
+```
 npm run watch-linter
-``` 
+```
+
+
+## Releasing
+1. When updating version be sure to update it in all files:
+
+```
+./VERSION
+./package.json
+./src/library/lib.js
+```
+
+2. Set git tag with current version.
+
+3. Be sure to update [npm package version](https://www.npmjs.com/package/filepicker-js) :
+```
+npm publish
+```
+
+4. And [Bower-friendly version of filepicker-js](https://github.com/filepicker/filepicker-js-bower)
+
+
+## Deployment
+### Filepicker
+
+Use ansible script to deploy current version for filepicker.
+
+```
+source ../vagrant/aws/new && ansible-playbook -i env/production/inventory filepicker_api/deploy_js_library_v2.yml
+```
+
+* optionally to deploy from branch othter than master
+```
+-e emergency_deploy="yes"
+```
+
+* optionally not to overwrite edge version
+```
+-e edge_version="no"
+```
+
+It overwrites [filepicker.js](https://api.filepicker.io/v2/filepicker.js) with current version. It creates versioned files, eg for v2.4.0:
+
+*  [filepicker-2.4.0.js](https://api.filepicker.io/v2/filepicker-2.4.0.js)
+*  [filepicker-2.4.0.min.js](https://api.filepicker.io/v2/filepicker-2.4.0.min.js)
+*  [filepicker_debug-2.4.0.js](https://api.filepicker.io/v2/filepicker_debug-2.4.0.js)
+
+### Filestack
+
+```
+source ~/.filepicker/aws_new && ansible-playbook -i env/production filestack_api/build_js.yml
+```
+
+Its working basically the same. The only diffrents is domain and file name it creates.
+[https://api.filestackapi.com/filestack.js](https://api.filestackapi.com/filestack.js)
