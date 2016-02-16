@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.4 (16.02.2016)
+- Add filtering support to audio client [#28](https://github.com/filepicker/filepicker-js/pull/28)
+
 ### 2.4.3 (09.02.2016)
 - Add storeRegion option to the picker. [#19](https://github.com/filepicker/filepicker-js/pull/19)
 - Added option for setting video & webcam resolution [#20](https://github.com/filepicker/filepicker-js/pull/20)
