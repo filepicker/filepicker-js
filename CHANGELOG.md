@@ -1,6 +1,6 @@
 ## Changelog
 
-### 2.4.5 (WIP)
+### 2.4.5 (25.02.2016)
 - Widget button rebranded to FileStack [#29](https://github.com/filepicker/filepicker-js/pull/29)
 
 ### 2.4.4 (16.02.2016)
