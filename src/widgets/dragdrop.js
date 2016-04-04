@@ -58,6 +58,11 @@ filepicker.extend('dragdrop', function(){
             }
         }
 
+        for (var i = 0; i < extensions.length; i++) {
+            extensions[i] = extensions[i].toLowerCase();
+        }
+
+
         if (fp.util.typeOf(extensions) === 'string'){
             extensions = extensions.replace(/ /g,'').split(',');
         }
