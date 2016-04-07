@@ -1,6 +1,6 @@
 ## Changelog
 
-### 2.4.6 (07.04.2016)
+### 2.4.7 (07.04.2016)
 - Extensions are case insensitive now [#31](https://github.com/filepicker/filepicker-js/pull/31)
 
 ### 2.4.5 (25.02.2016)
