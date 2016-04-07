@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.6 (07.04.2016)
+- Extensions are case insensitive now [#31](https://github.com/filepicker/filepicker-js/pull/31)
+
 ### 2.4.5 (25.02.2016)
 - Widget button rebranded to FileStack [#29](https://github.com/filepicker/filepicker-js/pull/29)
 
