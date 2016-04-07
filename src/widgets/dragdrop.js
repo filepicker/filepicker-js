@@ -62,6 +62,12 @@ filepicker.extend('dragdrop', function(){
             extensions = extensions.replace(/ /g,'').split(',');
         }
 
+        if (extensions) {
+            for (var i = 0; i < extensions.length; i++) {
+                extensions[i] = extensions[i].toLowerCase();
+            }
+        }
+
         var store_options = {
             location: options.location,
             path: options.path,
