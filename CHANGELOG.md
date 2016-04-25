@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.8 (25.04.2016)
+- Handle HTTP server errors [#32](https://github.com/filepicker/filepicker-js/pull/32)
+
 ### 2.4.7 (07.04.2016)
 - Extensions are case insensitive now [#31](https://github.com/filepicker/filepicker-js/pull/31)
 

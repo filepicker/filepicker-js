@@ -56,15 +56,20 @@ filepicker.extend('picker', function(){
 
             if (data.error) {
                 fp.util.console.error(data.error);
-                onError(fp.errors.FPError(102));
+                if (data.error.code) {
+                    onError(fp.errors.FPError(data.error.code));
+                } else {
+                    onError(fp.errors.FPError(102));
+                    //Try to close a modal if it exists.
+                    fp.modal.close();
+                }
             } else {
                 var fpfile = fpfileFromPayload(data.payload);
                 //TODO: change payload to not require parsing
                 onSuccess(fpfile);
+                //Try to close a modal if it exists.
+                fp.modal.close();
             }
-
-            //Try to close a modal if it exists.
-            fp.modal.close();
         };
         return handler;
     };
@@ -272,7 +277,7 @@ filepicker.extend('picker', function(){
             fp.modal.close();
         } else if (data.type === 'hideModal') {
             fp.modal.hide();
-        } else if (data.type === 'filepickerUrl') {
+        } else if (data.type === 'filepickerUrl' || data.type === 'serverHttpError') {
             return false;
         }
         return true;
