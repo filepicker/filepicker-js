@@ -124,6 +124,8 @@ filepicker.extend('picker', function(){
         fpfile.filename = data.filename;
         fpfile.mimetype = data.type;
         fpfile.size = data.size;
+        fpfile.cropped = data.cropped;
+        fpfile.rotated = data.rotated;
 
         addIfExist(data, fpfile, 'id');
         addIfExist(data, fpfile, 'key');
