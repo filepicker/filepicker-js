@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.9 (04.05.2016)
+- Passing crop and rotation data to blob [#33](https://github.com/filepicker/filepicker-js/pull/33)
+
 ### 2.4.8 (25.04.2016)
 - Handle HTTP server errors [#32](https://github.com/filepicker/filepicker-js/pull/32)
 
