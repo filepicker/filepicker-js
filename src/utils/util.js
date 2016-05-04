@@ -88,7 +88,7 @@ filepicker.extend('util', function(){
     */
     var getFPUrl = function(url){
         if (typeof url === 'string') {
-            var matched = url.match(/(cdn\.filestackcontent\.com|cdn\.filepicker\.io)[\S]*\/([\S]{20,})/);
+            var matched = url.match(/(cdn.filestackcontent.com|cdn.filepicker.io)[\S]*\/([\S]{20,})/);
             if (matched && matched.length > 1) {
                 return fp.urls.BASE + '/api/file/' + matched[1];
             }
