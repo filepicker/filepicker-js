@@ -536,6 +536,7 @@ filepicker.extend('widgets', function(){
         if (!url || !fp.util.isFPUrl(url)) {
             return true;
         } else {
+            url = fp.util.getFPUrl(url);
             url = url.replace('api/file/', 'api/preview/');
         }
 
