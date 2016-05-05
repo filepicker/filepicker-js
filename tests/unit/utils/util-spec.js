@@ -63,10 +63,6 @@ describe("The utils library", function(){
                 output: 'http://www.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y',
             },
             {
-                input: 'cdn.filestackcontent.dev:8080/no7gIBeQRhWq7Ce9FRrw',
-                output: filepicker.urls.BASE+'/api/file/no7gIBeQRhWq7Ce9FRrw'
-            },
-            {
                 input: 'https://api.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y',
                 output: 'https://api.filestackapi.com/api/file/zEJ90dDpS2iPriLsKY9Y'
             },

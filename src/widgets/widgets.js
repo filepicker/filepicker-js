@@ -532,7 +532,7 @@ filepicker.extend('widgets', function(){
     var constructPreview = function(domElement) {
         var url = domElement.getAttribute('data-fp-url'),
             css = domElement.getAttribute('data-fp-custom-css');
-
+        var url = fp.util.getFPUrl(url);
         if (!url || !fp.util.isFPUrl(url)) {
             return true;
         } else {
