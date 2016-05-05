@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.10 (05.05.2016)
+- Replace cdn urls for preview widget [#34](https://github.com/filepicker/filepicker-js/pull/34)
+
 ### 2.4.9 (04.05.2016)
 - Passing crop and rotation data to blob [#33](https://github.com/filepicker/filepicker-js/pull/33)
 
