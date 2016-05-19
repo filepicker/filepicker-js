@@ -130,6 +130,9 @@ filepicker.extend('picker', function(){
         if (data.rotated !== undefined) {
             fpfile.rotated = data.rotated;
         }
+        if (data.converted !== undefined) {
+            fpfile.converted = data.converted;
+        }
 
         addIfExist(data, fpfile, 'id');
         addIfExist(data, fpfile, 'key');
