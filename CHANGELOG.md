@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.11 (19.05.2016)
+- Pass `converted` property to blob in onSuccess callback
+
 ### 2.4.10 (05.05.2016)
 - Replace cdn urls for preview widget [#34](https://github.com/filepicker/filepicker-js/pull/34)
 
