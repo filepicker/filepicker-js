@@ -7,11 +7,11 @@ filepicker.extend('util', function(){
     };
 
     var isFile = function(o) {
-        return o && Object.prototype.toString.call(o) === '[object File]';
+        return o && (Object.prototype.toString.call(o) === '[object File]' || Object.prototype.toString.call(o) === '[object Blob]');
     };
 
     var isElement = function(o) {
-      //Returns true if it is a DOM element    
+      //Returns true if it is a DOM element
       if (typeof window.HTMLElement === 'object') {
          return o instanceof window.HTMLElement; //DOM2
       } else {
@@ -39,7 +39,7 @@ filepicker.extend('util', function(){
         var d = new Date();
         return d.getTime().toString();
     };
-    
+
     var setDefault = function(obj, key, def) {
         if (obj[key] === undefined) {
             obj[key] = def;
@@ -78,7 +78,7 @@ filepicker.extend('util', function(){
         return typeof url === 'string' && url.match(fp.urls.BASE + '/api/file/');
     };
 
-    // What about cdn 
+    // What about cdn
     var isFPUrlCdn = function(url) {
         return typeof url === 'string' && url.match('/api/file/');
     };
@@ -133,7 +133,7 @@ filepicker.extend('util', function(){
     };
 
     var isCanvasSupported = function(){
-        // IE8 is crashing on it 
+        // IE8 is crashing on it
         try {
             var elem = document.createElement('canvas');
             return !!(elem.getContext && elem.getContext('2d'));
@@ -164,7 +164,7 @@ filepicker.extend('util', function(){
     *
     *   @method objectKeys
     *   @param {Object} obj
-    *   @returns {Array} 
+    *   @returns {Array}
     */
 
     var objectKeys = function(obj) {
