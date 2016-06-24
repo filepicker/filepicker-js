@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.12 (24.06.2016)
+- [Blobs](https://developer.mozilla.org/en-US/docs/Web/API/Blob) support in `filepicker.store()` method. [#37](https://github.com/filepicker/filepicker-js/pull/37)
+
 ### 2.4.11 (19.05.2016)
 - Pass `converted` property to blob in onSuccess callback
 

@@ -3,6 +3,10 @@ describe("The utils library", function(){
     });
 
     it("can determine if an object is a file", function(){
+        expect(filepicker.util.isFile(new File([], 'name.jpg'))).toEqual(true);
+        expect(filepicker.util.isFile(new Blob())).toEqual(true);
+        expect(filepicker.util.isFile()).toBeFalsy(); // returns undefined rather than false
+        expect(filepicker.util.isFile(function() {})).toEqual(false);
     });
 
     it("can determine if an object is an element", function(){
