@@ -3,7 +3,7 @@
 
 filepicker.extend(function(){
     var fp = this,
-        VERSION = '2.4.12';
+        VERSION = '2.4.13';
     fp.API_VERSION = 'v2';
 
     var setKey = function(key) {
