@@ -36,7 +36,7 @@ filepicker.extend('handlers', function(){
     };
 
     var run = function(data){
-        if (data == null || data.id == null || data.type == null) {
+        if (data == null || data.id == null) {
             return false;
         }
         var callerId = data.id;
