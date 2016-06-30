@@ -6,7 +6,7 @@ filepicker.extend('handlers', function(){
     var storage = {};
 
     var attachHandler = function(id, handler){
-        if (storage.hasOwnProperty(id)){ 
+        if (storage.hasOwnProperty(id)){
             storage[id].push(handler);
         } else {
             storage[id] = [handler];
@@ -36,8 +36,11 @@ filepicker.extend('handlers', function(){
     };
 
     var run = function(data){
+        if (data == null || data.id == null || data.type == null) {
+            return false;
+        }
         var callerId = data.id;
-        if (storage.hasOwnProperty(callerId)){ 
+        if (storage.hasOwnProperty(callerId)){
             //have to grab first in case someone removes mid-go
             var handlers = storage[callerId];
             for (var i = 0; i < handlers.length; i++) {
