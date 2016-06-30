@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.13 (30.06.2016)
+- Fixed issue [#21](https://github.com/filepicker/filepicker-js/issues/21)
+
 ### 2.4.12 (24.06.2016)
 - [Blobs](https://developer.mozilla.org/en-US/docs/Web/API/Blob) support in `filepicker.store()` method. [#37](https://github.com/filepicker/filepicker-js/pull/37)
 
