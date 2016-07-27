@@ -179,6 +179,7 @@ filepicker.extend('urls', function(){
         STORE: store_url,
         PICK: pick_url,
         EXPORT: export_url,
+        LOGOUT: base + '/api/clients/unauth',
         constructPickUrl: constructPickUrl,
         constructConvertUrl: constructConvertUrl,
         constructPickFolderUrl: constructPickFolderUrl,
