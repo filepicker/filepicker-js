@@ -72,7 +72,7 @@ filepicker.extend('ajax', function(){
         var data = options.data || null;
         var processData = options.processData === undefined ? true : options.processData;
         var headers = options.headers || {};
-        
+
         var urlParts = fp.util.parseUrl(url);
         var origin = window.location.protocol + '//' + window.location.host;
         var crossdomain = origin !== urlParts.origin;
@@ -170,7 +170,9 @@ filepicker.extend('ajax', function(){
             url += (url.indexOf('?') !== -1 ? '&' : '?') + data;
             data = null;
         }
-        
+
+        xhr.withCredentials = true;
+
         xhr.open(method, url, async);
         if (options.json) {
             xhr.setRequestHeader('Accept', 'application/json, text/javascript');
@@ -189,7 +191,7 @@ filepicker.extend('ajax', function(){
             }
         }
 
-        xhr.send(data); 
+        xhr.send(data);
 
         return xhr;
     };
@@ -237,7 +239,7 @@ filepicker.extend('ajax', function(){
             url += (url.indexOf('?') >= 0 ? '&' : '?') + data;
             data = null;
         }
-        
+
         //so we know it's an xdr and can handle appropriately
         url += (url.indexOf('?') >= 0 ? '&' : '?') + '_xdr=true&_cacheBust='+fp.util.getId();
 
