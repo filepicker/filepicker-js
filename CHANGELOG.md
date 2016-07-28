@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.15 (28.07.2016)
+- Added `logout()` method [#41](https://github.com/filepicker/filepicker-js/pull/41)
+
 ### 2.4.13 & 2.4.14 (30.06.2016)
 - Fixed issue [#21](https://github.com/filepicker/filepicker-js/issues/21)
 

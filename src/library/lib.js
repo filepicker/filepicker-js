@@ -747,6 +747,14 @@ filepicker.extend(function(){
         fp.responsiveImages.update.apply(null, arguments);
     };
 
+    var logout = function(options) {
+        options = options || {};
+        fp.ajax.get(fp.urls.LOGOUT, {
+            success: options.onSuccess,
+            error: options.onError,
+        });
+    };
+
     return {
         setKey: setKey,
         setResponsiveOptions: setResponsiveOptions,
@@ -770,6 +778,7 @@ filepicker.extend(function(){
         makeDropPane: makeDropPane,
         FilepickerException: FilepickerException,
         responsive: responsive,
+        logout: logout,
         version: VERSION
     };
 }, true);
