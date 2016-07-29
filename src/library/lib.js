@@ -752,6 +752,7 @@ filepicker.extend(function(){
         fp.ajax.get(fp.urls.LOGOUT, {
             success: options.onSuccess,
             error: options.onError,
+            withCredentials: true
         });
     };
 

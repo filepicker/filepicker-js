@@ -171,7 +171,9 @@ filepicker.extend('ajax', function(){
             data = null;
         }
 
-        xhr.withCredentials = true;
+        if (options.withCredentials) {
+            xhr.withCredentials = true;
+        }
 
         xhr.open(method, url, async);
         if (options.json) {
