@@ -3,7 +3,7 @@
 
 filepicker.extend(function(){
     var fp = this,
-        VERSION = '2.4.15';
+        VERSION = '2.4.16';
     fp.API_VERSION = 'v2';
 
     var setKey = function(key) {
@@ -752,6 +752,7 @@ filepicker.extend(function(){
         fp.ajax.get(fp.urls.LOGOUT, {
             success: options.onSuccess,
             error: options.onError,
+            withCredentials: true
         });
     };
 
