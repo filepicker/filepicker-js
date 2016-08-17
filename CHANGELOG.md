@@ -1,5 +1,9 @@
 ## Changelog
 
+### 2.4.17 (17.08.2016)
+- Fix storeUrl regex [#43](https://github.com/filepicker/filepicker-js/pull/43)
+- Guard for malformed messages [#44](https://github.com/filepicker/filepicker-js/pull/44)
+
 ### 2.4.16 (29.07.2016)
 - Bugfix for `logout()` method
 
