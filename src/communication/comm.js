@@ -41,8 +41,12 @@ filepicker.extend('comm', function(){
         if (event.origin !== fp.urls.BASE && event.origin !== fp.urls.DIALOG_BASE) {
             return;
         }
-        var data = fp.json.parse(event.data);
-        fp.handlers.run(data);
+        try {
+            var data = fp.json.parse(event.data);
+            fp.handlers.run(data);
+        } catch(err) {
+            console.log('[Filepicker] Failed processing message:', event.data);
+        }
     };
 
     /*
