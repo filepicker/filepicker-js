@@ -43,9 +43,11 @@ filepicker.extend('comm', function(){
         }
         try {
             var data = fp.json.parse(event.data);
-            fp.handlers.run(data);
         } catch(err) {
             console.log('[Filepicker] Failed processing message:', event.data);
+        }
+        if (data) {
+            fp.handlers.run(data);
         }
     };
 
