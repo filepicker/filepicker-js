@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.18 (03.10.2016)
+- Make try/catch block less aggressive [#46](https://github.com/filepicker/filepicker-js/pull/46)
+
 ### 2.4.17 (17.08.2016)
 - Fix storeUrl regex [#43](https://github.com/filepicker/filepicker-js/pull/43)
 - Guard for malformed messages [#44](https://github.com/filepicker/filepicker-js/pull/44)
