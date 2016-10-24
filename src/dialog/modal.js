@@ -5,13 +5,13 @@ filepicker.extend('modal', function(){
     var fp = this,
         SHADE_NAME = 'filepicker_shade',
         WINDOW_CONTAINER_NAME = 'filepicker_dialog_container';
-        
+
 
     var originalBody = getHtmlTag();
     if (originalBody) {
         var originalOverflow = originalBody.style.overflow;
     }
-        
+
 
     /*
      * Make the code for the modal
@@ -93,7 +93,7 @@ filepicker.extend('modal', function(){
             }
             fp.uploading = false;
             document.onkeydown = null;
-            
+
             setOriginalOverflow();
 
             var shade = document.getElementById(SHADE_NAME);
@@ -129,22 +129,25 @@ filepicker.extend('modal', function(){
     }
 
     function appendStyle(){
-        var css = '.fp__overlay {top: 0;right: 0;bottom: 0;left: 0;z-index: 1000;background: rgba(0, 0, 0, 0.8);}' +
 
-            '.fp__close {top: 104px; right: 108px; width: 35px; height: 35px; z-index: 20; cursor: pointer}' +
-            '@media screen and (max-width: 768px), screen and (max-height: 500px) {.fp__close {top: 15px; right: 12px;}}' +
-            '.fp__close a {text-indent: -9999px; overflow: hidden; display: block; width: 100%; height: 100%; background: url(https://d1zyh3sbxittvg.cloudfront.net/close.png) 50% 50% no-repeat;}' +
-            '.fp__close a:hover {background-color: rgba(0,0,0, .02); opacity: .8;}' +
-            '@media screen and (max-width: 768px), screen and (max-height: 500px) {top: 14px; right: 14px;}' +
-            '.fp__copy {display: none;}' +
-
-            '.fp__container {-webkit-overflow-scrolling: touch; overflow: hidden; min-height: 300px; top: 100px;right: 100px;bottom: 100px;left: 100px;background: #eee; box-sizing:content-box; -webkit-box-sizing:content-box; -moz-box-sizing:content-box;}' +
-
-            '@media screen and (max-width: 768px), screen and (max-height: 500px) {.fp__copy {bottom: 0; left: 0; right: 0; height: 20px; background: #333;}}' +
-            '@media screen and (max-width: 768px), screen and (max-height: 500px) {.fp__copy a {margin-left: 5px;}}' +
-            '@media screen and (max-width: 768px), screen and (max-height: 500px) {.fp__container {top: 0;right: 0;bottom: 0;left: 0;}}' +
-
-            '.fp__overlay, .fp__close, .fp__copy, .fp__container {position: fixed;}';
+        var css = '.fp__overlay, .fp__close, .fp__copy, .fp__container { position: fixed; }' +
+            '.fp__close { top: 104px; right: 108px; width: 35px; height: 35px; z-index: 20;' +
+                'cursor: pointer; }' +
+            '.fp__close a { text-indent: -9999px; overflow: hidden; display: block; width: 100%;' +
+                'height: 100%; background: url(https://d1zyh3sbxittvg.cloudfront.net/close.png)' +
+                '50% 50% no-repeat; }' +
+            '.fp__close a:hover { background-color: rgba(0,0,0, .02); opacity: .8; }' +
+            '.fp__container { -webkit-overflow-scrolling: touch; overflow: hidden;' +
+                'min-height: 300px; top: 100px; right: 100px; bottom: 100px; left: 100px;' +
+                'background: #eee; box-sizing: content-box; -webkit-box-sizing: content-box;' +
+                '-moz-box-sizing: content-box; }' +
+            '.fp__copy { display: none; }' +
+            '@media screen and (max-width: 768px), screen and (max-height: 500px) {' +
+            '.fp__close { width: 65px; height: 65px; top: 0; right: 0 }' +
+            '.fp__copy { bottom: 0; left: 0; right: 0; height: 20px; background: #333; }' +
+            '.fp__copy a { margin-left: 5px; }' +
+            '.fp__container { top: 0; right: 0; bottom: 0; left: 0; }' +
+            '}';
 
         var head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
