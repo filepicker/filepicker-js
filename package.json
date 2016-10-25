@@ -9,7 +9,7 @@
     "test": "./node_modules/.bin/karma start --single-run",
     "prebuild": "rm -rf dist && mkdir dist",
     "postbuild": "uglifyjs dist/filepicker.js -o ./dist/filepicker.min.js --compress --mangle && cp filepicker_debug.js dist/",
-    "build": "uglifyjs ./src/setup.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker.js -b ",
+    "build": "(cat ./before.js && uglifyjs ./src/setup.js ./src/**/*.js ./src/finalize.js -b && cat ./after.js) > ./dist/filepicker.js",
     "watch": "onchange ./src/*.js ./src/**/*.js -- npm run build",
     "watch-test": "onchange ./tests/unit/*.js ./tests/unit/**/*.js ./src/*.js ./src/**/*.js -- npm run test",
     "linter": "jshint ./src/*.js ./src/**/*.js",
