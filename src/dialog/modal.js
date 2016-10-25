@@ -131,6 +131,8 @@ filepicker.extend('modal', function(){
     function appendStyle(){
 
         var css = '.fp__overlay, .fp__close, .fp__copy, .fp__container { position: fixed; }' +
+            '.fp__overlay {top: 0; right: 0; bottom: 0;l eft: 0; z-index: 1000;' +
+                'background: rgba(0, 0, 0, 0.8);}' +
             '.fp__close { top: 104px; right: 108px; width: 35px; height: 35px; z-index: 20;' +
                 'cursor: pointer; }' +
             '.fp__close a { text-indent: -9999px; overflow: hidden; display: block; width: 100%;' +
