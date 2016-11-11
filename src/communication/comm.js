@@ -38,7 +38,8 @@ filepicker.extend('comm', function(){
     };
 
     var communicationsHandler = function(event){
-        if (event.origin !== fp.urls.BASE && event.origin !== fp.urls.DIALOG_BASE) {
+        var origin = event.origin || event.originalEvent.origin; // For Chrome, the origin property is in the event.originalEvent object. (https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+        if (origin !== fp.urls.BASE && origin !== fp.urls.DIALOG_BASE) {
             return;
         }
         try {
