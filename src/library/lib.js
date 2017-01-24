@@ -739,6 +739,10 @@ filepicker.extend(function(){
         return fp.dragdrop.makeDropPane(div, options);
     };
 
+    var clearDropPaneEventListeners = function() {
+        return fp.dragdrop.clearDropPaneEventListeners();
+    };
+
     var setResponsiveOptions = function(options){
         return fp.responsiveImages.setResponsiveOptions(options);
     };
@@ -777,6 +781,7 @@ filepicker.extend(function(){
         convert: convert,
         constructWidget: constructWidget,
         makeDropPane: makeDropPane,
+        clearDropPaneEventListeners: clearDropPaneEventListeners,
         FilepickerException: FilepickerException,
         responsive: responsive,
         logout: logout,

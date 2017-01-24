@@ -2,6 +2,7 @@
 //dragdrop.js
 filepicker.extend('dragdrop', function(){
     var fp = this;
+    var listeners = [];
 
     var canDragDrop = function(){
         return (!!window.FileReader || navigator.userAgent.indexOf('Safari') >= 0) &&
@@ -82,7 +83,7 @@ filepicker.extend('dragdrop', function(){
         };
 
         //event listeners
-        div.addEventListener('dragenter', function(e){
+        function dragEnterListener(e){
             if (enabled()) {
                 dragEnter();
             }
@@ -90,9 +91,11 @@ filepicker.extend('dragdrop', function(){
             e.stopPropagation();
             e.preventDefault();
             return false;
-        }, false);
+        };
+        div.addEventListener('dragenter', dragEnterListener, false);
+        listeners.push({ element: div, event: 'dragenter', listener: dragEnterListener });
 
-        div.addEventListener('dragleave', function(e){
+        function dragLeaveListener(e){
             if (enabled()) {
                 dragLeave();
             }
@@ -100,15 +103,19 @@ filepicker.extend('dragdrop', function(){
             e.stopPropagation();
             e.preventDefault();
             return false;
-        }, false);
+        };
+        div.addEventListener('dragleave', dragLeaveListener, false);
+        listeners.push({ element: div, event: 'dragleave', listener: dragLeaveListener });
 
-        div.addEventListener('dragover', function(e) {
+        function dragOverListener(e) {
             e.dataTransfer.dropEffect = 'copy';
             e.preventDefault();
             return false;
-        }, false);
+        };
+        div.addEventListener('dragover', dragOverListener, false);
+        listeners.push({ element: div, event: 'dragover', listener: dragOverListener });
 
-        div.addEventListener('drop', function(e) {
+        function dropListener(e) {
             e.stopPropagation();
             e.preventDefault();
 
@@ -127,7 +134,9 @@ filepicker.extend('dragdrop', function(){
                 onError('NoFilesFound', 'No files uploaded');
             }
             return false;
-        });
+        };
+        div.addEventListener('drop', dropListener);
+        listeners.push({ element: div, event: 'drop', listener: dropListener });
 
         var reenablePane = function(){
             // Re-enabling
@@ -316,8 +325,15 @@ filepicker.extend('dragdrop', function(){
         }
     };
 
+    var clearDropPaneEventListeners = function() {
+        for (var i = 0; i < listeners.length; i++) {
+            listeners[i].element.removeEventListener(listeners[i].event, listeners[i].listener);
+        }
+    };
+
     return {
         enabled: canDragDrop,
-        makeDropPane: makeDropPane
+        makeDropPane: makeDropPane,
+        clearDropPaneEventListeners: clearDropPaneEventListeners
     };
 });
