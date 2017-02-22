@@ -81,6 +81,7 @@ filepicker.extend('widgets', function(){
             'data-fp-store-path': 'storePath',
             'data-fp-store-container': 'storeContainer',
             'data-fp-store-region': 'storeRegion',
+            'data-fp-store-cloudinary-upload-preset': 'cloudinaryUploadPreset',
             'data-fp-store-access': 'storeAccess',
             // v2
             'data-fp-image-quality': 'imageQuality',
@@ -378,6 +379,7 @@ filepicker.extend('widgets', function(){
             path: fpoptions.storePath,
             container: fpoptions.storeContainer,
             region: fpoptions.storeRegion,
+            cloudinaryUploadPreset: fpoptions.cloudinaryUploadPreset,
             access: fpoptions.storeAccess,
             policy: fpoptions.policy,
             signature: fpoptions.signature,

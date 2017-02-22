@@ -28,6 +28,7 @@ filepicker.extend('conversions', function(){
         storeLocation:'string',
         storePath:'string',
         text:'string',
+        cloudinaryUploadPreset: 'string',
         text_align:'string',
         text_color:'string',
         text_font:'string',
