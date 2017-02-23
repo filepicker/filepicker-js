@@ -139,6 +139,7 @@ filepicker.extend('picker', function(){
         addIfExist(data, fpfile, 'container');
         addIfExist(data, fpfile, 'path');
         addIfExist(data, fpfile, 'client');
+        addIfExist(data, fpfile, 'cloudinary_resource_type');
 
         //TODO: get writeable
         fpfile.isWriteable = true;
