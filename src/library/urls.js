@@ -31,6 +31,7 @@ filepicker.extend('urls', function(){
             (options.storePath ? '&storePath='+options.storePath : '')+
             (options.storeContainer ? '&storeContainer='+options.storeContainer : '')+
             (options.storeRegion ? '&storeRegion='+options.storeRegion : '')+
+            (options.cloudinaryUploadPreset ? '&cloudinaryUploadPreset='+options.cloudinaryUploadPreset: '')+
             (options.storeAccess ? '&storeAccess='+options.storeAccess : '')+
             ((options.webcam && options.webcam.webcamDim) ? '&wdim='+options.webcam.webcamDim.join(',') : '')+
             (options.webcamDim ? '&wdim='+options.webcamDim.join(',') : '')+

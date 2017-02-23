@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.19 (23.02.2017)
+- Add changes for Cloudinary upload presets and resource type [#57](https://github.com/filepicker/filepicker-js/pull/57)
+
 ### 2.4.18 (03.10.2016)
 - Make try/catch block less aggressive [#46](https://github.com/filepicker/filepicker-js/pull/46)
 
