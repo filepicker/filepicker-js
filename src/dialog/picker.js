@@ -218,7 +218,7 @@ filepicker.extend('picker', function(){
             var alreadyHandled = false;
             fp.cookies.checkThirdParty(function(){
                 if (!alreadyHandled) {
-                    createPicker(options, onSuccess, onError, !!multiple, folder, onProgress);
+                    createPicker(options, onSuccess, onError, !!multiple, folder, onProgress, convertFile);
                     alreadyHandled = true;
                 }
             });
