@@ -1,4 +1,6 @@
 ## Changelog
+### 2.4.20 (12.03.2018)
+- Bugfix for loading picker with video in iframe (chrome browser)
 
 ### 2.4.19 (23.02.2017)
 - Add changes for Cloudinary upload presets and resource type [#57](https://github.com/filepicker/filepicker-js/pull/57)
