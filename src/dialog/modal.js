@@ -5,13 +5,13 @@ filepicker.extend('modal', function(){
     var fp = this,
         SHADE_NAME = 'filepicker_shade',
         WINDOW_CONTAINER_NAME = 'filepicker_dialog_container';
-        
+
 
     var originalBody = getHtmlTag();
     if (originalBody) {
         var originalOverflow = originalBody.style.overflow;
     }
-        
+
 
     /*
      * Make the code for the modal
@@ -29,12 +29,14 @@ filepicker.extend('modal', function(){
         modal.style.height = '100%';
         modal.style.border = 'none';
         modal.style.position = 'relative';
+
         //IE...
         modal.setAttribute('border',0);
         modal.setAttribute('frameborder',0);
         modal.setAttribute('frameBorder',0);
         modal.setAttribute('marginwidth',0);
         modal.setAttribute('marginheight',0);
+        modal.setAttribute('allow', 'microphone; camera');
 
         modal.src = modalUrl;
         container.appendChild(modal);
@@ -93,7 +95,7 @@ filepicker.extend('modal', function(){
             }
             fp.uploading = false;
             document.onkeydown = null;
-            
+
             setOriginalOverflow();
 
             var shade = document.getElementById(SHADE_NAME);
