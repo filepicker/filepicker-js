@@ -4,7 +4,7 @@
   "description": "Filepicker client javascript library",
   "main": "index.js",
   "scripts": {
-    "prepublish":"npm run build",
+    "prepublish": "npm run build",
     "pretest": "npm run prebuild && uglifyjs ./src/setup-spec.js ./src/**/*.js  ./src/finalize.js -o ./dist/filepicker-spec.js -b ",
     "test": "./node_modules/.bin/karma start --single-run",
     "prebuild": "rm -rf dist && mkdir dist",
@@ -42,7 +42,7 @@
     "karma-jasmine": "0.3.6",
     "karma-jasmine-ajax": "0.1.13",
     "onchange": "2.0.0",
-    "uglify-js": "2.4.24"
+    "uglify-js": "2.6.0"
   },
   "dependencies": {}
 }
